@@ -1,0 +1,443 @@
+.todoist-task-notes-dashboard {
+  --ttn-border: var(--background-modifier-border);
+  --ttn-card: var(--background-primary-alt);
+  --ttn-soft: var(--background-secondary);
+  --ttn-accent: var(--interactive-accent);
+  display: grid;
+  direction: rtl;
+  gap: 1.4rem;
+  text-align: start;
+}
+
+.todoist-task-notes-dashboard *,
+.todoist-task-notes-modal * {
+  box-sizing: border-box;
+}
+
+.todoist-task-notes-toolbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.todoist-task-notes-toolbar button,
+.todoist-task-notes-add-subtask {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.4rem;
+  min-height: 2.5rem;
+}
+
+.todoist-task-notes-toolbar button svg,
+.todoist-task-notes-add-subtask svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.todoist-task-notes-status {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-inline-start: auto;
+}
+
+.todoist-task-notes-section {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.todoist-task-notes-section > h2 {
+  font-size: var(--font-ui-large);
+  margin: 0;
+}
+
+.todoist-task-notes-section-hint {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin: -0.35rem 0 0;
+}
+
+.todoist-task-notes-overview-grid,
+.todoist-task-notes-branch-stats-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.todoist-task-notes-branch-stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.todoist-task-notes-overview-card,
+.todoist-task-notes-branch-stat-card,
+.todoist-task-notes-project-branch,
+.todoist-task-notes-root-branch {
+  background: var(--ttn-card);
+  border: 1px solid var(--ttn-border);
+  border-radius: var(--radius-l);
+}
+
+.todoist-task-notes-project-header {
+  align-items: center;
+  display: flex;
+  gap: 0.55rem;
+  min-height: 3.4rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.todoist-task-notes-project-header > strong {
+  font-size: var(--font-ui-medium);
+}
+
+.todoist-task-notes-project-panel {
+  background: var(--background-primary);
+  border-top: 1px solid var(--ttn-border);
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.7rem;
+}
+
+.todoist-task-notes-overview-card {
+  align-items: center;
+  display: grid;
+  gap: 0.15rem 0.65rem;
+  grid-template-columns: auto 1fr;
+  padding: 0.8rem;
+}
+
+.todoist-task-notes-overview-card .todoist-task-notes-stat-icon {
+  align-items: center;
+  background: color-mix(in srgb, var(--ttn-accent) 14%, transparent);
+  border-radius: var(--radius-m);
+  color: var(--ttn-accent);
+  display: flex;
+  grid-row: span 2;
+  height: 2.5rem;
+  justify-content: center;
+  width: 2.5rem;
+}
+
+.todoist-task-notes-overview-card strong {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.todoist-task-notes-overview-card > span:last-child {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-branch-stat-card {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem;
+}
+
+.todoist-task-notes-branch-stat-heading h3 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.todoist-task-notes-branch-stat-heading span {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-progress-label {
+  display: flex;
+  font-size: var(--font-ui-smaller);
+  justify-content: space-between;
+}
+
+.todoist-task-notes-progress {
+  background: var(--background-modifier-border);
+  border-radius: 999px;
+  height: 0.4rem;
+  overflow: hidden;
+}
+
+.todoist-task-notes-progress-value {
+  background: var(--ttn-accent);
+  border-radius: inherit;
+  height: 100%;
+}
+
+.todoist-task-notes-next-task {
+  background: var(--ttn-soft);
+  border-radius: var(--radius-m);
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem;
+}
+
+.todoist-task-notes-next-task > span {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-branch-metrics {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.todoist-task-notes-branch-metrics > div {
+  display: grid;
+  text-align: center;
+}
+
+.todoist-task-notes-branch-metrics span {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-branch-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.todoist-task-notes-root-header {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  min-height: 3.15rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.todoist-task-notes-root-header .todoist-task-notes-task-link {
+  font-weight: var(--font-semibold);
+}
+
+.todoist-task-notes-remaining-badge {
+  background: var(--background-modifier-hover);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-inline-start: auto;
+  padding: 0.18rem 0.55rem;
+  white-space: nowrap;
+}
+
+.todoist-task-notes-root-panel {
+  border-top: 1px solid var(--ttn-border);
+  padding: 0.6rem 0.8rem 0.8rem;
+}
+
+.todoist-task-notes-root-panel > input[type="checkbox"] {
+  margin-inline-end: 0.45rem;
+}
+
+.todoist-task-notes-tree,
+.todoist-task-notes-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todoist-task-notes-tree {
+  margin-top: 0.45rem;
+}
+
+.todoist-task-notes-tree ul {
+  border-inline-start: 1px solid var(--ttn-border);
+  margin-inline-start: 0.8rem;
+  padding-inline-start: 0.8rem;
+}
+
+.todoist-task-notes-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding-block: 0.15rem;
+}
+
+.todoist-task-notes-row input[type="checkbox"] {
+  margin: 0;
+}
+
+.todoist-task-notes-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--text-muted);
+  display: inline-flex;
+  height: 2rem;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0;
+  width: 2rem;
+}
+
+.todoist-task-notes-toggle:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.todoist-task-notes-toggle svg {
+  height: 1rem;
+  transform: rotate(90deg);
+  transition: transform 120ms ease;
+  width: 1rem;
+}
+
+.todoist-task-notes-toggle.is-expanded svg {
+  transform: rotate(0);
+}
+
+.todoist-task-notes-toggle-spacer {
+  display: inline-block;
+  min-width: 2rem;
+}
+
+.todoist-task-notes-task-link {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.todoist-task-notes-meta {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-priority-p1 {
+  color: var(--color-red);
+}
+
+.todoist-task-notes-priority-p2 {
+  color: var(--color-orange);
+}
+
+.todoist-task-notes-priority-p3 {
+  color: var(--color-blue);
+}
+
+.todoist-task-notes-modal {
+  direction: rtl;
+  text-align: start;
+}
+
+.todoist-task-notes-modal .setting-item {
+  align-items: flex-start;
+}
+
+.todoist-task-notes-modal textarea {
+  min-height: 7rem;
+  width: 100%;
+}
+
+.todoist-task-notes-modal input[type="date"],
+.todoist-task-notes-modal input[type="time"],
+.todoist-task-notes-modal select {
+  min-width: min(16rem, 100%);
+}
+
+.todoist-task-notes-modal input[type="number"] {
+  min-width: 6rem;
+  width: 7rem;
+}
+
+.todoist-task-notes-parent-selectors {
+  border-block: 1px solid var(--background-modifier-border);
+  margin-block: 0.4rem;
+}
+
+.todoist-task-notes-breadcrumb {
+  background: var(--background-secondary);
+  border-radius: var(--radius-m);
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin-block: 0.65rem;
+  padding: 0.65rem;
+}
+
+.todoist-task-notes-breadcrumb strong {
+  color: var(--text-normal);
+}
+
+.todoist-task-notes-hierarchy-locked .setting-item-description {
+  background: var(--background-secondary);
+  border-radius: var(--radius-m);
+  color: var(--text-normal);
+  margin-top: 0.35rem;
+  padding: 0.5rem;
+}
+
+.todoist-task-notes-modal-actions {
+  border-top: 1px solid var(--background-modifier-border);
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+}
+
+.todoist-task-notes-inline-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-block: 0.8rem 1rem;
+}
+
+.todoist-task-notes-action-reason {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.todoist-task-notes-view-action.is-disabled {
+  opacity: 0.45;
+}
+
+.todoist-task-notes-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.todoist-task-notes-dashboard button:focus-visible,
+.todoist-task-notes-dashboard a:focus-visible,
+.todoist-task-notes-modal button:focus-visible,
+.todoist-task-notes-modal input:focus-visible,
+.todoist-task-notes-modal select:focus-visible,
+.todoist-task-notes-modal textarea:focus-visible {
+  outline: 2px solid var(--ttn-accent, var(--interactive-accent));
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .todoist-task-notes-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .todoist-task-notes-branch-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .todoist-task-notes-status {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+  }
+
+  .todoist-task-notes-root-header {
+    align-items: flex-start;
+  }
+
+  .todoist-task-notes-remaining-badge {
+    font-size: 0.72rem;
+  }
+
+  .todoist-task-notes-modal .setting-item {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .todoist-task-notes-modal .setting-item-control {
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .todoist-task-notes-modal input,
+  .todoist-task-notes-modal select,
+  .todoist-task-notes-modal textarea {
+    width: 100%;
+  }
+}
