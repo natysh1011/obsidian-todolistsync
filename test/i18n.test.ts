@@ -3,6 +3,8 @@ import {
   AVAILABLE_LOCALE_CODES,
   LOCALE_CODES,
   createI18n,
+  getLocaleDisplayName,
+  getLocaleOptions,
   isLanguagePreference,
   isLocaleAvailable,
   resolveLocale,
@@ -16,6 +18,29 @@ describe("localization infrastructure", () => {
     expect(isLocaleAvailable("he")).toBe(true);
     expect(isLocaleAvailable("fr")).toBe(false);
     expect(isLanguagePreference("fr")).toBe(false);
+  });
+
+  it("shows native locale names with available languages first", () => {
+    expect(getLocaleDisplayName("ga")).toBe("Gaeilge");
+    expect(getLocaleDisplayName("de")).toBe("Deutsch");
+    expect(getLocaleDisplayName("ar")).toBe("العربية");
+    expect(getLocaleDisplayName("ga") === "אירית").toBe(false);
+
+    const options = getLocaleOptions();
+    expect(options.slice(0, 2)).toEqual([
+      { code: "en", nativeName: "English", available: true },
+      { code: "he", nativeName: "עברית", available: true },
+    ]);
+    expect(options.slice(2).every(({ available }) => !available)).toBe(true);
+    expect(new Set(options.map(({ code }) => code)).size).toBe(73);
+    const unavailableNames = options
+      .slice(2)
+      .map(({ nativeName }) => nativeName);
+    expect(unavailableNames).toEqual(
+      [...unavailableNames].sort((left, right) =>
+        left.localeCompare(right, "en", { sensitivity: "base" }),
+      ),
+    );
   });
 
   it("uses an available system locale and falls back from unavailable ones", () => {

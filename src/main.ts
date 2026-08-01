@@ -46,7 +46,7 @@ import {
 import {
   LOCALE_CODES,
   createI18n,
-  getLocaleDisplayName,
+  getLocaleOptions,
   isLanguagePreference,
   isLocaleAvailable,
   type I18n,
@@ -1326,13 +1326,13 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
       .setDesc(i18n.t("settings.languageDescription"))
       .addDropdown((dropdown) => {
         dropdown.addOption("system", i18n.t("language.system"));
-        for (const locale of LOCALE_CODES) {
-          const suffix = isLocaleAvailable(locale)
+        for (const locale of getLocaleOptions()) {
+          const suffix = locale.available
             ? ""
             : ` — ${i18n.t("language.unavailable")}`;
           dropdown.addOption(
-            locale,
-            `${getLocaleDisplayName(locale)} (${locale})${suffix}`,
+            locale.code,
+            `${locale.nativeName} (${locale.code})${suffix}`,
           );
         }
         dropdown.setValue(settings.language);

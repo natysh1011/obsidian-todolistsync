@@ -2,20 +2,19 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  availableLocaleCodes,
+  localeCodes,
+  localeDefinitions,
+} from "./locale-registry.mjs";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const translateDirectory = resolve(repository, "translate");
-const locales = [
-  "af", "am", "ar", "az", "be", "bg", "bn", "ca", "cs", "da", "de",
-  "dv", "el", "en-GB", "en", "eo", "es", "eu", "fa", "fi", "fr",
-  "ga", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "ka", "kab",
-  "kh", "kn", "ko", "ky", "la", "lt", "lv", "ml", "ms", "nan-TW",
-  "ne", "nl", "nn", "no", "oc", "or", "pl", "pt-BR", "pt", "ro", "ru",
-  "sa", "si", "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th",
-  "tl", "tr", "tt", "uk", "ur", "uz", "vi", "zh-TW", "zh",
-];
-const activeLocales = new Set(["en", "he"]);
-const rtlLocales = new Set(["ar", "dv", "fa", "he", "ur"]);
+const locales = localeCodes;
+const activeLocales = new Set(availableLocaleCodes);
+const definitionsByCode = new Map(
+  localeDefinitions.map((definition) => [definition.code, definition]),
+);
 const identifierAliases = {
   "en-GB": "enGB",
   "nan-TW": "nanTW",
@@ -30,6 +29,8 @@ const hash = createHash("sha256")
   .digest("hex");
 
 for (const locale of locales) {
+  const definition = definitionsByCode.get(locale);
+  if (!definition) throw new Error(`Missing locale definition for ${locale}`);
   const path = resolve(translateDirectory, `${locale}.json`);
   const available = activeLocales.has(locale);
   let messages = {};
@@ -40,8 +41,9 @@ for (const locale of locales) {
   const payload = {
     _meta: {
       locale,
+      nativeName: definition.nativeName,
       sourceHash: hash,
-      direction: rtlLocales.has(locale) ? "rtl" : "ltr",
+      direction: definition.direction,
       available,
     },
     messages,
@@ -64,7 +66,8 @@ const catalog = [
   ...imports,
   "",
   `export const LOCALE_CODES = ${JSON.stringify(locales)} as const;`,
-  `export const AVAILABLE_LOCALE_CODES = ${JSON.stringify([...activeLocales])} as const;`,
+  `export const AVAILABLE_LOCALE_CODES = ${JSON.stringify(availableLocaleCodes)} as const;`,
+  `export const NATIVE_LOCALE_NAMES = ${JSON.stringify(Object.fromEntries(localeDefinitions.map(({ code, nativeName }) => [code, nativeName])))} as const;`,
   "",
   "export const TRANSLATION_CATALOG = {",
   ...entries,

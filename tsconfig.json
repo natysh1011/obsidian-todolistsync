@@ -24,5 +24,10 @@
     "esModuleInterop": true,
     "lib": ["DOM", "ES2022"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "docs/.vitepress/**/*.ts",
+    "docs/.vitepress/**/*.mts"
+  ]
 }

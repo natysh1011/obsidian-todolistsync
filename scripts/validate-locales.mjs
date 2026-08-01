@@ -2,20 +2,18 @@ import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  availableLocaleCodes,
+  localeDefinitions,
+} from "./locale-registry.mjs";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const directory = resolve(repository, "translate");
-const expectedLocales = [
-  "af", "am", "ar", "az", "be", "bg", "bn", "ca", "cs", "da", "de",
-  "dv", "el", "en-GB", "en", "eo", "es", "eu", "fa", "fi", "fr",
-  "ga", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "ka", "kab",
-  "kh", "kn", "ko", "ky", "la", "lt", "lv", "ml", "ms", "nan-TW",
-  "ne", "nl", "nn", "no", "oc", "or", "pl", "pt-BR", "pt", "ro", "ru",
-  "sa", "si", "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th",
-  "tl", "tr", "tt", "uk", "ur", "uz", "vi", "zh-TW", "zh",
-].sort();
-const rtlLocales = new Set(["ar", "dv", "fa", "he", "ur"]);
-const activeLocales = new Set(["en", "he"]);
+const expectedLocales = localeDefinitions.map(({ code }) => code).sort();
+const definitionsByCode = new Map(
+  localeDefinitions.map((definition) => [definition.code, definition]),
+);
+const activeLocales = new Set(availableLocaleCodes);
 
 function placeholders(value) {
   return [...value.matchAll(/\{([A-Za-z][A-Za-z0-9_]*)\}/g)]
@@ -38,10 +36,15 @@ const hash = createHash("sha256")
   .digest("hex");
 
 for (const locale of expectedLocales) {
+  const definition = definitionsByCode.get(locale);
+  if (!definition) throw new Error(`${locale}: missing registry definition`);
   const value = JSON.parse(await readFile(resolve(directory, `${locale}.json`), "utf8"));
   if (value._meta?.locale !== locale) throw new Error(`${locale}: invalid metadata locale`);
+  if (value._meta?.nativeName !== definition.nativeName) {
+    throw new Error(`${locale}: expected native name ${definition.nativeName}`);
+  }
   if (value._meta?.sourceHash !== hash) throw new Error(`${locale}: stale English source hash`);
-  const expectedDirection = rtlLocales.has(locale) ? "rtl" : "ltr";
+  const expectedDirection = definition.direction;
   if (value._meta?.direction !== expectedDirection) throw new Error(`${locale}: expected ${expectedDirection}`);
   const expectedAvailability = activeLocales.has(locale);
   if (value._meta?.available !== expectedAvailability) {

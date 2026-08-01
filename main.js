@@ -6631,6 +6631,7 @@ var browser_default = dist_exports;
 var en_default = {
   _meta: {
     locale: "en",
+    nativeName: "English",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: true
@@ -6795,6 +6796,7 @@ var en_default = {
 var af_default = {
   _meta: {
     locale: "af",
+    nativeName: "Afrikaans",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6806,6 +6808,7 @@ var af_default = {
 var am_default = {
   _meta: {
     locale: "am",
+    nativeName: "\u12A0\u121B\u122D\u129B",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6817,6 +6820,7 @@ var am_default = {
 var ar_default = {
   _meta: {
     locale: "ar",
+    nativeName: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "rtl",
     available: false
@@ -6828,6 +6832,7 @@ var ar_default = {
 var az_default = {
   _meta: {
     locale: "az",
+    nativeName: "az\u0259rbaycan",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6839,6 +6844,7 @@ var az_default = {
 var be_default = {
   _meta: {
     locale: "be",
+    nativeName: "\u0431\u0435\u043B\u0430\u0440\u0443\u0441\u043A\u0430\u044F",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6850,6 +6856,7 @@ var be_default = {
 var bg_default = {
   _meta: {
     locale: "bg",
+    nativeName: "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6861,6 +6868,7 @@ var bg_default = {
 var bn_default = {
   _meta: {
     locale: "bn",
+    nativeName: "\u09AC\u09BE\u0982\u09B2\u09BE",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6872,6 +6880,7 @@ var bn_default = {
 var ca_default = {
   _meta: {
     locale: "ca",
+    nativeName: "catal\xE0",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6883,6 +6892,7 @@ var ca_default = {
 var cs_default = {
   _meta: {
     locale: "cs",
+    nativeName: "\u010De\u0161tina",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6894,6 +6904,7 @@ var cs_default = {
 var da_default = {
   _meta: {
     locale: "da",
+    nativeName: "dansk",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6905,6 +6916,7 @@ var da_default = {
 var de_default = {
   _meta: {
     locale: "de",
+    nativeName: "Deutsch",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6916,6 +6928,7 @@ var de_default = {
 var dv_default = {
   _meta: {
     locale: "dv",
+    nativeName: "\u078B\u07A8\u0788\u07AC\u0780\u07A8",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "rtl",
     available: false
@@ -6927,6 +6940,7 @@ var dv_default = {
 var el_default = {
   _meta: {
     locale: "el",
+    nativeName: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6938,6 +6952,7 @@ var el_default = {
 var en_GB_default = {
   _meta: {
     locale: "en-GB",
+    nativeName: "English (UK)",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6949,6 +6964,7 @@ var en_GB_default = {
 var eo_default = {
   _meta: {
     locale: "eo",
+    nativeName: "Esperanto",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6960,6 +6976,7 @@ var eo_default = {
 var es_default = {
   _meta: {
     locale: "es",
+    nativeName: "espa\xF1ol",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6971,6 +6988,7 @@ var es_default = {
 var eu_default = {
   _meta: {
     locale: "eu",
+    nativeName: "euskara",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -6982,6 +7000,7 @@ var eu_default = {
 var fa_default = {
   _meta: {
     locale: "fa",
+    nativeName: "\u0641\u0627\u0631\u0633\u06CC",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "rtl",
     available: false
@@ -6993,6 +7012,7 @@ var fa_default = {
 var fi_default = {
   _meta: {
     locale: "fi",
+    nativeName: "suomi",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7004,6 +7024,7 @@ var fi_default = {
 var fr_default = {
   _meta: {
     locale: "fr",
+    nativeName: "fran\xE7ais",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7015,6 +7036,7 @@ var fr_default = {
 var ga_default = {
   _meta: {
     locale: "ga",
+    nativeName: "Gaeilge",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7026,6 +7048,7 @@ var ga_default = {
 var gl_default = {
   _meta: {
     locale: "gl",
+    nativeName: "galego",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7037,6 +7060,7 @@ var gl_default = {
 var he_default = {
   _meta: {
     locale: "he",
+    nativeName: "\u05E2\u05D1\u05E8\u05D9\u05EA",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "rtl",
     available: true
@@ -7201,6 +7225,7 @@ var he_default = {
 var hi_default = {
   _meta: {
     locale: "hi",
+    nativeName: "\u0939\u093F\u0928\u094D\u0926\u0940",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7212,6 +7237,7 @@ var hi_default = {
 var hr_default = {
   _meta: {
     locale: "hr",
+    nativeName: "hrvatski",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7223,6 +7249,7 @@ var hr_default = {
 var hu_default = {
   _meta: {
     locale: "hu",
+    nativeName: "magyar",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7234,6 +7261,7 @@ var hu_default = {
 var id_default = {
   _meta: {
     locale: "id",
+    nativeName: "Bahasa Indonesia",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7245,6 +7273,7 @@ var id_default = {
 var it_default = {
   _meta: {
     locale: "it",
+    nativeName: "italiano",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7256,6 +7285,7 @@ var it_default = {
 var ja_default = {
   _meta: {
     locale: "ja",
+    nativeName: "\u65E5\u672C\u8A9E",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7267,6 +7297,7 @@ var ja_default = {
 var ka_default = {
   _meta: {
     locale: "ka",
+    nativeName: "\u10E5\u10D0\u10E0\u10D7\u10E3\u10DA\u10D8",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7278,6 +7309,7 @@ var ka_default = {
 var kab_default = {
   _meta: {
     locale: "kab",
+    nativeName: "Taqbaylit",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7289,6 +7321,7 @@ var kab_default = {
 var kh_default = {
   _meta: {
     locale: "kh",
+    nativeName: "\u1781\u17D2\u1798\u17C2\u179A",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7300,6 +7333,7 @@ var kh_default = {
 var kn_default = {
   _meta: {
     locale: "kn",
+    nativeName: "\u0C95\u0CA8\u0CCD\u0CA8\u0CA1",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7311,6 +7345,7 @@ var kn_default = {
 var ko_default = {
   _meta: {
     locale: "ko",
+    nativeName: "\uD55C\uAD6D\uC5B4",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7322,6 +7357,7 @@ var ko_default = {
 var ky_default = {
   _meta: {
     locale: "ky",
+    nativeName: "\u043A\u044B\u0440\u0433\u044B\u0437\u0447\u0430",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7333,6 +7369,7 @@ var ky_default = {
 var la_default = {
   _meta: {
     locale: "la",
+    nativeName: "Latina",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7344,6 +7381,7 @@ var la_default = {
 var lt_default = {
   _meta: {
     locale: "lt",
+    nativeName: "lietuvi\u0173",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7355,6 +7393,7 @@ var lt_default = {
 var lv_default = {
   _meta: {
     locale: "lv",
+    nativeName: "latvie\u0161u",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7366,6 +7405,7 @@ var lv_default = {
 var ml_default = {
   _meta: {
     locale: "ml",
+    nativeName: "\u0D2E\u0D32\u0D2F\u0D3E\u0D33\u0D02",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7377,6 +7417,7 @@ var ml_default = {
 var ms_default = {
   _meta: {
     locale: "ms",
+    nativeName: "Bahasa Melayu",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7388,6 +7429,7 @@ var ms_default = {
 var nan_TW_default = {
   _meta: {
     locale: "nan-TW",
+    nativeName: "\u53F0\u8A9E\uFF08\u53F0\u7063\uFF09",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7399,6 +7441,7 @@ var nan_TW_default = {
 var ne_default = {
   _meta: {
     locale: "ne",
+    nativeName: "\u0928\u0947\u092A\u093E\u0932\u0940",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7410,6 +7453,7 @@ var ne_default = {
 var nl_default = {
   _meta: {
     locale: "nl",
+    nativeName: "Nederlands",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7421,6 +7465,7 @@ var nl_default = {
 var nn_default = {
   _meta: {
     locale: "nn",
+    nativeName: "norsk nynorsk",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7432,6 +7477,7 @@ var nn_default = {
 var no_default = {
   _meta: {
     locale: "no",
+    nativeName: "norsk",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7443,6 +7489,7 @@ var no_default = {
 var oc_default = {
   _meta: {
     locale: "oc",
+    nativeName: "occitan",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7454,6 +7501,7 @@ var oc_default = {
 var or_default = {
   _meta: {
     locale: "or",
+    nativeName: "\u0B13\u0B21\u0B3C\u0B3F\u0B06",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7465,6 +7513,7 @@ var or_default = {
 var pl_default = {
   _meta: {
     locale: "pl",
+    nativeName: "polski",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7476,6 +7525,7 @@ var pl_default = {
 var pt_BR_default = {
   _meta: {
     locale: "pt-BR",
+    nativeName: "portugu\xEAs (Brasil)",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7487,6 +7537,7 @@ var pt_BR_default = {
 var pt_default = {
   _meta: {
     locale: "pt",
+    nativeName: "portugu\xEAs",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7498,6 +7549,7 @@ var pt_default = {
 var ro_default = {
   _meta: {
     locale: "ro",
+    nativeName: "rom\xE2n\u0103",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7509,6 +7561,7 @@ var ro_default = {
 var ru_default = {
   _meta: {
     locale: "ru",
+    nativeName: "\u0440\u0443\u0441\u0441\u043A\u0438\u0439",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7520,6 +7573,7 @@ var ru_default = {
 var sa_default = {
   _meta: {
     locale: "sa",
+    nativeName: "\u0938\u0902\u0938\u094D\u0915\u0943\u0924\u092E\u094D",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7531,6 +7585,7 @@ var sa_default = {
 var si_default = {
   _meta: {
     locale: "si",
+    nativeName: "\u0DC3\u0DD2\u0D82\u0DC4\u0DBD",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7542,6 +7597,7 @@ var si_default = {
 var sk_default = {
   _meta: {
     locale: "sk",
+    nativeName: "sloven\u010Dina",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7553,6 +7609,7 @@ var sk_default = {
 var sl_default = {
   _meta: {
     locale: "sl",
+    nativeName: "sloven\u0161\u010Dina",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7564,6 +7621,7 @@ var sl_default = {
 var sq_default = {
   _meta: {
     locale: "sq",
+    nativeName: "shqip",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7575,6 +7633,7 @@ var sq_default = {
 var sr_default = {
   _meta: {
     locale: "sr",
+    nativeName: "\u0441\u0440\u043F\u0441\u043A\u0438",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7586,6 +7645,7 @@ var sr_default = {
 var sv_default = {
   _meta: {
     locale: "sv",
+    nativeName: "svenska",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7597,6 +7657,7 @@ var sv_default = {
 var sw_default = {
   _meta: {
     locale: "sw",
+    nativeName: "Kiswahili",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7608,6 +7669,7 @@ var sw_default = {
 var ta_default = {
   _meta: {
     locale: "ta",
+    nativeName: "\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7619,6 +7681,7 @@ var ta_default = {
 var te_default = {
   _meta: {
     locale: "te",
+    nativeName: "\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7630,6 +7693,7 @@ var te_default = {
 var th_default = {
   _meta: {
     locale: "th",
+    nativeName: "\u0E44\u0E17\u0E22",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7641,6 +7705,7 @@ var th_default = {
 var tl_default = {
   _meta: {
     locale: "tl",
+    nativeName: "Filipino",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7652,6 +7717,7 @@ var tl_default = {
 var tr_default = {
   _meta: {
     locale: "tr",
+    nativeName: "T\xFCrk\xE7e",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7663,6 +7729,7 @@ var tr_default = {
 var tt_default = {
   _meta: {
     locale: "tt",
+    nativeName: "\u0442\u0430\u0442\u0430\u0440\u0447\u0430",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7674,6 +7741,7 @@ var tt_default = {
 var uk_default = {
   _meta: {
     locale: "uk",
+    nativeName: "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7685,6 +7753,7 @@ var uk_default = {
 var ur_default = {
   _meta: {
     locale: "ur",
+    nativeName: "\u0627\u0631\u062F\u0648",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "rtl",
     available: false
@@ -7696,6 +7765,7 @@ var ur_default = {
 var uz_default = {
   _meta: {
     locale: "uz",
+    nativeName: "o\u2018zbekcha",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7707,6 +7777,7 @@ var uz_default = {
 var vi_default = {
   _meta: {
     locale: "vi",
+    nativeName: "Ti\u1EBFng Vi\u1EC7t",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7718,6 +7789,7 @@ var vi_default = {
 var zh_TW_default = {
   _meta: {
     locale: "zh-TW",
+    nativeName: "\u7E41\u9AD4\u4E2D\u6587",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7729,6 +7801,7 @@ var zh_TW_default = {
 var zh_default = {
   _meta: {
     locale: "zh",
+    nativeName: "\u7B80\u4F53\u4E2D\u6587",
     sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     direction: "ltr",
     available: false
@@ -7739,6 +7812,7 @@ var zh_default = {
 // src/locale-catalog.ts
 var LOCALE_CODES = ["af", "am", "ar", "az", "be", "bg", "bn", "ca", "cs", "da", "de", "dv", "el", "en-GB", "en", "eo", "es", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "ka", "kab", "kh", "kn", "ko", "ky", "la", "lt", "lv", "ml", "ms", "nan-TW", "ne", "nl", "nn", "no", "oc", "or", "pl", "pt-BR", "pt", "ro", "ru", "sa", "si", "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th", "tl", "tr", "tt", "uk", "ur", "uz", "vi", "zh-TW", "zh"];
 var AVAILABLE_LOCALE_CODES = ["en", "he"];
+var NATIVE_LOCALE_NAMES = { "af": "Afrikaans", "am": "\u12A0\u121B\u122D\u129B", "ar": "\u0627\u0644\u0639\u0631\u0628\u064A\u0629", "az": "az\u0259rbaycan", "be": "\u0431\u0435\u043B\u0430\u0440\u0443\u0441\u043A\u0430\u044F", "bg": "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438", "bn": "\u09AC\u09BE\u0982\u09B2\u09BE", "ca": "catal\xE0", "cs": "\u010De\u0161tina", "da": "dansk", "de": "Deutsch", "dv": "\u078B\u07A8\u0788\u07AC\u0780\u07A8", "el": "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", "en-GB": "English (UK)", "en": "English", "eo": "Esperanto", "es": "espa\xF1ol", "eu": "euskara", "fa": "\u0641\u0627\u0631\u0633\u06CC", "fi": "suomi", "fr": "fran\xE7ais", "ga": "Gaeilge", "gl": "galego", "he": "\u05E2\u05D1\u05E8\u05D9\u05EA", "hi": "\u0939\u093F\u0928\u094D\u0926\u0940", "hr": "hrvatski", "hu": "magyar", "id": "Bahasa Indonesia", "it": "italiano", "ja": "\u65E5\u672C\u8A9E", "ka": "\u10E5\u10D0\u10E0\u10D7\u10E3\u10DA\u10D8", "kab": "Taqbaylit", "kh": "\u1781\u17D2\u1798\u17C2\u179A", "kn": "\u0C95\u0CA8\u0CCD\u0CA8\u0CA1", "ko": "\uD55C\uAD6D\uC5B4", "ky": "\u043A\u044B\u0440\u0433\u044B\u0437\u0447\u0430", "la": "Latina", "lt": "lietuvi\u0173", "lv": "latvie\u0161u", "ml": "\u0D2E\u0D32\u0D2F\u0D3E\u0D33\u0D02", "ms": "Bahasa Melayu", "nan-TW": "\u53F0\u8A9E\uFF08\u53F0\u7063\uFF09", "ne": "\u0928\u0947\u092A\u093E\u0932\u0940", "nl": "Nederlands", "nn": "norsk nynorsk", "no": "norsk", "oc": "occitan", "or": "\u0B13\u0B21\u0B3C\u0B3F\u0B06", "pl": "polski", "pt-BR": "portugu\xEAs (Brasil)", "pt": "portugu\xEAs", "ro": "rom\xE2n\u0103", "ru": "\u0440\u0443\u0441\u0441\u043A\u0438\u0439", "sa": "\u0938\u0902\u0938\u094D\u0915\u0943\u0924\u092E\u094D", "si": "\u0DC3\u0DD2\u0D82\u0DC4\u0DBD", "sk": "sloven\u010Dina", "sl": "sloven\u0161\u010Dina", "sq": "shqip", "sr": "\u0441\u0440\u043F\u0441\u043A\u0438", "sv": "svenska", "sw": "Kiswahili", "ta": "\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD", "te": "\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41", "th": "\u0E44\u0E17\u0E22", "tl": "Filipino", "tr": "T\xFCrk\xE7e", "tt": "\u0442\u0430\u0442\u0430\u0440\u0447\u0430", "uk": "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430", "ur": "\u0627\u0631\u062F\u0648", "uz": "o\u2018zbekcha", "vi": "Ti\u1EBFng Vi\u1EC7t", "zh-TW": "\u7E41\u9AD4\u4E2D\u6587", "zh": "\u7B80\u4F53\u4E2D\u6587" };
 var TRANSLATION_CATALOG = {
   af: af_default,
   am: am_default,
@@ -7818,6 +7892,10 @@ var TRANSLATION_CATALOG = {
 // src/i18n.ts
 var localeSet = new Set(LOCALE_CODES);
 var availableLocaleSet = new Set(AVAILABLE_LOCALE_CODES);
+var localeNameCollator = new Intl.Collator("en", {
+  sensitivity: "base",
+  usage: "sort"
+});
 var localeAliases = {
   "en-us": "en",
   "en-au": "en-GB",
@@ -7835,10 +7913,6 @@ var localeAliases = {
 var intlAliases = {
   kh: "km",
   "nan-TW": "zh-TW"
-};
-var specialNativeNames = {
-  kh: "\u1781\u17D2\u1798\u17C2\u179A",
-  "nan-TW": "\u53F0\u8A9E\uFF08\u53F0\u7063\uFF09"
 };
 function normalizeLocale(value) {
   const trimmed = value.trim();
@@ -7889,16 +7963,24 @@ function createI18n(preference, systemLanguage) {
   };
 }
 function getLocaleDisplayName(code) {
-  const special = specialNativeNames[code];
-  if (special) return special;
-  const intlLocale = intlAliases[code] ?? code;
-  try {
-    return new Intl.DisplayNames([intlLocale], { type: "language" }).of(
-      intlLocale
-    ) ?? code;
-  } catch {
-    return code;
-  }
+  return NATIVE_LOCALE_NAMES[code];
+}
+function getLocaleOptions() {
+  const available = AVAILABLE_LOCALE_CODES.map((code) => ({
+    code,
+    nativeName: getLocaleDisplayName(code),
+    available: true
+  }));
+  const unavailable = LOCALE_CODES.filter(
+    (code) => !availableLocaleSet.has(code)
+  ).map((code) => ({
+    code,
+    nativeName: getLocaleDisplayName(code),
+    available: false
+  })).sort(
+    (left, right) => localeNameCollator.compare(left.nativeName, right.nativeName) || left.code.localeCompare(right.code)
+  );
+  return [...available, ...unavailable];
 }
 function isLanguagePreference(value) {
   return value === "system" || typeof value === "string" && availableLocaleSet.has(value);
@@ -10346,11 +10428,11 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     const i18n = this.plugin.getI18n();
     setting.setName(i18n.t("settings.language")).setDesc(i18n.t("settings.languageDescription")).addDropdown((dropdown) => {
       dropdown.addOption("system", i18n.t("language.system"));
-      for (const locale of LOCALE_CODES) {
-        const suffix = isLocaleAvailable(locale) ? "" : ` \u2014 ${i18n.t("language.unavailable")}`;
+      for (const locale of getLocaleOptions()) {
+        const suffix = locale.available ? "" : ` \u2014 ${i18n.t("language.unavailable")}`;
         dropdown.addOption(
-          locale,
-          `${getLocaleDisplayName(locale)} (${locale})${suffix}`
+          locale.code,
+          `${locale.nativeName} (${locale.code})${suffix}`
         );
       }
       dropdown.setValue(settings.language);

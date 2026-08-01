@@ -2,6 +2,8 @@
 
 An Obsidian plugin that creates one Markdown note per Todoist task and keeps task fields synchronized in both directions.
 
+**Documentation:** [English](https://natysh1011.github.io/obsidian-todolistsync/) · [עברית](https://natysh1011.github.io/obsidian-todolistsync/he/)
+
 ## Features
 
 - One note per task, subtask, and nested subtask.
@@ -56,8 +58,9 @@ Choose **System language**, **English**, or **עברית** in the plugin setting
 Hebrew uses a fully mirrored RTL interface; English uses LTR. The localization
 registry contains a separate JSON file for each planned locale under
 `translate/`, but languages without a complete translation are shown as
-unavailable and cannot be selected. An unsupported system language safely falls
-back to English.
+unavailable and cannot be selected. Available languages are listed first; every
+language is labeled by its native name (for example, `Gaeilge`). An unsupported
+system language safely falls back to English.
 
 Technical identifiers, command names, code-block names, frontmatter keys, and
 the `## Notes` heading remain in English for compatibility. User-authored task
@@ -71,6 +74,7 @@ npm run locales:validate
 npm run check
 npm test
 npm run build
+npm run docs:build
 ```
 
 `translate/en.json` is the canonical message source. Every available locale must

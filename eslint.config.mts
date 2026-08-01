@@ -6,6 +6,8 @@ export default defineConfig(
   globalIgnores([
     "node_modules",
     "coverage",
+    "docs/.vitepress/cache",
+    "docs/.vitepress/dist",
     "esbuild.config.mjs",
     "main.js",
     "package.json",

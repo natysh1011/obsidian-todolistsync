@@ -2,6 +2,7 @@ import english from "../translate/en.json";
 import {
   AVAILABLE_LOCALE_CODES,
   LOCALE_CODES,
+  NATIVE_LOCALE_NAMES,
   TRANSLATION_CATALOG,
 } from "./locale-catalog";
 
@@ -18,6 +19,10 @@ type MessageDictionary = Record<MessageKey, string>;
 
 const localeSet = new Set<string>(LOCALE_CODES);
 const availableLocaleSet = new Set<string>(AVAILABLE_LOCALE_CODES);
+const localeNameCollator = new Intl.Collator("en", {
+  sensitivity: "base",
+  usage: "sort",
+});
 const localeAliases: Record<string, LocaleCode> = {
   "en-us": "en",
   "en-au": "en-GB",
@@ -36,10 +41,11 @@ const intlAliases: Partial<Record<LocaleCode, string>> = {
   kh: "km",
   "nan-TW": "zh-TW",
 };
-const specialNativeNames: Partial<Record<LocaleCode, string>> = {
-  kh: "ខ្មែរ",
-  "nan-TW": "台語（台灣）",
-};
+export interface LocaleOption {
+  readonly code: LocaleCode;
+  readonly nativeName: string;
+  readonly available: boolean;
+}
 
 export interface I18n {
   readonly locale: LocaleCode;
@@ -123,18 +129,27 @@ export function createI18n(
 }
 
 export function getLocaleDisplayName(code: LocaleCode): string {
-  const special = specialNativeNames[code];
-  if (special) return special;
-  const intlLocale = intlAliases[code] ?? code;
-  try {
-    return (
-      new Intl.DisplayNames([intlLocale], { type: "language" }).of(
-        intlLocale,
-      ) ?? code
-    );
-  } catch {
-    return code;
-  }
+  return NATIVE_LOCALE_NAMES[code];
+}
+
+export function getLocaleOptions(): readonly LocaleOption[] {
+  const available = AVAILABLE_LOCALE_CODES.map((code) => ({
+    code,
+    nativeName: getLocaleDisplayName(code),
+    available: true,
+  }));
+  const unavailable = LOCALE_CODES.filter(
+    (code) => !availableLocaleSet.has(code),
+  ).map((code) => ({
+    code,
+    nativeName: getLocaleDisplayName(code),
+    available: false,
+  })).sort(
+    (left, right) =>
+      localeNameCollator.compare(left.nativeName, right.nativeName) ||
+      left.code.localeCompare(right.code),
+  );
+  return [...available, ...unavailable];
 }
 
 export function isLanguagePreference(
