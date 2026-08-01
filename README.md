@@ -49,4 +49,20 @@ npm test
 npm run build
 ```
 
+## Releases
+
+Push a version tag that exactly matches `manifest.json`, without a `v` prefix:
+
+```bash
+git tag 1.0.0
+git push origin 1.0.0
+```
+
+GitHub Actions validates and builds the plugin, then publishes `main.js`,
+`manifest.json`, `styles.css`, and an installation ZIP to GitHub Releases.
+
+## License
+
+[MIT](LICENSE)
+
 The first synchronization is pull-only and does not modify Todoist.
