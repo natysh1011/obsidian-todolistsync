@@ -51,10 +51,6 @@ for (const locale of expectedLocales) {
     throw new Error(`${locale}: expected available=${expectedAvailability}`);
   }
   const actualKeys = Object.keys(value.messages ?? {}).sort();
-  if (!expectedAvailability) {
-    if (actualKeys.length) throw new Error(`${locale}: unavailable locale must be an empty stub`);
-    continue;
-  }
   if (JSON.stringify(actualKeys) !== JSON.stringify(keys)) {
     throw new Error(`${locale}: active-locale message key parity failed`);
   }

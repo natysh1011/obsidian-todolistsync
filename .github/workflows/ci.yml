@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate locale catalog
+        run: npm run locales:generate
+
       - name: Verify source
         run: |
           npm run locales:validate

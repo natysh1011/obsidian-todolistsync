@@ -33,11 +33,8 @@ for (const locale of locales) {
   if (!definition) throw new Error(`Missing locale definition for ${locale}`);
   const path = resolve(translateDirectory, `${locale}.json`);
   const available = activeLocales.has(locale);
-  let messages = {};
-  if (available) {
-    const existing = JSON.parse(await readFile(path, "utf8"));
-    messages = existing.messages;
-  }
+  const existing = JSON.parse(await readFile(path, "utf8"));
+  const messages = existing.messages;
   const payload = {
     _meta: {
       locale,

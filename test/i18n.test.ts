@@ -11,13 +11,13 @@ import {
 } from "../src/i18n";
 
 describe("localization infrastructure", () => {
-  it("registers all locale files but exposes only English and Hebrew", () => {
+  it("registers and exposes every locale file", () => {
     expect(LOCALE_CODES).toHaveLength(73);
-    expect([...AVAILABLE_LOCALE_CODES]).toEqual(["en", "he"]);
+    expect(AVAILABLE_LOCALE_CODES).toHaveLength(73);
     expect(isLocaleAvailable("en")).toBe(true);
     expect(isLocaleAvailable("he")).toBe(true);
-    expect(isLocaleAvailable("fr")).toBe(false);
-    expect(isLanguagePreference("fr")).toBe(false);
+    expect(isLocaleAvailable("fr")).toBe(true);
+    expect(isLanguagePreference("fr")).toBe(true);
   });
 
   it("shows native locale names with available languages first", () => {
@@ -46,7 +46,7 @@ describe("localization infrastructure", () => {
   it("uses an available system locale and falls back from unavailable ones", () => {
     expect(resolveLocale("system", "he", [])).toBe("he");
     expect(resolveLocale("system", "en-US", [])).toBe("en");
-    expect(resolveLocale("system", "ar", [])).toBe("en");
+    expect(resolveLocale("system", "ar", [])).toBe("ar");
     expect(resolveLocale("system", "xx", ["he-IL"])).toBe("he");
   });
 
