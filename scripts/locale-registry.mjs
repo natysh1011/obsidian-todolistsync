@@ -75,7 +75,5 @@ export const localeDefinitions = [
 ];
 
 export const localeCodes = localeDefinitions.map(({ code }) => code);
-export const availableLocaleCodes = localeDefinitions
-  .filter(({ available }) => available)
-  .map(({ code }) => code);
+export const availableLocaleCodes = localeCodes;
 

@@ -2,10 +2,7 @@ import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  availableLocaleCodes,
-  localeDefinitions,
-} from "./locale-registry.mjs";
+import { localeCodes, localeDefinitions } from "./locale-registry.mjs";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const directory = resolve(repository, "translate");
@@ -13,7 +10,11 @@ const expectedLocales = localeDefinitions.map(({ code }) => code).sort();
 const definitionsByCode = new Map(
   localeDefinitions.map((definition) => [definition.code, definition]),
 );
-const activeLocales = new Set(availableLocaleCodes);
+const activeLocales = new Set(
+  localeDefinitions
+    .filter(({ available }) => available)
+    .map(({ code }) => code),
+);
 
 function placeholders(value) {
   return [...value.matchAll(/\{([A-Za-z][A-Za-z0-9_]*)\}/g)]

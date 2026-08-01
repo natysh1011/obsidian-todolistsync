@@ -2,16 +2,17 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  availableLocaleCodes,
-  localeCodes,
-  localeDefinitions,
-} from "./locale-registry.mjs";
+import { localeCodes, localeDefinitions } from "./locale-registry.mjs";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const translateDirectory = resolve(repository, "translate");
 const locales = localeCodes;
-const activeLocales = new Set(availableLocaleCodes);
+const activeLocales = new Set(
+  localeDefinitions
+    .filter(({ available }) => available)
+    .map(({ code }) => code),
+);
+const availableLocaleCodes = localeCodes;
 const definitionsByCode = new Map(
   localeDefinitions.map((definition) => [definition.code, definition]),
 );
