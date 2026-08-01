@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing release tag, without a v prefix
-        required: true
+        description: Existing release tag, without a v prefix. Leave empty to use the latest matching tag.
+        required: false
         type: string
 
 permissions:
@@ -28,13 +28,34 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
-    env:
-      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
     steps:
+      - name: Resolve release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.tag }}" ]; then
+            tag="${{ inputs.tag }}"
+          elif [ "${{ github.event_name }}" = "release" ] && [ -n "${{ github.event.release.tag_name }}" ]; then
+            tag="${{ github.event.release.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ] && [ -n "${{ github.ref_name }}" ]; then
+            tag="${{ github.ref_name }}"
+          else
+            tag="$(git ls-remote --tags origin 'refs/tags/[0-9]*.[0-9]*.[0-9]*' | awk '{print $2}' | sed 's|refs/tags/||' | sort -V | tail -n 1)"
+          fi
+
+          if [ -z "$tag" ]; then
+            echo "No release tag found" >&2
+            exit 1
+          fi
+
+          echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
+
       - name: Check out release tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Node.js
