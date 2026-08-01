@@ -1,100 +1,51 @@
-name: Release plugin
+name: Release Obsidian plugin
 
 on:
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Existing release tag, without a v prefix
-        required: true
-        type: string
+      - '*'
 
-permissions:
-  contents: write
-
-concurrency:
-  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-  cancel-in-progress: false
+permissions: read-all
 
 jobs:
-  release:
-    name: Build, verify, and publish
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
     steps:
-      - name: Check out release tag
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ env.RELEASE_TAG }}
-          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
+          node-version: '24.x'
           cache: npm
 
-      - name: Verify release version
+      - name: Build plugin
         run: |
-          node <<'NODE'
-          const { readFileSync } = require("node:fs");
-          const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
-          const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
-          const tag = process.env.RELEASE_TAG;
-          if (!/^\d+\.\d+\.\d+$/.test(tag)) {
-            throw new Error(`Release tag must be a version without a v prefix: ${tag}`);
-          }
-          if (manifest.version !== tag || packageJson.version !== tag) {
-            throw new Error(
-              `Tag ${tag}, manifest ${manifest.version}, and package ${packageJson.version} must match.`,
-            );
-          }
-          NODE
+          npm ci
+          npm run build
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Attest release assets
+        uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6 # v4
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Type-check
-        run: npm run check
-
-      - name: Test
-        run: npm test
-
-      - name: Audit dependencies
-        run: npm audit
-
-      - name: Build
-        run: npm run build
-
-      - name: Verify committed build
-        run: |
-          test -s main.js
-          test -s manifest.json
-          test -s styles.css
-          git diff --exit-code -- main.js
-
-      - name: Package release
-        run: zip -j "todoist-task-notes-${RELEASE_TAG}.zip" main.js manifest.json styles.css
-
-      - name: Publish GitHub release
+      - name: Create release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          archive="todoist-task-notes-${RELEASE_TAG}.zip"
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release upload "$RELEASE_TAG" \
-              main.js manifest.json styles.css "$archive" --clobber
-          else
-            gh release create "$RELEASE_TAG" \
-              main.js manifest.json styles.css "$archive" \
-              --verify-tag \
-              --title "$RELEASE_TAG" \
-              --generate-notes
-          fi
+          tag="${GITHUB_REF#refs/tags/}"
+
+          # Generate release notes from src/releaseNotes.ts
+          node scripts/mdReleaseNotes.js "$tag" > release-notes.md
+
+          gh release create "$tag" \
+            --title="$tag" \
+            --notes-file release-notes.md \
+            main.js manifest.json styles.css
