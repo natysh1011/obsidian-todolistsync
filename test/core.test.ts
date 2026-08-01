@@ -48,6 +48,11 @@ describe("sanitizeSegment", () => {
     );
   });
 
+  it("replaces ASCII control characters without embedding them in a regex", () => {
+    const controlCharacters = String.fromCharCode(0, 10, 31);
+    expect(sanitizeSegment(`a${controlCharacters}b`)).toBe("a – b");
+  });
+
   it("uses a safe fallback and truncates long titles", () => {
     expect(sanitizeSegment("...")).toBe("Untitled task");
     expect(Array.from(sanitizeSegment("a".repeat(200))).length).toBe(120);

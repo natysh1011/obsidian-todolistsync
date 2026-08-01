@@ -6,6 +6,7 @@ import {
   Notice,
   Setting,
   setIcon,
+  type ButtonComponent,
 } from "obsidian";
 import type { CreateTaskInput } from "./api";
 import {
@@ -153,7 +154,7 @@ export class NewTaskModal extends Modal {
     }
 
     new Setting(contentEl)
-      .setName("תגיות Todoist")
+      .setName("תגיות")
       .setDesc("מופרדות בפסיקים; תגיות חסרות ייווצרו")
       .addText((text) =>
         text.setPlaceholder("לימודים, דחוף").onChange((value) => {
@@ -225,14 +226,38 @@ export class NewTaskModal extends Modal {
         });
     });
 
+    let durationAmount = "";
+    let durationUnit: "minute" | "hour" | "day" = "minute";
+    const updateDuration = (): void => {
+      this.value.duration = durationAmount
+        ? `${durationAmount} ${durationUnit}`
+        : "";
+    };
     new Setting(contentEl)
       .setName("משך")
-      .setDesc("לדוגמה: 30m, 2h, 1d")
-      .addText((text) =>
-        text.setPlaceholder("30m").onChange((value) => {
-          this.value.duration = value;
-        }),
-      );
+      .setDesc("הזן מספר ובחר דקות, שעות או ימים")
+      .addText((text) => {
+        text.inputEl.type = "number";
+        text.inputEl.min = "1";
+        text.inputEl.step = "1";
+        text.setPlaceholder("30").onChange((value) => {
+          durationAmount = value;
+          updateDuration();
+        });
+      })
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("minute", "דקות")
+          .addOption("hour", "שעות")
+          .addOption("day", "ימים")
+          .setValue(durationUnit)
+          .onChange((value) => {
+            if (value === "minute" || value === "hour" || value === "day") {
+              durationUnit = value;
+              updateDuration();
+            }
+          });
+      });
 
     const actions = new Setting(contentEl);
     actions.settingEl.addClass("todoist-task-notes-modal-actions");
@@ -244,25 +269,29 @@ export class NewTaskModal extends Modal {
         button
           .setButtonText("יצירה וסנכרון")
           .setCta()
-          .onClick(async () => {
-            if (!this.value.title.trim()) {
-              new Notice("יש להזין כותרת למשימה.");
-              return;
-            }
-            button.setDisabled(true);
-            try {
-              await this.host.createTaskFromForm(this.value);
-              this.close();
-            } catch (error) {
-              new Notice(
-                `יצירת המשימה נכשלה: ${
-                  error instanceof Error ? error.message : String(error)
-                }`,
-              );
-              button.setDisabled(false);
-            }
+          .onClick(() => {
+            void this.submitTask(button);
           }),
       );
+  }
+
+  private async submitTask(button: ButtonComponent): Promise<void> {
+    if (!this.value.title.trim()) {
+      new Notice("יש להזין כותרת למשימה.");
+      return;
+    }
+    button.setDisabled(true);
+    try {
+      await this.host.createTaskFromForm(this.value);
+      this.close();
+    } catch (error) {
+      new Notice(
+        `יצירת המשימה נכשלה: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+      button.setDisabled(false);
+    }
   }
 
   private renderLockedHierarchy(container: HTMLElement): void {
@@ -276,7 +305,7 @@ export class NewTaskModal extends Modal {
       )
       .join(" ← ");
     new Setting(container)
-      .setName("פרויקט Todoist")
+      .setName("פרויקט")
       .setDesc(project?.name ?? "פרויקט לא ידוע");
     const setting = new Setting(container)
       .setName("משימת אב נעולה")
@@ -287,7 +316,7 @@ export class NewTaskModal extends Modal {
   private renderHierarchyPicker(container: HTMLElement): void {
     const projects = this.host.getProjects();
     new Setting(container)
-      .setName("פרויקט Todoist")
+      .setName("פרויקט")
       .setDesc("בחירת הפרויקט מסננת את כל רמות ההיררכיה")
       .addDropdown((dropdown) => {
         for (const project of projects) {
@@ -423,8 +452,14 @@ export class ItemPickerModal extends FuzzySuggestModal<PickerItem> {
       : item.label;
   }
 
-  async onChooseItem(item: PickerItem): Promise<void> {
-    await this.onPick(item);
+  onChooseItem(item: PickerItem): void {
+    void Promise.resolve(this.onPick(item)).catch((error: unknown) => {
+      new Notice(
+        `הפעולה נכשלה: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    });
   }
 }
 
@@ -576,13 +611,8 @@ export class DashboardChild extends MarkdownRenderChild {
     newButton.addEventListener("click", () => this.host.openNewTaskModal());
     const syncButton = toolbar.createEl("button", { text: "סנכרן עכשיו" });
     setIcon(syncButton.createSpan(), "refresh-cw");
-    syncButton.addEventListener("click", async () => {
-      syncButton.setAttr("disabled", "true");
-      try {
-        await this.host.syncNow("dashboard");
-      } finally {
-        syncButton.removeAttribute("disabled");
-      }
+    syncButton.addEventListener("click", () => {
+      void this.syncFromDashboard(syncButton);
     });
     const status = toolbar.createSpan("todoist-task-notes-status");
     if (data.lastError) {
@@ -593,6 +623,15 @@ export class DashboardChild extends MarkdownRenderChild {
       );
     } else {
       status.setText("עדיין לא בוצע סנכרון");
+    }
+  }
+
+  private async syncFromDashboard(button: HTMLButtonElement): Promise<void> {
+    button.setAttr("disabled", "true");
+    try {
+      await this.host.syncNow("dashboard");
+    } finally {
+      button.removeAttribute("disabled");
     }
   }
 
@@ -816,23 +855,30 @@ export class DashboardChild extends MarkdownRenderChild {
     checkbox.type = "checkbox";
     checkbox.checked = false;
     checkbox.setAttribute("aria-label", `סמן כהושלמה: ${task.content}`);
-    checkbox.addEventListener("change", async () => {
-      checkbox.disabled = true;
-      try {
-        await this.host.setTaskCompleted(task.id, checkbox.checked);
-      } catch (error) {
-        checkbox.checked = !checkbox.checked;
-        new Notice(
-          `עדכון Todoist נכשל: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
-      } finally {
-        checkbox.disabled = false;
-      }
+    checkbox.addEventListener("change", () => {
+      void this.updateTaskCompletion(checkbox, task);
     });
     this.createTaskLink(parent, task, paths);
     this.renderTaskMeta(parent, task);
+  }
+
+  private async updateTaskCompletion(
+    checkbox: HTMLInputElement,
+    task: TodoistTask,
+  ): Promise<void> {
+    checkbox.disabled = true;
+    try {
+      await this.host.setTaskCompleted(task.id, checkbox.checked);
+    } catch (error) {
+      checkbox.checked = !checkbox.checked;
+      new Notice(
+        `עדכון Todoist נכשל: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    } finally {
+      checkbox.disabled = false;
+    }
   }
 
   private createTaskLink(

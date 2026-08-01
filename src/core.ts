@@ -85,11 +85,18 @@ export type SyncResolution =
   | "remote"
   | "conflict";
 
-const ILLEGAL_FILENAME = /[\\/:*?"<>|\u0000-\u001f]/g;
+const ILLEGAL_FILENAME = /[\\/:*?"<>|]/g;
 const RESERVED_NAMES = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
 
+function replaceAsciiControlCharacters(input: string): string {
+  return Array.from(input, (character) => {
+    const codePoint = character.codePointAt(0) ?? 0;
+    return codePoint <= 0x1f ? " – " : character;
+  }).join("");
+}
+
 export function sanitizeSegment(input: string, maxLength = 120): string {
-  let value = input
+  let value = replaceAsciiControlCharacters(input)
     .normalize("NFC")
     .replace(ILLEGAL_FILENAME, " – ")
     .replace(/(?:\s*–\s*){2,}/g, " – ")
@@ -221,15 +228,27 @@ export function apiPriorityToName(priority = 1): string {
   return `p${5 - bounded}`;
 }
 
+export function stringValue(value: unknown, fallback = ""): string {
+  if (typeof value === "string") return value;
+  if (
+    typeof value === "number" ||
+    typeof value === "boolean" ||
+    typeof value === "bigint"
+  ) {
+    return String(value);
+  }
+  return fallback;
+}
+
 export function namePriorityToApi(priority: unknown): number {
-  const match = /^p([1-4])$/i.exec(String(priority ?? "p4"));
+  const match = /^p([1-4])$/i.exec(stringValue(priority, "p4"));
   return match ? 5 - Number(match[1]) : 1;
 }
 
 function normalizedLabels(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value
-    .map((item) => String(item).trim())
+    .map((item) => stringValue(item).trim())
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b));
 }
@@ -258,7 +277,7 @@ export function remoteComparable(
 
 function optionalString(value: unknown): string | null {
   if (value === null || value === undefined || value === "") return null;
-  return String(value);
+  return stringValue(value) || null;
 }
 
 function optionalNumber(value: unknown): number | null {
@@ -270,19 +289,20 @@ function optionalNumber(value: unknown): number | null {
 export function localComparable(
   properties: Record<string, unknown>,
 ): ComparableTask {
-  const rawStatus = String(properties.status ?? "open");
+  const rawStatus = stringValue(properties.status, "open");
+  const priority = stringValue(properties.priority);
   return {
-    title: String(properties.title ?? ""),
-    description: String(properties.description ?? ""),
+    title: stringValue(properties.title),
+    description: stringValue(properties.description),
     status: rawStatus === "completed" ? "completed" : "open",
-    project_id: String(properties.project_id ?? ""),
+    project_id: stringValue(properties.project_id),
     parent_id: optionalString(properties.parent_id),
     labels: normalizedLabels(properties.labels),
     due: optionalString(properties.due),
     due_string: optionalString(properties.due_string),
     deadline: optionalString(properties.deadline),
-    priority: /^p[1-4]$/i.test(String(properties.priority ?? ""))
-      ? String(properties.priority).toLowerCase()
+    priority: /^p[1-4]$/i.test(priority)
+      ? priority.toLowerCase()
       : "p4",
     duration: optionalNumber(properties.duration),
     duration_unit: optionalString(properties.duration_unit),
@@ -329,7 +349,7 @@ export function parseTaskNote(content: string): ParsedTaskNote {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(content);
   let properties: Record<string, unknown> = {};
   if (match) {
-    const parsed = YAML.parse(match[1]);
+    const parsed: unknown = YAML.parse(match[1]);
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
       properties = parsed as Record<string, unknown>;
     }
@@ -384,8 +404,11 @@ export function makeTaskProperties(
 
 function valueOrDash(value: unknown): string {
   if (value === null || value === undefined || value === "") return "—";
-  if (Array.isArray(value)) return value.length ? value.join(", ") : "—";
-  return String(value);
+  if (Array.isArray(value)) {
+    const items = value.map((item) => stringValue(item)).filter(Boolean);
+    return items.length ? items.join(", ") : "—";
+  }
+  return stringValue(value, "—");
 }
 
 export function renderTaskNote(
@@ -396,7 +419,7 @@ export function renderTaskNote(
     lineWidth: 0,
     defaultStringType: "QUOTE_DOUBLE",
   }).trimEnd();
-  const title = String(properties.title ?? "Untitled task");
+  const title = stringValue(properties.title, "Untitled task");
   const taskUrl = optionalString(properties.todoist_url);
   const lines = [
     "---",

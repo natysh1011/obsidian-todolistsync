@@ -1,5 +1,6 @@
 import {
   namePriorityToApi,
+  stringValue,
   type TodoistTask,
 } from "./core";
 
@@ -287,9 +288,9 @@ export function getTaskBreadcrumb(
 export function dashboardRecordFromProperties(
   properties: Record<string, unknown>,
 ): DashboardTaskRecord | null {
-  const id = String(properties.todoist_id ?? "").trim();
+  const id = stringValue(properties.todoist_id).trim();
   if (!id) return null;
-  const rawStatus = String(properties.status ?? "open");
+  const rawStatus = stringValue(properties.status, "open");
   const status: DashboardTaskStatus =
     rawStatus === "completed"
       ? "completed"
@@ -297,23 +298,22 @@ export function dashboardRecordFromProperties(
         ? "detached"
         : "open";
   const labels = Array.isArray(properties.labels)
-    ? properties.labels.map(String)
+    ? properties.labels.map((label) => stringValue(label)).filter(Boolean)
     : [];
-  const due = String(properties.due ?? "").trim();
-  const dueString = String(properties.due_string ?? "").trim();
-  const deadline = String(properties.deadline ?? "").trim();
+  const due = stringValue(properties.due).trim();
+  const dueString = stringValue(properties.due_string).trim();
+  const deadline = stringValue(properties.deadline).trim();
   const duration = Number(properties.duration);
-  const durationUnit = String(properties.duration_unit ?? "");
+  const durationUnit = stringValue(properties.duration_unit);
+  const parentId = stringValue(properties.parent_id).trim();
   return {
     status,
     task: {
       id,
-      content: String(properties.title ?? ""),
-      description: String(properties.description ?? ""),
-      project_id: String(properties.project_id ?? ""),
-      parent_id: properties.parent_id
-        ? String(properties.parent_id)
-        : null,
+      content: stringValue(properties.title),
+      description: stringValue(properties.description),
+      project_id: stringValue(properties.project_id),
+      parent_id: parentId || null,
       labels,
       priority: namePriorityToApi(properties.priority),
       child_order: Number(properties.child_order ?? 0) || 0,
@@ -339,7 +339,7 @@ export function dashboardRecordFromProperties(
           : null,
       completed_at:
         status === "completed"
-          ? String(properties.todoist_updated_at ?? "") || null
+          ? stringValue(properties.todoist_updated_at) || null
           : null,
     },
   };

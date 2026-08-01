@@ -72,13 +72,13 @@ export class TodoistApi {
       let detail = response.text;
       try {
         const json = response.json as Record<string, unknown>;
-        detail = String(
-          json.error ??
-            json.error_tag ??
-            json.message ??
-            response.text ??
-            "Unknown API error",
-        );
+        detail =
+          [json.error, json.error_tag, json.message].find(
+            (value): value is string =>
+              typeof value === "string" && value.length > 0,
+          ) ??
+          response.text ??
+          "Unknown API error";
       } catch {
         // The text response is already useful.
       }

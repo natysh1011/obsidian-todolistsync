@@ -6631,10 +6631,16 @@ var browser_default = dist_exports;
 var NOTE_TAG = "todoist-task";
 var NOTES_HEADING = "## Notes";
 var TASK_ACTIONS_BLOCK = "todoist-task-actions";
-var ILLEGAL_FILENAME = /[\\/:*?"<>|\u0000-\u001f]/g;
+var ILLEGAL_FILENAME = /[\\/:*?"<>|]/g;
 var RESERVED_NAMES = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+function replaceAsciiControlCharacters(input) {
+  return Array.from(input, (character) => {
+    const codePoint = character.codePointAt(0) ?? 0;
+    return codePoint <= 31 ? " \u2013 " : character;
+  }).join("");
+}
 function sanitizeSegment(input, maxLength = 120) {
-  let value = input.normalize("NFC").replace(ILLEGAL_FILENAME, " \u2013 ").replace(/(?:\s*–\s*){2,}/g, " \u2013 ").replace(/\s+/g, " ").replace(/^\.+/, "").replace(/[. ]+$/g, "").trim();
+  let value = replaceAsciiControlCharacters(input).normalize("NFC").replace(ILLEGAL_FILENAME, " \u2013 ").replace(/(?:\s*–\s*){2,}/g, " \u2013 ").replace(/\s+/g, " ").replace(/^\.+/, "").replace(/[. ]+$/g, "").trim();
   if (!value) value = "Untitled task";
   if (RESERVED_NAMES.test(value)) value = `${value} task`;
   const characters = Array.from(value);
@@ -6725,13 +6731,20 @@ function apiPriorityToName(priority = 1) {
   const bounded = Math.min(4, Math.max(1, priority));
   return `p${5 - bounded}`;
 }
+function stringValue(value, fallback = "") {
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean" || typeof value === "bigint") {
+    return String(value);
+  }
+  return fallback;
+}
 function namePriorityToApi(priority) {
-  const match = /^p([1-4])$/i.exec(String(priority ?? "p4"));
+  const match = /^p([1-4])$/i.exec(stringValue(priority, "p4"));
   return match ? 5 - Number(match[1]) : 1;
 }
 function normalizedLabels(value) {
   if (!Array.isArray(value)) return [];
-  return value.map((item) => String(item).trim()).filter(Boolean).sort((a, b) => a.localeCompare(b));
+  return value.map((item) => stringValue(item).trim()).filter(Boolean).sort((a, b) => a.localeCompare(b));
 }
 function remoteComparable(task, status = "open") {
   return {
@@ -6753,7 +6766,7 @@ function remoteComparable(task, status = "open") {
 }
 function optionalString(value) {
   if (value === null || value === void 0 || value === "") return null;
-  return String(value);
+  return stringValue(value) || null;
 }
 function optionalNumber(value) {
   if (value === null || value === void 0 || value === "") return null;
@@ -6761,18 +6774,19 @@ function optionalNumber(value) {
   return Number.isFinite(number) ? number : null;
 }
 function localComparable(properties) {
-  const rawStatus = String(properties.status ?? "open");
+  const rawStatus = stringValue(properties.status, "open");
+  const priority = stringValue(properties.priority);
   return {
-    title: String(properties.title ?? ""),
-    description: String(properties.description ?? ""),
+    title: stringValue(properties.title),
+    description: stringValue(properties.description),
     status: rawStatus === "completed" ? "completed" : "open",
-    project_id: String(properties.project_id ?? ""),
+    project_id: stringValue(properties.project_id),
     parent_id: optionalString(properties.parent_id),
     labels: normalizedLabels(properties.labels),
     due: optionalString(properties.due),
     due_string: optionalString(properties.due_string),
     deadline: optionalString(properties.deadline),
-    priority: /^p[1-4]$/i.test(String(properties.priority ?? "")) ? String(properties.priority).toLowerCase() : "p4",
+    priority: /^p[1-4]$/i.test(priority) ? priority.toLowerCase() : "p4",
     duration: optionalNumber(properties.duration),
     duration_unit: optionalString(properties.duration_unit),
     recurring: properties.recurring === true || properties.recurring === "true",
@@ -6844,15 +6858,18 @@ function makeTaskProperties(task, project, parentPath, status, syncState, pendin
 }
 function valueOrDash(value) {
   if (value === null || value === void 0 || value === "") return "\u2014";
-  if (Array.isArray(value)) return value.length ? value.join(", ") : "\u2014";
-  return String(value);
+  if (Array.isArray(value)) {
+    const items = value.map((item) => stringValue(item)).filter(Boolean);
+    return items.length ? items.join(", ") : "\u2014";
+  }
+  return stringValue(value, "\u2014");
 }
 function renderTaskNote(properties, notes) {
   const yaml = browser_default.stringify(properties, {
     lineWidth: 0,
     defaultStringType: "QUOTE_DOUBLE"
   }).trimEnd();
-  const title = String(properties.title ?? "Untitled task");
+  const title = stringValue(properties.title, "Untitled task");
   const taskUrl = optionalString(properties.todoist_url);
   const lines = [
     "---",
@@ -7093,24 +7110,25 @@ function getTaskBreadcrumb(tasks, taskId) {
   return result;
 }
 function dashboardRecordFromProperties(properties) {
-  const id = String(properties.todoist_id ?? "").trim();
+  const id = stringValue(properties.todoist_id).trim();
   if (!id) return null;
-  const rawStatus = String(properties.status ?? "open");
+  const rawStatus = stringValue(properties.status, "open");
   const status = rawStatus === "completed" ? "completed" : rawStatus === "detached" ? "detached" : "open";
-  const labels = Array.isArray(properties.labels) ? properties.labels.map(String) : [];
-  const due = String(properties.due ?? "").trim();
-  const dueString = String(properties.due_string ?? "").trim();
-  const deadline = String(properties.deadline ?? "").trim();
+  const labels = Array.isArray(properties.labels) ? properties.labels.map((label) => stringValue(label)).filter(Boolean) : [];
+  const due = stringValue(properties.due).trim();
+  const dueString = stringValue(properties.due_string).trim();
+  const deadline = stringValue(properties.deadline).trim();
   const duration = Number(properties.duration);
-  const durationUnit = String(properties.duration_unit ?? "");
+  const durationUnit = stringValue(properties.duration_unit);
+  const parentId = stringValue(properties.parent_id).trim();
   return {
     status,
     task: {
       id,
-      content: String(properties.title ?? ""),
-      description: String(properties.description ?? ""),
-      project_id: String(properties.project_id ?? ""),
-      parent_id: properties.parent_id ? String(properties.parent_id) : null,
+      content: stringValue(properties.title),
+      description: stringValue(properties.description),
+      project_id: stringValue(properties.project_id),
+      parent_id: parentId || null,
       labels,
       priority: namePriorityToApi(properties.priority),
       child_order: Number(properties.child_order ?? 0) || 0,
@@ -7124,7 +7142,7 @@ function dashboardRecordFromProperties(properties) {
         amount: duration,
         unit: durationUnit
       } : null,
-      completed_at: status === "completed" ? String(properties.todoist_updated_at ?? "") || null : null
+      completed_at: status === "completed" ? stringValue(properties.todoist_updated_at) || null : null
     }
   };
 }
@@ -7164,9 +7182,9 @@ var TodoistApi = class {
       let detail = response.text;
       try {
         const json = response.json;
-        detail = String(
-          json.error ?? json.error_tag ?? json.message ?? response.text ?? "Unknown API error"
-        );
+        detail = [json.error, json.error_tag, json.message].find(
+          (value) => typeof value === "string" && value.length > 0
+        ) ?? response.text ?? "Unknown API error";
       } catch {
       }
       throw new TodoistApiError(
@@ -7323,7 +7341,7 @@ var NewTaskModal = class extends import_obsidian2.Modal {
     } else {
       this.renderHierarchyPicker(contentEl);
     }
-    new import_obsidian2.Setting(contentEl).setName("\u05EA\u05D2\u05D9\u05D5\u05EA Todoist").setDesc("\u05DE\u05D5\u05E4\u05E8\u05D3\u05D5\u05EA \u05D1\u05E4\u05E1\u05D9\u05E7\u05D9\u05DD; \u05EA\u05D2\u05D9\u05D5\u05EA \u05D7\u05E1\u05E8\u05D5\u05EA \u05D9\u05D9\u05D5\u05D5\u05E6\u05E8\u05D5").addText(
+    new import_obsidian2.Setting(contentEl).setName("\u05EA\u05D2\u05D9\u05D5\u05EA").setDesc("\u05DE\u05D5\u05E4\u05E8\u05D3\u05D5\u05EA \u05D1\u05E4\u05E1\u05D9\u05E7\u05D9\u05DD; \u05EA\u05D2\u05D9\u05D5\u05EA \u05D7\u05E1\u05E8\u05D5\u05EA \u05D9\u05D9\u05D5\u05D5\u05E6\u05E8\u05D5").addText(
       (text) => text.setPlaceholder("\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD, \u05D3\u05D7\u05D5\u05E3").onChange((value) => {
         this.value.labels = value.split(",").map((label) => label.trim()).filter(Boolean);
       })
@@ -7364,46 +7382,65 @@ var NewTaskModal = class extends import_obsidian2.Modal {
         this.value.priority = value;
       });
     });
-    new import_obsidian2.Setting(contentEl).setName("\u05DE\u05E9\u05DA").setDesc("\u05DC\u05D3\u05D5\u05D2\u05DE\u05D4: 30m, 2h, 1d").addText(
-      (text) => text.setPlaceholder("30m").onChange((value) => {
-        this.value.duration = value;
-      })
-    );
+    let durationAmount = "";
+    let durationUnit = "minute";
+    const updateDuration = () => {
+      this.value.duration = durationAmount ? `${durationAmount} ${durationUnit}` : "";
+    };
+    new import_obsidian2.Setting(contentEl).setName("\u05DE\u05E9\u05DA").setDesc("\u05D4\u05D6\u05DF \u05DE\u05E1\u05E4\u05E8 \u05D5\u05D1\u05D7\u05E8 \u05D3\u05E7\u05D5\u05EA, \u05E9\u05E2\u05D5\u05EA \u05D0\u05D5 \u05D9\u05DE\u05D9\u05DD").addText((text) => {
+      text.inputEl.type = "number";
+      text.inputEl.min = "1";
+      text.inputEl.step = "1";
+      text.setPlaceholder("30").onChange((value) => {
+        durationAmount = value;
+        updateDuration();
+      });
+    }).addDropdown((dropdown) => {
+      dropdown.addOption("minute", "\u05D3\u05E7\u05D5\u05EA").addOption("hour", "\u05E9\u05E2\u05D5\u05EA").addOption("day", "\u05D9\u05DE\u05D9\u05DD").setValue(durationUnit).onChange((value) => {
+        if (value === "minute" || value === "hour" || value === "day") {
+          durationUnit = value;
+          updateDuration();
+        }
+      });
+    });
     const actions = new import_obsidian2.Setting(contentEl);
     actions.settingEl.addClass("todoist-task-notes-modal-actions");
     actions.addButton(
       (button) => button.setButtonText("\u05D1\u05D9\u05D8\u05D5\u05DC").onClick(() => this.close())
     ).addButton(
-      (button) => button.setButtonText("\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D5\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF").setCta().onClick(async () => {
-        if (!this.value.title.trim()) {
-          new import_obsidian2.Notice("\u05D9\u05E9 \u05DC\u05D4\u05D6\u05D9\u05DF \u05DB\u05D5\u05EA\u05E8\u05EA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4.");
-          return;
-        }
-        button.setDisabled(true);
-        try {
-          await this.host.createTaskFromForm(this.value);
-          this.close();
-        } catch (error) {
-          new import_obsidian2.Notice(
-            `\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: ${error instanceof Error ? error.message : String(error)}`
-          );
-          button.setDisabled(false);
-        }
+      (button) => button.setButtonText("\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D5\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF").setCta().onClick(() => {
+        void this.submitTask(button);
       })
     );
+  }
+  async submitTask(button) {
+    if (!this.value.title.trim()) {
+      new import_obsidian2.Notice("\u05D9\u05E9 \u05DC\u05D4\u05D6\u05D9\u05DF \u05DB\u05D5\u05EA\u05E8\u05EA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4.");
+      return;
+    }
+    button.setDisabled(true);
+    try {
+      await this.host.createTaskFromForm(this.value);
+      this.close();
+    } catch (error) {
+      new import_obsidian2.Notice(
+        `\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: ${error instanceof Error ? error.message : String(error)}`
+      );
+      button.setDisabled(false);
+    }
   }
   renderLockedHierarchy(container) {
     const project = this.host.getProjects().find((item) => item.id === this.value.projectId);
     const path = this.parentPathIds.map(
       (id) => this.host.getTasks().find((task) => task.id === id)?.content ?? id
     ).join(" \u2190 ");
-    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 Todoist").setDesc(project?.name ?? "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2");
+    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8").setDesc(project?.name ?? "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2");
     const setting = new import_obsidian2.Setting(container).setName("\u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1 \u05E0\u05E2\u05D5\u05DC\u05D4").setDesc(path || "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1");
     setting.settingEl.addClass("todoist-task-notes-hierarchy-locked");
   }
   renderHierarchyPicker(container) {
     const projects = this.host.getProjects();
-    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 Todoist").setDesc("\u05D1\u05D7\u05D9\u05E8\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DE\u05E1\u05E0\u05E0\u05EA \u05D0\u05EA \u05DB\u05DC \u05E8\u05DE\u05D5\u05EA \u05D4\u05D4\u05D9\u05E8\u05E8\u05DB\u05D9\u05D4").addDropdown((dropdown) => {
+    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8").setDesc("\u05D1\u05D7\u05D9\u05E8\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DE\u05E1\u05E0\u05E0\u05EA \u05D0\u05EA \u05DB\u05DC \u05E8\u05DE\u05D5\u05EA \u05D4\u05D4\u05D9\u05E8\u05E8\u05DB\u05D9\u05D4").addDropdown((dropdown) => {
       for (const project of projects) {
         dropdown.addOption(project.id, project.name);
       }
@@ -7508,8 +7545,12 @@ var ItemPickerModal = class extends import_obsidian2.FuzzySuggestModal {
   getItemText(item) {
     return item.description ? `${item.label} \u2014 ${item.description}` : item.label;
   }
-  async onChooseItem(item) {
-    await this.onPick(item);
+  onChooseItem(item) {
+    void Promise.resolve(this.onPick(item)).catch((error) => {
+      new import_obsidian2.Notice(
+        `\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: ${error instanceof Error ? error.message : String(error)}`
+      );
+    });
   }
 };
 var TaskActionsChild = class extends import_obsidian2.MarkdownRenderChild {
@@ -7639,13 +7680,8 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     newButton.addEventListener("click", () => this.host.openNewTaskModal());
     const syncButton = toolbar.createEl("button", { text: "\u05E1\u05E0\u05DB\u05E8\u05DF \u05E2\u05DB\u05E9\u05D9\u05D5" });
     (0, import_obsidian2.setIcon)(syncButton.createSpan(), "refresh-cw");
-    syncButton.addEventListener("click", async () => {
-      syncButton.setAttr("disabled", "true");
-      try {
-        await this.host.syncNow("dashboard");
-      } finally {
-        syncButton.removeAttribute("disabled");
-      }
+    syncButton.addEventListener("click", () => {
+      void this.syncFromDashboard(syncButton);
     });
     const status = toolbar.createSpan("todoist-task-notes-status");
     if (data.lastError) {
@@ -7656,6 +7692,14 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
       );
     } else {
       status.setText("\u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D1\u05D5\u05E6\u05E2 \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF");
+    }
+  }
+  async syncFromDashboard(button) {
+    button.setAttr("disabled", "true");
+    try {
+      await this.host.syncNow("dashboard");
+    } finally {
+      button.removeAttribute("disabled");
     }
   }
   renderOverview(overview) {
@@ -7833,21 +7877,24 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     checkbox.type = "checkbox";
     checkbox.checked = false;
     checkbox.setAttribute("aria-label", `\u05E1\u05DE\u05DF \u05DB\u05D4\u05D5\u05E9\u05DC\u05DE\u05D4: ${task.content}`);
-    checkbox.addEventListener("change", async () => {
-      checkbox.disabled = true;
-      try {
-        await this.host.setTaskCompleted(task.id, checkbox.checked);
-      } catch (error) {
-        checkbox.checked = !checkbox.checked;
-        new import_obsidian2.Notice(
-          `\u05E2\u05D3\u05DB\u05D5\u05DF Todoist \u05E0\u05DB\u05E9\u05DC: ${error instanceof Error ? error.message : String(error)}`
-        );
-      } finally {
-        checkbox.disabled = false;
-      }
+    checkbox.addEventListener("change", () => {
+      void this.updateTaskCompletion(checkbox, task);
     });
     this.createTaskLink(parent, task, paths);
     this.renderTaskMeta(parent, task);
+  }
+  async updateTaskCompletion(checkbox, task) {
+    checkbox.disabled = true;
+    try {
+      await this.host.setTaskCompleted(task.id, checkbox.checked);
+    } catch (error) {
+      checkbox.checked = !checkbox.checked;
+      new import_obsidian2.Notice(
+        `\u05E2\u05D3\u05DB\u05D5\u05DF Todoist \u05E0\u05DB\u05E9\u05DC: ${error instanceof Error ? error.message : String(error)}`
+      );
+    } finally {
+      checkbox.disabled = false;
+    }
   }
   createTaskLink(parent, task, paths) {
     const path = paths.get(task.id)?.note;
@@ -7981,10 +8028,10 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     this.addSettingTab(new TodoistTaskNotesSettingTab(this.app, this));
     this.addRibbonIcon(
       "list-plus",
-      "New Todoist task",
+      "New task",
       () => this.openNewTaskModal()
     );
-    this.addRibbonIcon("refresh-cw", "Sync Todoist task notes", () => {
+    this.addRibbonIcon("refresh-cw", "Sync task notes", () => {
       void this.syncNow("ribbon");
     });
     this.addCommand({
@@ -8019,7 +8066,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     });
     this.addCommand({
       id: "open-current-in-todoist",
-      name: "Open current task in Todoist",
+      name: "Open current task online",
       checkCallback: (checking) => this.openCurrentInTodoist(checking)
     });
     this.registerMarkdownCodeBlockProcessor(
@@ -8098,7 +8145,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   }
   async testConnection() {
     await this.api.validate();
-    new import_obsidian3.Notice("Todoist Task Notes: API connection is working.");
+    new import_obsidian3.Notice("API connection is working.");
   }
   openNewTaskModal(context = {}) {
     if (!this.projects.length) {
@@ -8221,8 +8268,8 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       const completedTasks = pullOnly ? [] : await this.api.listCompletedSince(completedSince);
       const localById = /* @__PURE__ */ new Map();
       for (const local of localFiles) {
-        const id = local.parsed.properties.todoist_id;
-        if (id) localById.set(String(id), local);
+        const id = stringValue(local.parsed.properties.todoist_id).trim();
+        if (id) localById.set(id, local);
       }
       const activeById = new Map(activeTasks.map((task) => [task.id, task]));
       const completedById = new Map(
@@ -8435,8 +8482,9 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       if (properties.sync_state !== "pending-create" || properties.todoist_id) {
         continue;
       }
-      const requestId = String(
-        properties.pending_create_id ?? crypto.randomUUID()
+      const requestId = stringValue(
+        properties.pending_create_id,
+        crypto.randomUUID()
       );
       const localState = localComparable(properties);
       const input = {
@@ -8686,7 +8734,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         pending += 1;
         continue;
       }
-      const id = properties.todoist_id ? String(properties.todoist_id) : "";
+      const id = stringValue(properties.todoist_id).trim();
       const previous = this.data.tasks[id]?.fingerprint;
       if (previous && previous !== stableFingerprint(localComparable(properties))) {
         changed += 1;
@@ -8709,7 +8757,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     if (checking) return true;
     void this.app.vault.read(file).then((content) => {
       const parsed = parseTaskNote(content);
-      const currentId = String(parsed.properties.todoist_id ?? "");
+      const currentId = stringValue(parsed.properties.todoist_id).trim();
       const items = [
         { id: "", label: "No parent" },
         ...this.tasks.filter((task) => task.id !== currentId).map((task) => ({
@@ -8725,11 +8773,12 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         async (item) => {
           const parent = this.tasks.find((task) => task.id === item.id);
           await this.app.fileManager.processFrontMatter(file, (fm) => {
-            fm.parent_id = parent?.id ?? null;
-            fm.parent = parent ? `[[${this.paths.get(parent.id)?.note.replace(/\.md$/, "")}]]` : null;
+            const frontmatter = fm;
+            frontmatter.parent_id = parent?.id ?? null;
+            frontmatter.parent = parent ? `[[${this.paths.get(parent.id)?.note.replace(/\.md$/, "")}]]` : null;
             if (parent) {
-              fm.project_id = parent.project_id;
-              fm.project = this.projects.find((p) => p.id === parent.project_id)?.name ?? fm.project;
+              frontmatter.project_id = parent.project_id;
+              frontmatter.project = this.projects.find((p) => p.id === parent.project_id)?.name ?? stringValue(frontmatter.project);
             }
           });
           await this.syncNow("reparent");
@@ -8753,10 +8802,11 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       async (item) => {
         const project = this.projects.find((p) => p.id === item.id);
         await this.app.fileManager.processFrontMatter(file, (fm) => {
-          fm.project_id = item.id;
-          fm.project = project?.name ?? item.label;
-          fm.parent_id = null;
-          fm.parent = null;
+          const frontmatter = fm;
+          frontmatter.project_id = item.id;
+          frontmatter.project = project?.name ?? item.label;
+          frontmatter.parent_id = null;
+          frontmatter.parent = null;
         });
         await this.syncNow("move-project");
       }
@@ -8768,10 +8818,11 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     if (!file) return false;
     if (checking) return true;
     void this.app.fileManager.processFrontMatter(file, (fm) => {
-      fm.status = "detached";
-      fm.sync_state = "detached";
-      fm.detached_reason = "Detached manually in Obsidian.";
-      fm.detached_at = (/* @__PURE__ */ new Date()).toISOString();
+      const frontmatter = fm;
+      frontmatter.status = "detached";
+      frontmatter.sync_state = "detached";
+      frontmatter.detached_reason = "Detached manually in Obsidian.";
+      frontmatter.detached_at = (/* @__PURE__ */ new Date()).toISOString();
     }).then(() => this.syncNow("detach"));
     return true;
   }
@@ -8779,9 +8830,10 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     const file = this.activeTaskFile();
     if (!file) return false;
     const cache = this.app.metadataCache.getFileCache(file);
-    const url = cache?.frontmatter?.todoist_url;
-    if (!url) return false;
-    if (!checking) window.open(String(url));
+    const frontmatter = cache?.frontmatter;
+    const url = frontmatter && typeof frontmatter === "object" ? frontmatter.todoist_url : null;
+    if (typeof url !== "string" || !url) return false;
+    if (!checking) window.open(url);
     return true;
   }
   triggerDashboardUpdate() {
@@ -8815,15 +8867,19 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   async getTodoistToken() {
     let secretId = this.data.settings.tokenSecretId;
     try {
-      const configPath = ".obsidian/plugins/todoist-sync-plugin/data.json";
+      const configDir = this.app.vault.configDir;
+      const configPath = (0, import_obsidian3.normalizePath)(
+        `${configDir}/plugins/todoist-sync-plugin/data.json`
+      );
       if (await this.app.vault.adapter.exists(configPath)) {
         const raw = await this.app.vault.adapter.read(configPath);
-        const config = JSON.parse(raw);
-        if (config.apiTokenSecretId) {
+        const parsed = JSON.parse(raw);
+        const config = parsed && typeof parsed === "object" ? parsed : {};
+        if (typeof config.apiTokenSecretId === "string") {
           secretId = config.apiTokenSecretId;
         }
         if (config.tokenStorage === "file") {
-          const legacyPath = ".obsidian/todoist-token";
+          const legacyPath = (0, import_obsidian3.normalizePath)(`${configDir}/todoist-token`);
           if (await this.app.vault.adapter.exists(legacyPath)) {
             const legacyToken = (await this.app.vault.adapter.read(legacyPath)).trim();
             if (legacyToken) return legacyToken;
@@ -8864,54 +8920,107 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     this.plugin = plugin;
   }
   plugin;
+  getSettingDefinitions() {
+    const settings = this.plugin.getSettings();
+    return [
+      {
+        type: "group",
+        heading: "Synchronization",
+        items: [
+          {
+            name: "Task-note root folder",
+            desc: "One nested Markdown note is created for every task.",
+            render: (setting) => this.addRootFolderSetting(setting, settings)
+          },
+          {
+            name: "Dashboard note",
+            render: (setting) => this.addDashboardPathSetting(setting, settings)
+          },
+          {
+            name: "Automatic sync interval",
+            desc: "Minutes while Obsidian is open. Takes effect after reload.",
+            render: (setting) => this.addIntervalSetting(setting, settings)
+          },
+          {
+            name: "Shared secret key",
+            desc: "Uses the token already configured by the existing sync plugin. The token itself is never saved here.",
+            render: (setting) => this.addSecretKeySetting(setting, settings)
+          },
+          {
+            name: "API connection",
+            desc: "Validates the shared token without displaying it.",
+            render: (setting) => this.addConnectionSetting(setting)
+          }
+        ]
+      }
+    ];
+  }
   display() {
     const { containerEl } = this;
-    containerEl.empty();
-    containerEl.createEl("h2", { text: "Todoist Task Notes" });
     const settings = this.plugin.getSettings();
-    new import_obsidian3.Setting(containerEl).setName("Task-note root folder").setDesc("One nested Markdown note is created for every Todoist task.").addText(
-      (text) => text.setValue(settings.rootFolder).onChange(async (value) => {
-        await this.plugin.updateSettings({
+    containerEl.empty();
+    new import_obsidian3.Setting(containerEl).setName("Synchronization").setHeading();
+    this.addRootFolderSetting(new import_obsidian3.Setting(containerEl), settings);
+    this.addDashboardPathSetting(new import_obsidian3.Setting(containerEl), settings);
+    this.addIntervalSetting(new import_obsidian3.Setting(containerEl), settings);
+    this.addSecretKeySetting(new import_obsidian3.Setting(containerEl), settings);
+    this.addConnectionSetting(new import_obsidian3.Setting(containerEl));
+  }
+  addRootFolderSetting(setting, settings) {
+    setting.setName("Task-note root folder").setDesc("One nested Markdown note is created for every task.").addText(
+      (text) => text.setValue(settings.rootFolder).onChange((value) => {
+        void this.plugin.updateSettings({
           rootFolder: (0, import_obsidian3.normalizePath)(value)
         });
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Dashboard note").addText(
-      (text) => text.setValue(settings.dashboardPath).onChange(async (value) => {
-        await this.plugin.updateSettings({
+  }
+  addDashboardPathSetting(setting, settings) {
+    setting.setName("Dashboard note").addText(
+      (text) => text.setValue(settings.dashboardPath).onChange((value) => {
+        void this.plugin.updateSettings({
           dashboardPath: (0, import_obsidian3.normalizePath)(value)
         });
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Automatic sync interval").setDesc("Minutes while Obsidian is open. Takes effect after reload.").addText((text) => {
+  }
+  addIntervalSetting(setting, settings) {
+    setting.setName("Automatic sync interval").setDesc("Minutes while Obsidian is open. Takes effect after reload.").addText((text) => {
       text.inputEl.type = "number";
-      text.setValue(String(settings.intervalMinutes)).onChange(async (value) => {
-        await this.plugin.updateSettings({
+      text.setValue(String(settings.intervalMinutes)).onChange((value) => {
+        void this.plugin.updateSettings({
           intervalMinutes: Math.max(1, Number(value) || 5)
         });
       });
     });
-    new import_obsidian3.Setting(containerEl).setName("Shared SecretStorage key").setDesc(
-      "Uses the token already configured by Todoist Sync. The token itself is never saved in this plugin."
+  }
+  addSecretKeySetting(setting, settings) {
+    setting.setName("Shared secret key").setDesc(
+      "Uses the token already configured by the existing sync plugin. The token itself is never saved here."
     ).addText(
-      (text) => text.setValue(settings.tokenSecretId).onChange(async (value) => {
-        await this.plugin.updateSettings({ tokenSecretId: value.trim() });
+      (text) => text.setValue(settings.tokenSecretId).onChange((value) => {
+        void this.plugin.updateSettings({ tokenSecretId: value.trim() });
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("API connection").setDesc("Validates the shared token without displaying it.").addButton(
-      (button) => button.setButtonText("Test connection").onClick(async () => {
-        button.setDisabled(true);
-        try {
-          await this.plugin.testConnection();
-        } catch (error) {
-          new import_obsidian3.Notice(
-            `Todoist connection failed: ${error instanceof Error ? error.message : String(error)}`,
-            1e4
-          );
-        } finally {
-          button.setDisabled(false);
-        }
+  }
+  addConnectionSetting(setting) {
+    setting.setName("API connection").setDesc("Validates the shared token without displaying it.").addButton(
+      (button) => button.setButtonText("Test connection").onClick(() => {
+        void this.testConnection(button);
       })
     );
+  }
+  async testConnection(button) {
+    button.setDisabled(true);
+    try {
+      await this.plugin.testConnection();
+    } catch (error) {
+      new import_obsidian3.Notice(
+        `Todoist connection failed: ${error instanceof Error ? error.message : String(error)}`,
+        1e4
+      );
+    } finally {
+      button.setDisabled(false);
+    }
   }
 };
