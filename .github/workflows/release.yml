@@ -2,6 +2,8 @@ name: Release plugin
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
@@ -42,6 +44,9 @@ jobs:
             tag="${{ github.ref_name }}"
           else
             tag="$(git ls-remote --tags origin 'refs/tags/[0-9]*.[0-9]*.[0-9]*' | awk '{print $2}' | sed 's|refs/tags/||' | sort -V | tail -n 1)"
+            if [ -z "$tag" ]; then
+              tag="$(node -e 'const {readFileSync}=require("node:fs"); const pkg=JSON.parse(readFileSync("package.json","utf8")); console.log(pkg.version);')"
+            fi
           fi
 
           if [ -z "$tag" ]; then
