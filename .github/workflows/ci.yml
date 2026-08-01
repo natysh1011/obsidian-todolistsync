@@ -38,6 +38,7 @@ jobs:
 
       - name: Verify source
         run: |
+          npm run locales:validate
           npm run lint
           npm run check
           npm test

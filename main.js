@@ -6627,6 +6627,1286 @@ function stringify3(value, replacer, options) {
 // node_modules/yaml/browser/index.js
 var browser_default = dist_exports;
 
+// translate/en.json
+var en_default = {
+  _meta: {
+    locale: "en",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: true
+  },
+  messages: {
+    "language.system": "System language",
+    "language.unavailable": "Unavailable",
+    "ribbon.newTask": "New task",
+    "ribbon.sync": "Sync task notes",
+    "modal.newTask": "New Todoist task",
+    "modal.addSubtask": "Add subtask",
+    "modal.title": "Title",
+    "modal.required": "Required",
+    "modal.titlePlaceholder": "What needs to be done?",
+    "modal.description": "Description",
+    "modal.descriptionPlaceholder": "More details about the task",
+    "modal.labels": "Labels",
+    "modal.labelsDescription": "Comma-separated; missing labels will be created",
+    "modal.labelsPlaceholder": "study, urgent",
+    "modal.dueDate": "Due date",
+    "modal.dueTime": "Due time",
+    "modal.recurrence": "Recurrence",
+    "modal.recurrenceDescription": "Enter a number and choose a time unit",
+    "modal.number": "Number",
+    "modal.noRecurrence": "No recurrence",
+    "unit.minutes": "Minutes",
+    "unit.hours": "Hours",
+    "unit.days": "Days",
+    "modal.deadline": "Deadline",
+    "modal.priority": "Priority",
+    "priority.normal": "P4 \u2014 Normal",
+    "priority.medium": "P3 \u2014 Medium",
+    "priority.high": "P2 \u2014 High",
+    "priority.urgent": "P1 \u2014 Urgent",
+    "modal.duration": "Duration",
+    "modal.durationDescription": "Enter a number and choose minutes, hours, or days",
+    "common.cancel": "Cancel",
+    "modal.createAndSync": "Create and sync",
+    "notice.titleRequired": "Enter a task title.",
+    "notice.createFailed": "Task creation failed: {error}",
+    "field.project": "Project",
+    "modal.lockedParent": "Locked parent task",
+    "common.unknownProject": "Unknown project",
+    "common.noParent": "No parent task",
+    "common.untitledTask": "Untitled task",
+    "modal.projectDescription": "Choosing a project filters every hierarchy level",
+    "modal.mainTask": "Main task",
+    "modal.subtaskLevel": "Subtask \u2014 level {level}",
+    "modal.mainTaskDescription": "Optional; create directly in the project",
+    "modal.childDescription": "Only direct children of the previous selection",
+    "modal.stopAtProject": "No parent task",
+    "modal.stopAtLevel": "Stop at the current level",
+    "modal.parentPath": "Parent path:",
+    "modal.projectLevel": "None \u2014 create at project level",
+    "notice.actionFailed": "Action failed: {error}",
+    "action.addSubtask": "Add subtask",
+    "action.unavailable": "This action is unavailable",
+    "action.pendingReason": "The task is waiting to be created in Todoist; children can be added after synchronization.",
+    "action.completedReason": "A subtask cannot be added to a completed task.",
+    "action.detachedReason": "The note is detached from Todoist.",
+    "action.inactiveReason": "The task is not currently active in Todoist.",
+    "action.addSubtaskUnavailable": "Adding a subtask is unavailable",
+    "dashboard.empty": "There are no active Todoist tasks.",
+    "dashboard.projectSnapshot": "Project snapshot",
+    "dashboard.tasks": "Tasks",
+    "dashboard.treeHint": "Projects and tasks are collapsed when the dashboard opens. You can expand several branches at once.",
+    "dashboard.newTask": "New task",
+    "dashboard.syncNow": "Sync now",
+    "dashboard.lastError": "Last sync error: {error}",
+    "dashboard.lastSync": "Last synced {date}",
+    "dashboard.neverSynced": "Not synchronized yet",
+    "dashboard.overview": "Overview",
+    "dashboard.openTasks": "Open tasks",
+    "dashboard.overdue": "Overdue",
+    "dashboard.dueSoon": "Today and the next 7 days",
+    "dashboard.urgentP1P2": "Urgent \xB7 P1/P2",
+    "dashboard.todoistProject": "My Projects \xB7 Todoist",
+    "dashboard.remainingCompleted": "{remaining} remaining \xB7 {completed} completed",
+    "dashboard.progress": "Progress for {project}",
+    "dashboard.nextTask": "Next task",
+    "dashboard.noDatedTasks": "No open tasks have a date",
+    "dashboard.urgent": "Urgent",
+    "dashboard.noDate": "No date",
+    "dashboard.taskCount.one": "{count} task",
+    "dashboard.taskCount.other": "{count} tasks",
+    "dashboard.remainingCount.one": "{count} remaining",
+    "dashboard.remainingCount.other": "{count} remaining",
+    "dashboard.noActiveSubtasks": "No active subtasks.",
+    "aria.collapse": "Collapse {label}",
+    "aria.expand": "Expand {label}",
+    "aria.markCompleted": "Mark completed: {task}",
+    "notice.todoistUpdateFailed": "Todoist update failed: {error}",
+    "notice.connectionWorking": "The API connection is working.",
+    "notice.syncBeforeCreate": "Synchronize once before creating a task.",
+    "notice.inactiveSubtask": "A subtask cannot be added to an inactive task.",
+    "notice.taskCreated": "Todoist task created.",
+    "notice.savedOffline": "Saved offline as pending-create. It will retry on the next sync. {error}",
+    "notice.initialPull": "Initial pull imported {count} active tasks without changing Todoist.",
+    "notice.syncComplete": "Synchronization complete ({count} active tasks).",
+    "notice.syncFailed": "Todoist Task Notes synchronization failed: {error}",
+    "notice.preview": "Preview: {changed} changed note(s), {pending} pending creation(s). No remote changes were made.",
+    "picker.noParent": "No parent",
+    "picker.chooseParent": "Choose a parent task",
+    "picker.chooseProject": "Choose a Todoist project",
+    "sync.detachedManual": "Detached manually in Obsidian.",
+    "sync.remoteDeleted": "Remote task was deleted or is unavailable.",
+    "error.tokenMissing": "No Todoist API token is available. Save one in the Todoist Task Notes settings or configure Todoist Sync.",
+    "error.noTaskPath": "No note path was generated for Todoist task {taskId}",
+    "error.pathCollision": "Task note path already exists: {path}",
+    "settings.heading": "Synchronization",
+    "settings.language": "Language",
+    "settings.languageDescription": "Language used by the plugin. System follows Obsidian and your operating system.",
+    "settings.rootFolder": "Task-note root folder",
+    "settings.rootFolderDescription": "One nested Markdown note is created for every task.",
+    "settings.dashboardNote": "Dashboard note",
+    "settings.interval": "Automatic sync interval",
+    "settings.intervalDescription": "Minutes while Obsidian is open. Takes effect after reload.",
+    "settings.token": "Todoist API token",
+    "settings.tokenDescription": "Stored securely in Obsidian SecretStorage. Enter a new token to save or replace it; the saved value is never displayed.",
+    "settings.tokenPlaceholderEmpty": "Paste your Todoist API token",
+    "settings.tokenPlaceholderSaved": "A token is securely stored",
+    "settings.tokenStatusChecking": "Checking secure storage\u2026",
+    "settings.tokenStatusManaged": "A token is saved for this plugin.",
+    "settings.tokenStatusShared": "Using the token already stored by Todoist Sync.",
+    "settings.tokenStatusMissing": "No token is currently available.",
+    "settings.saveToken": "Save token",
+    "settings.replaceToken": "Replace token",
+    "settings.removeToken": "Remove token",
+    "settings.removeTokenTitle": "Remove the saved Todoist token?",
+    "settings.removeTokenDescription": "This removes only the token saved by Todoist Task Notes. A token stored by Todoist Sync is not changed.",
+    "settings.secretKey": "Shared secret key",
+    "settings.secretKeyDescription": "Uses the token already configured by the existing sync plugin. The token itself is never saved here.",
+    "settings.connection": "API connection",
+    "settings.connectionDescription": "Validates the available token without displaying it.",
+    "settings.testConnection": "Test connection",
+    "notice.tokenRequired": "Paste a Todoist API token before saving.",
+    "notice.tokenSaved": "The Todoist API token was saved securely.",
+    "notice.tokenRemoved": "The saved Todoist API token was removed.",
+    "notice.tokenSaveFailed": "The token could not be saved: {error}",
+    "notice.connectionFailed": "Todoist connection failed: {error}",
+    "note.todoistTask": "Todoist task",
+    "note.openInTodoist": "Open in Todoist",
+    "note.pendingCreation": "Pending API creation",
+    "note.details": "Details",
+    "field.parent": "Parent",
+    "field.status": "Status",
+    "field.due": "Due",
+    "field.deadline": "Deadline",
+    "field.priority": "Priority",
+    "field.labels": "Labels",
+    "conflict.title": "Todoist synchronization conflict",
+    "conflict.originalNote": "Original note",
+    "conflict.todoistTask": "Todoist task",
+    "conflict.captured": "Captured",
+    "conflict.resolution": "Resolution",
+    "conflict.resolutionText": "Todoist won; this file preserves the displaced local version.",
+    "conflict.localVersion": "Local version"
+  }
+};
+
+// translate/af.json
+var af_default = {
+  _meta: {
+    locale: "af",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/am.json
+var am_default = {
+  _meta: {
+    locale: "am",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ar.json
+var ar_default = {
+  _meta: {
+    locale: "ar",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "rtl",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/az.json
+var az_default = {
+  _meta: {
+    locale: "az",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/be.json
+var be_default = {
+  _meta: {
+    locale: "be",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/bg.json
+var bg_default = {
+  _meta: {
+    locale: "bg",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/bn.json
+var bn_default = {
+  _meta: {
+    locale: "bn",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ca.json
+var ca_default = {
+  _meta: {
+    locale: "ca",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/cs.json
+var cs_default = {
+  _meta: {
+    locale: "cs",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/da.json
+var da_default = {
+  _meta: {
+    locale: "da",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/de.json
+var de_default = {
+  _meta: {
+    locale: "de",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/dv.json
+var dv_default = {
+  _meta: {
+    locale: "dv",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "rtl",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/el.json
+var el_default = {
+  _meta: {
+    locale: "el",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/en-GB.json
+var en_GB_default = {
+  _meta: {
+    locale: "en-GB",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/eo.json
+var eo_default = {
+  _meta: {
+    locale: "eo",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/es.json
+var es_default = {
+  _meta: {
+    locale: "es",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/eu.json
+var eu_default = {
+  _meta: {
+    locale: "eu",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/fa.json
+var fa_default = {
+  _meta: {
+    locale: "fa",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "rtl",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/fi.json
+var fi_default = {
+  _meta: {
+    locale: "fi",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/fr.json
+var fr_default = {
+  _meta: {
+    locale: "fr",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ga.json
+var ga_default = {
+  _meta: {
+    locale: "ga",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/gl.json
+var gl_default = {
+  _meta: {
+    locale: "gl",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/he.json
+var he_default = {
+  _meta: {
+    locale: "he",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "rtl",
+    available: true
+  },
+  messages: {
+    "language.system": "\u05E9\u05E4\u05EA \u05D4\u05DE\u05E2\u05E8\u05DB\u05EA",
+    "language.unavailable": "\u05DC\u05D0 \u05D6\u05DE\u05D9\u05DF",
+    "ribbon.newTask": "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4",
+    "ribbon.sync": "\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05E4\u05EA\u05E7\u05D9 \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA",
+    "modal.newTask": "\u05DE\u05E9\u05D9\u05DE\u05EA Todoist \u05D7\u05D3\u05E9\u05D4",
+    "modal.addSubtask": "\u05D4\u05D5\u05E1\u05E4\u05EA \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4",
+    "modal.title": "\u05DB\u05D5\u05EA\u05E8\u05EA",
+    "modal.required": "\u05E9\u05D3\u05D4 \u05D7\u05D5\u05D1\u05D4",
+    "modal.titlePlaceholder": "\u05DE\u05D4 \u05E6\u05E8\u05D9\u05DA \u05DC\u05E2\u05E9\u05D5\u05EA?",
+    "modal.description": "\u05EA\u05D9\u05D0\u05D5\u05E8",
+    "modal.descriptionPlaceholder": "\u05E4\u05E8\u05D8\u05D9\u05DD \u05E0\u05D5\u05E1\u05E4\u05D9\u05DD \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4",
+    "modal.labels": "\u05EA\u05D2\u05D9\u05D5\u05EA",
+    "modal.labelsDescription": "\u05DE\u05D5\u05E4\u05E8\u05D3\u05D5\u05EA \u05D1\u05E4\u05E1\u05D9\u05E7\u05D9\u05DD; \u05EA\u05D2\u05D9\u05D5\u05EA \u05D7\u05E1\u05E8\u05D5\u05EA \u05D9\u05D9\u05D5\u05D5\u05E6\u05E8\u05D5",
+    "modal.labelsPlaceholder": "\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD, \u05D3\u05D7\u05D5\u05E3",
+    "modal.dueDate": "\u05EA\u05D0\u05E8\u05D9\u05DA \u05D9\u05E2\u05D3",
+    "modal.dueTime": "\u05E9\u05E2\u05EA \u05D9\u05E2\u05D3",
+    "modal.recurrence": "\u05D7\u05D6\u05E8\u05D4",
+    "modal.recurrenceDescription": "\u05D4\u05D6\u05DF \u05DE\u05E1\u05E4\u05E8 \u05D5\u05D1\u05D7\u05E8 \u05D9\u05D7\u05D9\u05D3\u05EA \u05D6\u05DE\u05DF",
+    "modal.number": "\u05DE\u05E1\u05E4\u05E8",
+    "modal.noRecurrence": "\u05DC\u05DC\u05D0 \u05D7\u05D6\u05E8\u05D4",
+    "unit.minutes": "\u05D3\u05E7\u05D5\u05EA",
+    "unit.hours": "\u05E9\u05E2\u05D5\u05EA",
+    "unit.days": "\u05D9\u05DE\u05D9\u05DD",
+    "modal.deadline": "\u05D3\u05D3\u05DC\u05D9\u05D9\u05DF",
+    "modal.priority": "\u05E2\u05D3\u05D9\u05E4\u05D5\u05EA",
+    "priority.normal": "P4 \u2014 \u05E8\u05D2\u05D9\u05DC\u05D4",
+    "priority.medium": "P3 \u2014 \u05D1\u05D9\u05E0\u05D5\u05E0\u05D9\u05EA",
+    "priority.high": "P2 \u2014 \u05D2\u05D1\u05D5\u05D4\u05D4",
+    "priority.urgent": "P1 \u2014 \u05D3\u05D7\u05D5\u05E4\u05D4",
+    "modal.duration": "\u05DE\u05E9\u05DA",
+    "modal.durationDescription": "\u05D4\u05D6\u05DF \u05DE\u05E1\u05E4\u05E8 \u05D5\u05D1\u05D7\u05E8 \u05D3\u05E7\u05D5\u05EA, \u05E9\u05E2\u05D5\u05EA \u05D0\u05D5 \u05D9\u05DE\u05D9\u05DD",
+    "common.cancel": "\u05D1\u05D9\u05D8\u05D5\u05DC",
+    "modal.createAndSync": "\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D5\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF",
+    "notice.titleRequired": "\u05D9\u05E9 \u05DC\u05D4\u05D6\u05D9\u05DF \u05DB\u05D5\u05EA\u05E8\u05EA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4.",
+    "notice.createFailed": "\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: {error}",
+    "field.project": "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8",
+    "modal.lockedParent": "\u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1 \u05E0\u05E2\u05D5\u05DC\u05D4",
+    "common.unknownProject": "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2",
+    "common.noParent": "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1",
+    "common.untitledTask": "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DC\u05DC\u05D0 \u05DB\u05D5\u05EA\u05E8\u05EA",
+    "modal.projectDescription": "\u05D1\u05D7\u05D9\u05E8\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DE\u05E1\u05E0\u05E0\u05EA \u05D0\u05EA \u05DB\u05DC \u05E8\u05DE\u05D5\u05EA \u05D4\u05D4\u05D9\u05E8\u05E8\u05DB\u05D9\u05D4",
+    "modal.mainTask": "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E8\u05D0\u05E9\u05D9\u05EA",
+    "modal.subtaskLevel": "\u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u2014 \u05E8\u05DE\u05D4 {level}",
+    "modal.mainTaskDescription": "\u05D0\u05D5\u05E4\u05E6\u05D9\u05D5\u05E0\u05DC\u05D9; \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D9\u05E6\u05D5\u05E8 \u05D9\u05E9\u05D9\u05E8\u05D5\u05EA \u05D1\u05EA\u05D5\u05DA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8",
+    "modal.childDescription": "\u05E8\u05E7 \u05D9\u05DC\u05D3\u05D9\u05DD \u05D9\u05E9\u05D9\u05E8\u05D9\u05DD \u05E9\u05DC \u05D4\u05D1\u05D7\u05D9\u05E8\u05D4 \u05D4\u05E7\u05D5\u05D3\u05DE\u05EA",
+    "modal.stopAtProject": "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1",
+    "modal.stopAtLevel": "\u05E2\u05E6\u05D5\u05E8 \u05D1\u05E8\u05DE\u05D4 \u05D4\u05E0\u05D5\u05DB\u05D7\u05D9\u05EA",
+    "modal.parentPath": "\u05E0\u05EA\u05D9\u05D1 \u05D0\u05D1:",
+    "modal.projectLevel": "\u05DC\u05DC\u05D0 \u2014 \u05D9\u05E6\u05D9\u05E8\u05D4 \u05D1\u05E8\u05DE\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8",
+    "notice.actionFailed": "\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: {error}",
+    "action.addSubtask": "\u05D4\u05D5\u05E1\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4",
+    "action.unavailable": "\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4",
+    "action.pendingReason": "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DE\u05DE\u05EA\u05D9\u05E0\u05D4 \u05DC\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D1\u05BETodoist; \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05D9\u05DC\u05D3\u05D9\u05DD \u05DC\u05D0\u05D7\u05E8 \u05D4\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF.",
+    "action.completedReason": "\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E9\u05D4\u05D5\u05E9\u05DC\u05DE\u05D4.",
+    "action.detachedReason": "\u05D4\u05E4\u05EA\u05E7 \u05DE\u05E0\u05D5\u05EA\u05E7 \u05DE\u05BETodoist.",
+    "action.inactiveReason": "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4 \u05DB\u05E8\u05D2\u05E2 \u05D1\u05BETodoist.",
+    "action.addSubtaskUnavailable": "\u05D4\u05D5\u05E1\u05E4\u05EA \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4",
+    "dashboard.empty": "\u05D0\u05D9\u05DF \u05DB\u05E8\u05D2\u05E2 \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA Todoist \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA.",
+    "dashboard.projectSnapshot": "\u05EA\u05DE\u05D5\u05E0\u05EA \u05DE\u05E6\u05D1 \u05DC\u05E4\u05D9 \u05E4\u05E8\u05D5\u05D9\u05E7\u05D8",
+    "dashboard.tasks": "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA",
+    "dashboard.treeHint": "\u05DB\u05DC \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8\u05D9\u05DD \u05D5\u05D4\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E1\u05D2\u05D5\u05E8\u05D9\u05DD \u05D1\u05E4\u05EA\u05D9\u05D7\u05EA \u05D4\u05D3\u05E9\u05D1\u05D5\u05E8\u05D3. \u05D0\u05E4\u05E9\u05E8 \u05DC\u05E4\u05EA\u05D5\u05D7 \u05DB\u05DE\u05D4 \u05E2\u05E0\u05E4\u05D9\u05DD \u05D1\u05DE\u05E7\u05D1\u05D9\u05DC.",
+    "dashboard.newTask": "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4",
+    "dashboard.syncNow": "\u05E1\u05E0\u05DB\u05E8\u05DF \u05E2\u05DB\u05E9\u05D9\u05D5",
+    "dashboard.lastError": "\u05E9\u05D2\u05D9\u05D0\u05EA \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D0\u05D7\u05E8\u05D5\u05E0\u05D4: {error}",
+    "dashboard.lastSync": "\u05E1\u05D5\u05E0\u05DB\u05E8\u05DF \u05DC\u05D0\u05D7\u05E8\u05D5\u05E0\u05D4 {date}",
+    "dashboard.neverSynced": "\u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D1\u05D5\u05E6\u05E2 \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF",
+    "dashboard.overview": "\u05E1\u05D9\u05DB\u05D5\u05DD \u05DB\u05DC\u05DC\u05D9",
+    "dashboard.openTasks": "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05EA\u05D5\u05D7\u05D5\u05EA",
+    "dashboard.overdue": "\u05D1\u05D0\u05D9\u05D7\u05D5\u05E8",
+    "dashboard.dueSoon": "\u05D4\u05D9\u05D5\u05DD \u05D5\u05D1\u05BE7 \u05D4\u05D9\u05DE\u05D9\u05DD \u05D4\u05E7\u05E8\u05D5\u05D1\u05D9\u05DD",
+    "dashboard.urgentP1P2": "\u05D3\u05D7\u05D5\u05E4\u05D5\u05EA \xB7 P1/P2",
+    "dashboard.todoistProject": "My Projects \xB7 Todoist",
+    "dashboard.remainingCompleted": "{remaining} \u05E0\u05D5\u05EA\u05E8\u05D5 \xB7 {completed} \u05D4\u05D5\u05E9\u05DC\u05DE\u05D5",
+    "dashboard.progress": "\u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA {project}",
+    "dashboard.nextTask": "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D4\u05E7\u05E8\u05D5\u05D1\u05D4",
+    "dashboard.noDatedTasks": "\u05D0\u05D9\u05DF \u05EA\u05D0\u05E8\u05D9\u05DA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05E4\u05EA\u05D5\u05D7\u05D5\u05EA",
+    "dashboard.urgent": "\u05D3\u05D7\u05D5\u05E4\u05D5\u05EA",
+    "dashboard.noDate": "\u05DC\u05DC\u05D0 \u05EA\u05D0\u05E8\u05D9\u05DA",
+    "dashboard.taskCount.one": "{count} \u05DE\u05E9\u05D9\u05DE\u05D4",
+    "dashboard.taskCount.other": "{count} \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA",
+    "dashboard.remainingCount.one": "{count} \u05E0\u05D5\u05EA\u05E8\u05D4",
+    "dashboard.remainingCount.other": "{count} \u05E0\u05D5\u05EA\u05E8\u05D5",
+    "dashboard.noActiveSubtasks": "\u05D0\u05D9\u05DF \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA.",
+    "aria.collapse": "\u05E1\u05D2\u05D5\u05E8 \u05D0\u05EA {label}",
+    "aria.expand": "\u05E4\u05EA\u05D7 \u05D0\u05EA {label}",
+    "aria.markCompleted": "\u05E1\u05DE\u05DF \u05DB\u05D4\u05D5\u05E9\u05DC\u05DE\u05D4: {task}",
+    "notice.todoistUpdateFailed": "\u05E2\u05D3\u05DB\u05D5\u05DF Todoist \u05E0\u05DB\u05E9\u05DC: {error}",
+    "notice.connectionWorking": "\u05D4\u05D7\u05D9\u05D1\u05D5\u05E8 \u05DC\u05BEAPI \u05E2\u05D5\u05D1\u05D3.",
+    "notice.syncBeforeCreate": "\u05D9\u05E9 \u05DC\u05E1\u05E0\u05DB\u05E8\u05DF \u05E4\u05E2\u05DD \u05D0\u05D7\u05EA \u05DC\u05E4\u05E0\u05D9 \u05D9\u05E6\u05D9\u05E8\u05EA \u05DE\u05E9\u05D9\u05DE\u05D4.",
+    "notice.inactiveSubtask": "\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E9\u05D0\u05D9\u05E0\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4.",
+    "notice.taskCreated": "\u05DE\u05E9\u05D9\u05DE\u05EA Todoist \u05E0\u05D5\u05E6\u05E8\u05D4.",
+    "notice.savedOffline": "\u05E0\u05E9\u05DE\u05E8\u05D4 \u05D1\u05DE\u05E6\u05D1 \u05DC\u05D0 \u05DE\u05E7\u05D5\u05D5\u05DF \u05DB\u05BEpending-create. \u05E0\u05D9\u05E1\u05D9\u05D5\u05DF \u05E0\u05D5\u05E1\u05E3 \u05D9\u05EA\u05D1\u05E6\u05E2 \u05D1\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D4\u05D1\u05D0. {error}",
+    "notice.initialPull": "\u05D4\u05D9\u05D9\u05D1\u05D5\u05D0 \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D9 \u05DE\u05E9\u05DA {count} \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA \u05D1\u05DC\u05D9 \u05DC\u05E9\u05E0\u05D5\u05EA \u05D0\u05EA Todoist.",
+    "notice.syncComplete": "\u05D4\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D4\u05D5\u05E9\u05DC\u05DD ({count} \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA).",
+    "notice.syncFailed": "\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF Todoist Task Notes \u05E0\u05DB\u05E9\u05DC: {error}",
+    "notice.preview": "\u05EA\u05E6\u05D5\u05D2\u05D4 \u05DE\u05E7\u05D3\u05D9\u05DE\u05D4: {changed} \u05E4\u05EA\u05E7\u05D9\u05DD \u05D4\u05E9\u05EA\u05E0\u05D5, {pending} \u05DE\u05DE\u05EA\u05D9\u05E0\u05D9\u05DD \u05DC\u05D9\u05E6\u05D9\u05E8\u05D4. \u05DC\u05D0 \u05D1\u05D5\u05E6\u05E2\u05D5 \u05E9\u05D9\u05E0\u05D5\u05D9\u05D9\u05DD \u05DE\u05E8\u05D5\u05D7\u05E7\u05D9\u05DD.",
+    "picker.noParent": "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1",
+    "picker.chooseParent": "\u05D1\u05D7\u05E8 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1",
+    "picker.chooseProject": "\u05D1\u05D7\u05E8 \u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 Todoist",
+    "sync.detachedManual": "\u05E0\u05D5\u05EA\u05E7 \u05D9\u05D3\u05E0\u05D9\u05EA \u05DE\u05EA\u05D5\u05DA Obsidian.",
+    "sync.remoteDeleted": "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D4\u05DE\u05E8\u05D5\u05D7\u05E7\u05EA \u05E0\u05DE\u05D7\u05E7\u05D4 \u05D0\u05D5 \u05D0\u05D9\u05E0\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4.",
+    "error.tokenMissing": "\u05D0\u05D9\u05DF token \u05D6\u05DE\u05D9\u05DF \u05E2\u05D1\u05D5\u05E8 Todoist API. \u05D9\u05E9 \u05DC\u05E9\u05DE\u05D5\u05E8 token \u05D1\u05D4\u05D2\u05D3\u05E8\u05D5\u05EA Todoist Task Notes \u05D0\u05D5 \u05DC\u05D4\u05D2\u05D3\u05D9\u05E8 \u05D0\u05EA Todoist Sync.",
+    "error.noTaskPath": "\u05DC\u05D0 \u05E0\u05D5\u05E6\u05E8 \u05E0\u05EA\u05D9\u05D1 \u05E4\u05EA\u05E7 \u05DC\u05DE\u05E9\u05D9\u05DE\u05EA Todoist \u05E9\u05DE\u05D6\u05D4\u05D4 \u05E9\u05DC\u05D4 {taskId}",
+    "error.pathCollision": "\u05E0\u05EA\u05D9\u05D1 \u05E4\u05EA\u05E7 \u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DB\u05D1\u05E8 \u05E7\u05D9\u05D9\u05DD: {path}",
+    "settings.heading": "\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF",
+    "settings.language": "\u05E9\u05E4\u05D4",
+    "settings.languageDescription": "\u05E9\u05E4\u05EA \u05DE\u05DE\u05E9\u05E7 \u05D4\u05E4\u05DC\u05D0\u05D2\u05D9\u05DF. \u05DE\u05E6\u05D1 \u05DE\u05E2\u05E8\u05DB\u05EA \u05DE\u05E9\u05EA\u05DE\u05E9 \u05D1\u05E9\u05E4\u05EA Obsidian \u05D5\u05DE\u05E2\u05E8\u05DB\u05EA \u05D4\u05D4\u05E4\u05E2\u05DC\u05D4.",
+    "settings.rootFolder": "\u05EA\u05D9\u05E7\u05D9\u05D9\u05EA \u05E4\u05EA\u05E7\u05D9 \u05D4\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA",
+    "settings.rootFolderDescription": "\u05DC\u05DB\u05DC \u05DE\u05E9\u05D9\u05DE\u05D4 \u05E0\u05D5\u05E6\u05E8 \u05E4\u05EA\u05E7 Markdown \u05DE\u05E7\u05D5\u05E0\u05DF \u05D0\u05D7\u05D3.",
+    "settings.dashboardNote": "\u05E4\u05EA\u05E7 \u05D4\u05D3\u05E9\u05D1\u05D5\u05E8\u05D3",
+    "settings.interval": "\u05DE\u05E8\u05D5\u05D5\u05D7 \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9",
+    "settings.intervalDescription": "\u05DE\u05E1\u05E4\u05E8 \u05D4\u05D3\u05E7\u05D5\u05EA \u05D1\u05D6\u05DE\u05DF \u05E9\u05BEObsidian \u05E4\u05EA\u05D5\u05D7. \u05E0\u05DB\u05E0\u05E1 \u05DC\u05EA\u05D5\u05E7\u05E3 \u05DC\u05D0\u05D7\u05E8 \u05D8\u05E2\u05D9\u05E0\u05D4 \u05DE\u05D7\u05D3\u05E9.",
+    "settings.token": "Token \u05E9\u05DC Todoist API",
+    "settings.tokenDescription": "\u05E0\u05E9\u05DE\u05E8 \u05D1\u05D0\u05D5\u05E4\u05DF \u05DE\u05D0\u05D5\u05D1\u05D8\u05D7 \u05D1\u05BEObsidian SecretStorage. \u05D9\u05E9 \u05DC\u05D4\u05D6\u05D9\u05DF token \u05D7\u05D3\u05E9 \u05DB\u05D3\u05D9 \u05DC\u05E9\u05DE\u05D5\u05E8 \u05D0\u05D5 \u05DC\u05D4\u05D7\u05DC\u05D9\u05E3 \u05D0\u05D5\u05EA\u05D5; \u05D4\u05E2\u05E8\u05DA \u05D4\u05E9\u05DE\u05D5\u05E8 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D0\u05D9\u05E0\u05D5 \u05DE\u05D5\u05E6\u05D2.",
+    "settings.tokenPlaceholderEmpty": "\u05D4\u05D3\u05D1\u05E7 \u05DB\u05D0\u05DF token \u05E9\u05DC Todoist API",
+    "settings.tokenPlaceholderSaved": "Token \u05E9\u05DE\u05D5\u05E8 \u05D1\u05D0\u05D5\u05E4\u05DF \u05DE\u05D0\u05D5\u05D1\u05D8\u05D7",
+    "settings.tokenStatusChecking": "\u05D1\u05D5\u05D3\u05E7 \u05D0\u05EA \u05D4\u05D0\u05D7\u05E1\u05D5\u05DF \u05D4\u05DE\u05D0\u05D5\u05D1\u05D8\u05D7\u2026",
+    "settings.tokenStatusManaged": "Token \u05E9\u05DE\u05D5\u05E8 \u05E2\u05D1\u05D5\u05E8 \u05D4\u05E4\u05DC\u05D0\u05D2\u05D9\u05DF \u05D4\u05D6\u05D4.",
+    "settings.tokenStatusShared": "\u05E0\u05E2\u05E9\u05D4 \u05E9\u05D9\u05DE\u05D5\u05E9 \u05D1\u05BEtoken \u05E9\u05DB\u05D1\u05E8 \u05E9\u05DE\u05D5\u05E8 \u05E2\u05DC \u05D9\u05D3\u05D9 Todoist Sync.",
+    "settings.tokenStatusMissing": "\u05D0\u05D9\u05DF \u05DB\u05E8\u05D2\u05E2 token \u05D6\u05DE\u05D9\u05DF.",
+    "settings.saveToken": "\u05E9\u05DE\u05D9\u05E8\u05EA token",
+    "settings.replaceToken": "\u05D4\u05D7\u05DC\u05E4\u05EA token",
+    "settings.removeToken": "\u05D4\u05E1\u05E8\u05EA token",
+    "settings.removeTokenTitle": "\u05DC\u05D4\u05E1\u05D9\u05E8 \u05D0\u05EA \u05D4\u05BEtoken \u05D4\u05E9\u05DE\u05D5\u05E8 \u05E9\u05DC Todoist?",
+    "settings.removeTokenDescription": "\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05DE\u05E1\u05D9\u05E8\u05D4 \u05E8\u05E7 \u05D0\u05EA \u05D4\u05BEtoken \u05E9\u05E0\u05E9\u05DE\u05E8 \u05E2\u05DC \u05D9\u05D3\u05D9 Todoist Task Notes. Token \u05E9\u05E9\u05DE\u05D5\u05E8 \u05E2\u05DC \u05D9\u05D3\u05D9 Todoist Sync \u05DC\u05D0 \u05D9\u05E9\u05EA\u05E0\u05D4.",
+    "settings.secretKey": "\u05DE\u05E4\u05EA\u05D7 \u05E1\u05D5\u05D3 \u05DE\u05E9\u05D5\u05EA\u05E3",
+    "settings.secretKeyDescription": "\u05DE\u05E9\u05EA\u05DE\u05E9 \u05D1\u05BEtoken \u05E9\u05DB\u05D1\u05E8 \u05D4\u05D5\u05D2\u05D3\u05E8 \u05D1\u05E4\u05DC\u05D0\u05D2\u05D9\u05DF \u05D4\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D4\u05E7\u05D9\u05D9\u05DD. \u05D4\u05BEtoken \u05E2\u05E6\u05DE\u05D5 \u05DC\u05E2\u05D5\u05DC\u05DD \u05DC\u05D0 \u05E0\u05E9\u05DE\u05E8 \u05DB\u05D0\u05DF.",
+    "settings.connection": "\u05D7\u05D9\u05D1\u05D5\u05E8 API",
+    "settings.connectionDescription": "\u05DE\u05D0\u05DE\u05EA \u05D0\u05EA \u05D4\u05BEtoken \u05D4\u05D6\u05DE\u05D9\u05DF \u05D1\u05DC\u05D9 \u05DC\u05D4\u05E6\u05D9\u05D2 \u05D0\u05D5\u05EA\u05D5.",
+    "settings.testConnection": "\u05D1\u05D3\u05D9\u05E7\u05EA \u05D7\u05D9\u05D1\u05D5\u05E8",
+    "notice.tokenRequired": "\u05D9\u05E9 \u05DC\u05D4\u05D3\u05D1\u05D9\u05E7 token \u05E9\u05DC Todoist API \u05DC\u05E4\u05E0\u05D9 \u05D4\u05E9\u05DE\u05D9\u05E8\u05D4.",
+    "notice.tokenSaved": "\u05D4\u05BEtoken \u05E9\u05DC Todoist API \u05E0\u05E9\u05DE\u05E8 \u05D1\u05D0\u05D5\u05E4\u05DF \u05DE\u05D0\u05D5\u05D1\u05D8\u05D7.",
+    "notice.tokenRemoved": "\u05D4\u05BEtoken \u05D4\u05E9\u05DE\u05D5\u05E8 \u05E9\u05DC Todoist API \u05D4\u05D5\u05E1\u05E8.",
+    "notice.tokenSaveFailed": "\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05E9\u05DE\u05D5\u05E8 \u05D0\u05EA \u05D4\u05BEtoken: {error}",
+    "notice.connectionFailed": "\u05D4\u05D7\u05D9\u05D1\u05D5\u05E8 \u05DC\u05BETodoist \u05E0\u05DB\u05E9\u05DC: {error}",
+    "note.todoistTask": "\u05DE\u05E9\u05D9\u05DE\u05EA Todoist",
+    "note.openInTodoist": "\u05E4\u05EA\u05D9\u05D7\u05D4 \u05D1\u05BETodoist",
+    "note.pendingCreation": "\u05DE\u05DE\u05EA\u05D9\u05E0\u05D4 \u05DC\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D1\u05BEAPI",
+    "note.details": "\u05E4\u05E8\u05D8\u05D9\u05DD",
+    "field.parent": "\u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1",
+    "field.status": "\u05E1\u05D8\u05D8\u05D5\u05E1",
+    "field.due": "\u05DE\u05D5\u05E2\u05D3",
+    "field.deadline": "\u05D3\u05D3\u05DC\u05D9\u05D9\u05DF",
+    "field.priority": "\u05E2\u05D3\u05D9\u05E4\u05D5\u05EA",
+    "field.labels": "\u05EA\u05D2\u05D9\u05D5\u05EA",
+    "conflict.title": "\u05D4\u05EA\u05E0\u05D2\u05E9\u05D5\u05EA \u05D1\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF Todoist",
+    "conflict.originalNote": "\u05D4\u05E4\u05EA\u05E7 \u05D4\u05DE\u05E7\u05D5\u05E8\u05D9",
+    "conflict.todoistTask": "\u05DE\u05E9\u05D9\u05DE\u05EA Todoist",
+    "conflict.captured": "\u05E0\u05E9\u05DE\u05E8 \u05D1\u05EA\u05D0\u05E8\u05D9\u05DA",
+    "conflict.resolution": "\u05E4\u05EA\u05E8\u05D5\u05DF",
+    "conflict.resolutionText": "Todoist \u05E0\u05D9\u05E6\u05D7; \u05D4\u05E7\u05D5\u05D1\u05E5 \u05D4\u05D6\u05D4 \u05E9\u05D5\u05DE\u05E8 \u05D0\u05EA \u05D4\u05D2\u05E8\u05E1\u05D4 \u05D4\u05DE\u05E7\u05D5\u05DE\u05D9\u05EA \u05E9\u05D4\u05D5\u05D7\u05DC\u05E4\u05D4.",
+    "conflict.localVersion": "\u05D4\u05D2\u05E8\u05E1\u05D4 \u05D4\u05DE\u05E7\u05D5\u05DE\u05D9\u05EA"
+  }
+};
+
+// translate/hi.json
+var hi_default = {
+  _meta: {
+    locale: "hi",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/hr.json
+var hr_default = {
+  _meta: {
+    locale: "hr",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/hu.json
+var hu_default = {
+  _meta: {
+    locale: "hu",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/id.json
+var id_default = {
+  _meta: {
+    locale: "id",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/it.json
+var it_default = {
+  _meta: {
+    locale: "it",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ja.json
+var ja_default = {
+  _meta: {
+    locale: "ja",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ka.json
+var ka_default = {
+  _meta: {
+    locale: "ka",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/kab.json
+var kab_default = {
+  _meta: {
+    locale: "kab",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/kh.json
+var kh_default = {
+  _meta: {
+    locale: "kh",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/kn.json
+var kn_default = {
+  _meta: {
+    locale: "kn",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ko.json
+var ko_default = {
+  _meta: {
+    locale: "ko",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ky.json
+var ky_default = {
+  _meta: {
+    locale: "ky",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/la.json
+var la_default = {
+  _meta: {
+    locale: "la",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/lt.json
+var lt_default = {
+  _meta: {
+    locale: "lt",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/lv.json
+var lv_default = {
+  _meta: {
+    locale: "lv",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ml.json
+var ml_default = {
+  _meta: {
+    locale: "ml",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ms.json
+var ms_default = {
+  _meta: {
+    locale: "ms",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/nan-TW.json
+var nan_TW_default = {
+  _meta: {
+    locale: "nan-TW",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ne.json
+var ne_default = {
+  _meta: {
+    locale: "ne",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/nl.json
+var nl_default = {
+  _meta: {
+    locale: "nl",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/nn.json
+var nn_default = {
+  _meta: {
+    locale: "nn",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/no.json
+var no_default = {
+  _meta: {
+    locale: "no",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/oc.json
+var oc_default = {
+  _meta: {
+    locale: "oc",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/or.json
+var or_default = {
+  _meta: {
+    locale: "or",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/pl.json
+var pl_default = {
+  _meta: {
+    locale: "pl",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/pt-BR.json
+var pt_BR_default = {
+  _meta: {
+    locale: "pt-BR",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/pt.json
+var pt_default = {
+  _meta: {
+    locale: "pt",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ro.json
+var ro_default = {
+  _meta: {
+    locale: "ro",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ru.json
+var ru_default = {
+  _meta: {
+    locale: "ru",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sa.json
+var sa_default = {
+  _meta: {
+    locale: "sa",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/si.json
+var si_default = {
+  _meta: {
+    locale: "si",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sk.json
+var sk_default = {
+  _meta: {
+    locale: "sk",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sl.json
+var sl_default = {
+  _meta: {
+    locale: "sl",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sq.json
+var sq_default = {
+  _meta: {
+    locale: "sq",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sr.json
+var sr_default = {
+  _meta: {
+    locale: "sr",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sv.json
+var sv_default = {
+  _meta: {
+    locale: "sv",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/sw.json
+var sw_default = {
+  _meta: {
+    locale: "sw",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ta.json
+var ta_default = {
+  _meta: {
+    locale: "ta",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/te.json
+var te_default = {
+  _meta: {
+    locale: "te",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/th.json
+var th_default = {
+  _meta: {
+    locale: "th",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/tl.json
+var tl_default = {
+  _meta: {
+    locale: "tl",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/tr.json
+var tr_default = {
+  _meta: {
+    locale: "tr",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/tt.json
+var tt_default = {
+  _meta: {
+    locale: "tt",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/uk.json
+var uk_default = {
+  _meta: {
+    locale: "uk",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/ur.json
+var ur_default = {
+  _meta: {
+    locale: "ur",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "rtl",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/uz.json
+var uz_default = {
+  _meta: {
+    locale: "uz",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/vi.json
+var vi_default = {
+  _meta: {
+    locale: "vi",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/zh-TW.json
+var zh_TW_default = {
+  _meta: {
+    locale: "zh-TW",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// translate/zh.json
+var zh_default = {
+  _meta: {
+    locale: "zh",
+    sourceHash: "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
+    direction: "ltr",
+    available: false
+  },
+  messages: {}
+};
+
+// src/locale-catalog.ts
+var LOCALE_CODES = ["af", "am", "ar", "az", "be", "bg", "bn", "ca", "cs", "da", "de", "dv", "el", "en-GB", "en", "eo", "es", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "ka", "kab", "kh", "kn", "ko", "ky", "la", "lt", "lv", "ml", "ms", "nan-TW", "ne", "nl", "nn", "no", "oc", "or", "pl", "pt-BR", "pt", "ro", "ru", "sa", "si", "sk", "sl", "sq", "sr", "sv", "sw", "ta", "te", "th", "tl", "tr", "tt", "uk", "ur", "uz", "vi", "zh-TW", "zh"];
+var AVAILABLE_LOCALE_CODES = ["en", "he"];
+var TRANSLATION_CATALOG = {
+  af: af_default,
+  am: am_default,
+  ar: ar_default,
+  az: az_default,
+  be: be_default,
+  bg: bg_default,
+  bn: bn_default,
+  ca: ca_default,
+  cs: cs_default,
+  da: da_default,
+  de: de_default,
+  dv: dv_default,
+  el: el_default,
+  "en-GB": en_GB_default,
+  en: en_default,
+  eo: eo_default,
+  es: es_default,
+  eu: eu_default,
+  fa: fa_default,
+  fi: fi_default,
+  fr: fr_default,
+  ga: ga_default,
+  gl: gl_default,
+  he: he_default,
+  hi: hi_default,
+  hr: hr_default,
+  hu: hu_default,
+  id: id_default,
+  it: it_default,
+  ja: ja_default,
+  ka: ka_default,
+  kab: kab_default,
+  kh: kh_default,
+  kn: kn_default,
+  ko: ko_default,
+  ky: ky_default,
+  la: la_default,
+  lt: lt_default,
+  lv: lv_default,
+  ml: ml_default,
+  ms: ms_default,
+  "nan-TW": nan_TW_default,
+  ne: ne_default,
+  nl: nl_default,
+  nn: nn_default,
+  no: no_default,
+  oc: oc_default,
+  or: or_default,
+  pl: pl_default,
+  "pt-BR": pt_BR_default,
+  pt: pt_default,
+  ro: ro_default,
+  ru: ru_default,
+  sa: sa_default,
+  si: si_default,
+  sk: sk_default,
+  sl: sl_default,
+  sq: sq_default,
+  sr: sr_default,
+  sv: sv_default,
+  sw: sw_default,
+  ta: ta_default,
+  te: te_default,
+  th: th_default,
+  tl: tl_default,
+  tr: tr_default,
+  tt: tt_default,
+  uk: uk_default,
+  ur: ur_default,
+  uz: uz_default,
+  vi: vi_default,
+  "zh-TW": zh_TW_default,
+  zh: zh_default
+};
+
+// src/i18n.ts
+var localeSet = new Set(LOCALE_CODES);
+var availableLocaleSet = new Set(AVAILABLE_LOCALE_CODES);
+var localeAliases = {
+  "en-us": "en",
+  "en-au": "en-GB",
+  "en-ca": "en-GB",
+  iw: "he",
+  km: "kh",
+  nb: "no",
+  "pt-br": "pt-BR",
+  "zh-cn": "zh",
+  "zh-hans": "zh",
+  "zh-hant": "zh-TW",
+  "zh-hk": "zh-TW",
+  "zh-tw": "zh-TW"
+};
+var intlAliases = {
+  kh: "km",
+  "nan-TW": "zh-TW"
+};
+var specialNativeNames = {
+  kh: "\u1781\u17D2\u1798\u17C2\u179A",
+  "nan-TW": "\u53F0\u8A9E\uFF08\u53F0\u7063\uFF09"
+};
+function normalizeLocale(value) {
+  const trimmed = value.trim();
+  if (localeSet.has(trimmed)) return trimmed;
+  const lower = trimmed.toLowerCase().replaceAll("_", "-");
+  const alias = localeAliases[lower];
+  if (alias) return alias;
+  const exact = LOCALE_CODES.find((code) => code.toLowerCase() === lower);
+  if (exact) return exact;
+  const language = lower.split("-")[0];
+  return localeSet.has(language) ? language : null;
+}
+function resolveLocale(preference, systemLanguage = "en", browserLanguages = typeof navigator === "undefined" ? [] : navigator.languages) {
+  if (preference !== "system") return preference;
+  for (const candidate of [systemLanguage, ...browserLanguages]) {
+    const resolved = normalizeLocale(candidate);
+    if (resolved && availableLocaleSet.has(resolved)) {
+      return resolved;
+    }
+  }
+  return "en";
+}
+function interpolate(template, params = {}) {
+  return template.replace(
+    /\{([A-Za-z][A-Za-z0-9_]*)\}/g,
+    (match, name) => Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : match
+  );
+}
+function createI18n(preference, systemLanguage) {
+  const locale = resolveLocale(preference, systemLanguage);
+  const bundle = TRANSLATION_CATALOG[locale];
+  const intlLocale = intlAliases[locale] ?? locale;
+  const t = (key, params) => interpolate(bundle.messages[key] ?? en_default.messages[key], params);
+  return {
+    locale,
+    intlLocale,
+    direction: bundle._meta.direction,
+    t,
+    plural(base, count) {
+      const category = new Intl.PluralRules(intlLocale).select(count);
+      const candidate = `${base}.${category}`;
+      const key = Object.prototype.hasOwnProperty.call(
+        en_default.messages,
+        candidate
+      ) ? candidate : `${base}.other`;
+      return t(key, { count });
+    }
+  };
+}
+function getLocaleDisplayName(code) {
+  const special = specialNativeNames[code];
+  if (special) return special;
+  const intlLocale = intlAliases[code] ?? code;
+  try {
+    return new Intl.DisplayNames([intlLocale], { type: "language" }).of(
+      intlLocale
+    ) ?? code;
+  } catch {
+    return code;
+  }
+}
+function isLanguagePreference(value) {
+  return value === "system" || typeof value === "string" && availableLocaleSet.has(value);
+}
+function isLocaleAvailable(code) {
+  return availableLocaleSet.has(code);
+}
+
 // src/core.ts
 var NOTE_TAG = "todoist-task";
 var NOTES_HEADING = "## Notes";
@@ -6828,7 +8108,7 @@ function parseTaskNote(content) {
   const notes = headingIndex === -1 ? "" : content.slice(headingIndex + NOTES_HEADING.length).replace(/^\r?\n+/, "");
   return { properties, notes };
 }
-function makeTaskProperties(task, project, parentPath, status, syncState, pendingCreateId = null) {
+function makeTaskProperties(task, project, parentPath, status, syncState, pendingCreateId = null, i18n = createI18n("en", "en")) {
   return {
     type: "todoist-task",
     tags: [NOTE_TAG],
@@ -6836,7 +8116,7 @@ function makeTaskProperties(task, project, parentPath, status, syncState, pendin
     title: task.content,
     description: task.description ?? "",
     status,
-    project: project?.name ?? "Unknown project",
+    project: project?.name ?? i18n.t("common.unknownProject"),
     project_id: task.project_id,
     parent: parentPath ? `[[${parentPath.replace(/\.md$/, "")}]]` : null,
     parent_id: task.parent_id ?? null,
@@ -6864,12 +8144,15 @@ function valueOrDash(value) {
   }
   return stringValue(value, "\u2014");
 }
-function renderTaskNote(properties, notes) {
+function renderTaskNote(properties, notes, i18n = createI18n("en", "en")) {
   const yaml = browser_default.stringify(properties, {
     lineWidth: 0,
     defaultStringType: "QUOTE_DOUBLE"
   }).trimEnd();
-  const title = stringValue(properties.title, "Untitled task");
+  const title = stringValue(
+    properties.title,
+    i18n.t("common.untitledTask")
+  );
   const taskUrl = optionalString(properties.todoist_url);
   const lines = [
     "---",
@@ -6878,18 +8161,18 @@ function renderTaskNote(properties, notes) {
     "",
     `# ${title}`,
     "",
-    "> [!todoist] Todoist task",
-    taskUrl ? `> [Open in Todoist](${taskUrl})` : "> Pending API creation",
+    `> [!todoist] ${i18n.t("note.todoistTask")}`,
+    taskUrl ? `> [${i18n.t("note.openInTodoist")}](${taskUrl})` : `> ${i18n.t("note.pendingCreation")}`,
     "",
-    "## Details",
+    `## ${i18n.t("note.details")}`,
     "",
-    `- **Project:** ${valueOrDash(properties.project)}`,
-    `- **Parent:** ${valueOrDash(properties.parent)}`,
-    `- **Status:** ${valueOrDash(properties.status)}`,
-    `- **Due:** ${valueOrDash(properties.due)}`,
-    `- **Deadline:** ${valueOrDash(properties.deadline)}`,
-    `- **Priority:** ${valueOrDash(properties.priority)}`,
-    `- **Labels:** ${valueOrDash(properties.labels)}`,
+    `- **${i18n.t("field.project")}:** ${valueOrDash(properties.project)}`,
+    `- **${i18n.t("field.parent")}:** ${valueOrDash(properties.parent)}`,
+    `- **${i18n.t("field.status")}:** ${valueOrDash(properties.status)}`,
+    `- **${i18n.t("field.due")}:** ${valueOrDash(properties.due)}`,
+    `- **${i18n.t("field.deadline")}:** ${valueOrDash(properties.deadline)}`,
+    `- **${i18n.t("field.priority")}:** ${valueOrDash(properties.priority)}`,
+    `- **${i18n.t("field.labels")}:** ${valueOrDash(properties.labels)}`,
     "",
     `\`\`\`${TASK_ACTIONS_BLOCK}`,
     "```",
@@ -7319,20 +8602,24 @@ var NewTaskModal = class extends import_obsidian2.Modal {
   context;
   onOpen() {
     const { contentEl } = this;
+    const i18n = this.host.getI18n();
     contentEl.empty();
     contentEl.addClass("todoist-task-notes-modal");
-    contentEl.setAttr("dir", "rtl");
+    contentEl.setAttr("dir", i18n.direction);
+    contentEl.setAttr("lang", i18n.locale);
     this.setTitle(
-      this.context.lockHierarchy ? "\u05D4\u05D5\u05E1\u05E4\u05EA \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4" : "\u05DE\u05E9\u05D9\u05DE\u05EA Todoist \u05D7\u05D3\u05E9\u05D4"
+      i18n.t(
+        this.context.lockHierarchy ? "modal.addSubtask" : "modal.newTask"
+      )
     );
-    new import_obsidian2.Setting(contentEl).setName("\u05DB\u05D5\u05EA\u05E8\u05EA").setDesc("\u05E9\u05D3\u05D4 \u05D7\u05D5\u05D1\u05D4").addText((text) => {
-      text.setPlaceholder("\u05DE\u05D4 \u05E6\u05E8\u05D9\u05DA \u05DC\u05E2\u05E9\u05D5\u05EA?").onChange((value) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.title")).setDesc(i18n.t("modal.required")).addText((text) => {
+      text.setPlaceholder(i18n.t("modal.titlePlaceholder")).onChange((value) => {
         this.value.title = value;
       });
       text.inputEl.autofocus = true;
     });
-    new import_obsidian2.Setting(contentEl).setName("\u05EA\u05D9\u05D0\u05D5\u05E8").addTextArea((text) => {
-      text.setPlaceholder("\u05E4\u05E8\u05D8\u05D9\u05DD \u05E0\u05D5\u05E1\u05E4\u05D9\u05DD \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4").onChange((value) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.description")).addTextArea((text) => {
+      text.setPlaceholder(i18n.t("modal.descriptionPlaceholder")).onChange((value) => {
         this.value.description = value;
       });
     });
@@ -7341,44 +8628,44 @@ var NewTaskModal = class extends import_obsidian2.Modal {
     } else {
       this.renderHierarchyPicker(contentEl);
     }
-    new import_obsidian2.Setting(contentEl).setName("\u05EA\u05D2\u05D9\u05D5\u05EA").setDesc("\u05DE\u05D5\u05E4\u05E8\u05D3\u05D5\u05EA \u05D1\u05E4\u05E1\u05D9\u05E7\u05D9\u05DD; \u05EA\u05D2\u05D9\u05D5\u05EA \u05D7\u05E1\u05E8\u05D5\u05EA \u05D9\u05D9\u05D5\u05D5\u05E6\u05E8\u05D5").addText(
-      (text) => text.setPlaceholder("\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD, \u05D3\u05D7\u05D5\u05E3").onChange((value) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.labels")).setDesc(i18n.t("modal.labelsDescription")).addText(
+      (text) => text.setPlaceholder(i18n.t("modal.labelsPlaceholder")).onChange((value) => {
         this.value.labels = value.split(",").map((label) => label.trim()).filter(Boolean);
       })
     );
-    new import_obsidian2.Setting(contentEl).setName("\u05EA\u05D0\u05E8\u05D9\u05DA \u05D9\u05E2\u05D3").addText((text) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.dueDate")).addText((text) => {
       text.inputEl.type = "date";
       text.onChange((value) => {
         this.value.dueDate = value;
       });
     });
-    new import_obsidian2.Setting(contentEl).setName("\u05E9\u05E2\u05EA \u05D9\u05E2\u05D3").addText((text) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.dueTime")).addText((text) => {
       text.inputEl.type = "time";
       text.onChange((value) => {
         this.value.dueTime = value;
       });
     });
-    new import_obsidian2.Setting(contentEl).setName("\u05D7\u05D6\u05E8\u05D4").setDesc("\u05D4\u05D6\u05DF \u05DE\u05E1\u05E4\u05E8 \u05D5\u05D1\u05D7\u05E8 \u05D9\u05D7\u05D9\u05D3\u05EA \u05D6\u05DE\u05DF").addText((text) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.recurrence")).setDesc(i18n.t("modal.recurrenceDescription")).addText((text) => {
       text.inputEl.type = "number";
       text.inputEl.min = "1";
       text.inputEl.step = "1";
       text.inputEl.inputMode = "numeric";
-      text.setPlaceholder("\u05DE\u05E1\u05E4\u05E8").onChange((value) => {
+      text.setPlaceholder(i18n.t("modal.number")).onChange((value) => {
         this.value.recurrenceInterval = value;
       });
     }).addDropdown(
-      (dropdown) => dropdown.addOption("", "\u05DC\u05DC\u05D0 \u05D7\u05D6\u05E8\u05D4").addOption("minute", "\u05D3\u05E7\u05D5\u05EA").addOption("hour", "\u05E9\u05E2\u05D5\u05EA").addOption("day", "\u05D9\u05DE\u05D9\u05DD").setValue("").onChange((value) => {
+      (dropdown) => dropdown.addOption("", i18n.t("modal.noRecurrence")).addOption("minute", i18n.t("unit.minutes")).addOption("hour", i18n.t("unit.hours")).addOption("day", i18n.t("unit.days")).setValue("").onChange((value) => {
         this.value.recurrenceUnit = value;
       })
     );
-    new import_obsidian2.Setting(contentEl).setName("\u05D3\u05D3\u05DC\u05D9\u05D9\u05DF").addText((text) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.deadline")).addText((text) => {
       text.inputEl.type = "date";
       text.onChange((value) => {
         this.value.deadline = value;
       });
     });
-    new import_obsidian2.Setting(contentEl).setName("\u05E2\u05D3\u05D9\u05E4\u05D5\u05EA").addDropdown((dropdown) => {
-      dropdown.addOption("p4", "P4 \u2014 \u05E8\u05D2\u05D9\u05DC\u05D4").addOption("p3", "P3 \u2014 \u05D1\u05D9\u05E0\u05D5\u05E0\u05D9\u05EA").addOption("p2", "P2 \u2014 \u05D2\u05D1\u05D5\u05D4\u05D4").addOption("p1", "P1 \u2014 \u05D3\u05D7\u05D5\u05E4\u05D4").setValue("p4").onChange((value) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.priority")).addDropdown((dropdown) => {
+      dropdown.addOption("p4", i18n.t("priority.normal")).addOption("p3", i18n.t("priority.medium")).addOption("p2", i18n.t("priority.high")).addOption("p1", i18n.t("priority.urgent")).setValue("p4").onChange((value) => {
         this.value.priority = value;
       });
     });
@@ -7387,7 +8674,7 @@ var NewTaskModal = class extends import_obsidian2.Modal {
     const updateDuration = () => {
       this.value.duration = durationAmount ? `${durationAmount} ${durationUnit}` : "";
     };
-    new import_obsidian2.Setting(contentEl).setName("\u05DE\u05E9\u05DA").setDesc("\u05D4\u05D6\u05DF \u05DE\u05E1\u05E4\u05E8 \u05D5\u05D1\u05D7\u05E8 \u05D3\u05E7\u05D5\u05EA, \u05E9\u05E2\u05D5\u05EA \u05D0\u05D5 \u05D9\u05DE\u05D9\u05DD").addText((text) => {
+    new import_obsidian2.Setting(contentEl).setName(i18n.t("modal.duration")).setDesc(i18n.t("modal.durationDescription")).addText((text) => {
       text.inputEl.type = "number";
       text.inputEl.min = "1";
       text.inputEl.step = "1";
@@ -7396,7 +8683,7 @@ var NewTaskModal = class extends import_obsidian2.Modal {
         updateDuration();
       });
     }).addDropdown((dropdown) => {
-      dropdown.addOption("minute", "\u05D3\u05E7\u05D5\u05EA").addOption("hour", "\u05E9\u05E2\u05D5\u05EA").addOption("day", "\u05D9\u05DE\u05D9\u05DD").setValue(durationUnit).onChange((value) => {
+      dropdown.addOption("minute", i18n.t("unit.minutes")).addOption("hour", i18n.t("unit.hours")).addOption("day", i18n.t("unit.days")).setValue(durationUnit).onChange((value) => {
         if (value === "minute" || value === "hour" || value === "day") {
           durationUnit = value;
           updateDuration();
@@ -7406,16 +8693,17 @@ var NewTaskModal = class extends import_obsidian2.Modal {
     const actions = new import_obsidian2.Setting(contentEl);
     actions.settingEl.addClass("todoist-task-notes-modal-actions");
     actions.addButton(
-      (button) => button.setButtonText("\u05D1\u05D9\u05D8\u05D5\u05DC").onClick(() => this.close())
+      (button) => button.setButtonText(i18n.t("common.cancel")).onClick(() => this.close())
     ).addButton(
-      (button) => button.setButtonText("\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D5\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF").setCta().onClick(() => {
+      (button) => button.setButtonText(i18n.t("modal.createAndSync")).setCta().onClick(() => {
         void this.submitTask(button);
       })
     );
   }
   async submitTask(button) {
+    const i18n = this.host.getI18n();
     if (!this.value.title.trim()) {
-      new import_obsidian2.Notice("\u05D9\u05E9 \u05DC\u05D4\u05D6\u05D9\u05DF \u05DB\u05D5\u05EA\u05E8\u05EA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4.");
+      new import_obsidian2.Notice(i18n.t("notice.titleRequired"));
       return;
     }
     button.setDisabled(true);
@@ -7423,24 +8711,26 @@ var NewTaskModal = class extends import_obsidian2.Modal {
       await this.host.createTaskFromForm(this.value);
       this.close();
     } catch (error) {
-      new import_obsidian2.Notice(
-        `\u05D9\u05E6\u05D9\u05E8\u05EA \u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: ${error instanceof Error ? error.message : String(error)}`
-      );
+      new import_obsidian2.Notice(i18n.t("notice.createFailed", {
+        error: error instanceof Error ? error.message : String(error)
+      }));
       button.setDisabled(false);
     }
   }
   renderLockedHierarchy(container) {
+    const i18n = this.host.getI18n();
     const project = this.host.getProjects().find((item) => item.id === this.value.projectId);
     const path = this.parentPathIds.map(
       (id) => this.host.getTasks().find((task) => task.id === id)?.content ?? id
     ).join(" \u2190 ");
-    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8").setDesc(project?.name ?? "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2");
-    const setting = new import_obsidian2.Setting(container).setName("\u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1 \u05E0\u05E2\u05D5\u05DC\u05D4").setDesc(path || "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1");
+    new import_obsidian2.Setting(container).setName(i18n.t("field.project")).setDesc(project?.name ?? i18n.t("common.unknownProject"));
+    const setting = new import_obsidian2.Setting(container).setName(i18n.t("modal.lockedParent")).setDesc(path || i18n.t("common.noParent"));
     setting.settingEl.addClass("todoist-task-notes-hierarchy-locked");
   }
   renderHierarchyPicker(container) {
+    const i18n = this.host.getI18n();
     const projects = this.host.getProjects();
-    new import_obsidian2.Setting(container).setName("\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8").setDesc("\u05D1\u05D7\u05D9\u05E8\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DE\u05E1\u05E0\u05E0\u05EA \u05D0\u05EA \u05DB\u05DC \u05E8\u05DE\u05D5\u05EA \u05D4\u05D4\u05D9\u05E8\u05E8\u05DB\u05D9\u05D4").addDropdown((dropdown) => {
+    new import_obsidian2.Setting(container).setName(i18n.t("field.project")).setDesc(i18n.t("modal.projectDescription")).addDropdown((dropdown) => {
       for (const project of projects) {
         dropdown.addOption(project.id, project.name);
       }
@@ -7458,6 +8748,7 @@ var NewTaskModal = class extends import_obsidian2.Modal {
   }
   renderParentSelectors() {
     if (!this.parentSelectorsEl) return;
+    const i18n = this.host.getI18n();
     this.parentSelectorsEl.empty();
     const tasks = this.host.getTasks();
     let level = 0;
@@ -7472,14 +8763,14 @@ var NewTaskModal = class extends import_obsidian2.Modal {
       const selectedId = this.parentPathIds[currentLevel] ?? "";
       if (!options.length && !selectedId) break;
       const setting = new import_obsidian2.Setting(this.parentSelectorsEl).setName(
-        currentLevel === 0 ? "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E8\u05D0\u05E9\u05D9\u05EA" : `\u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u2014 \u05E8\u05DE\u05D4 ${currentLevel}`
+        currentLevel === 0 ? i18n.t("modal.mainTask") : i18n.t("modal.subtaskLevel", { level: currentLevel })
       ).setDesc(
-        currentLevel === 0 ? "\u05D0\u05D5\u05E4\u05E6\u05D9\u05D5\u05E0\u05DC\u05D9; \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D9\u05E6\u05D5\u05E8 \u05D9\u05E9\u05D9\u05E8\u05D5\u05EA \u05D1\u05EA\u05D5\u05DA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8" : "\u05E8\u05E7 \u05D9\u05DC\u05D3\u05D9\u05DD \u05D9\u05E9\u05D9\u05E8\u05D9\u05DD \u05E9\u05DC \u05D4\u05D1\u05D7\u05D9\u05E8\u05D4 \u05D4\u05E7\u05D5\u05D3\u05DE\u05EA"
+        currentLevel === 0 ? i18n.t("modal.mainTaskDescription") : i18n.t("modal.childDescription")
       );
       setting.addDropdown((dropdown) => {
         dropdown.addOption(
           "",
-          currentLevel === 0 ? "\u05DC\u05DC\u05D0 \u05DE\u05E9\u05D9\u05DE\u05EA \u05D0\u05D1" : "\u05E2\u05E6\u05D5\u05E8 \u05D1\u05E8\u05DE\u05D4 \u05D4\u05E0\u05D5\u05DB\u05D7\u05D9\u05EA"
+          currentLevel === 0 ? i18n.t("modal.stopAtProject") : i18n.t("modal.stopAtLevel")
         );
         for (const task of options) {
           dropdown.addOption(task.id, task.content);
@@ -7498,12 +8789,12 @@ var NewTaskModal = class extends import_obsidian2.Modal {
     const breadcrumb = this.parentSelectorsEl.createDiv(
       "todoist-task-notes-breadcrumb"
     );
-    breadcrumb.createSpan({ text: "\u05E0\u05EA\u05D9\u05D1 \u05D0\u05D1: " });
+    breadcrumb.createSpan({ text: `${i18n.t("modal.parentPath")} ` });
     const names = this.parentPathIds.map(
       (id) => tasks.find((task) => task.id === id)?.content ?? id
     );
     breadcrumb.createEl("strong", {
-      text: names.length ? names.join(" \u2190 ") : "\u05DC\u05DC\u05D0 \u2014 \u05D9\u05E6\u05D9\u05E8\u05D4 \u05D1\u05E8\u05DE\u05EA \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8"
+      text: names.length ? names.join(" \u2190 ") : i18n.t("modal.projectLevel")
     });
   }
   onClose() {
@@ -7529,13 +8820,15 @@ function formToApiInput(form) {
   };
 }
 var ItemPickerModal = class extends import_obsidian2.FuzzySuggestModal {
-  constructor(app, title, items, onPick) {
+  constructor(app, i18n, title, items, onPick) {
     super(app);
+    this.i18n = i18n;
     this.title = title;
     this.items = items;
     this.onPick = onPick;
     this.setPlaceholder(title);
   }
+  i18n;
   title;
   items;
   onPick;
@@ -7547,9 +8840,9 @@ var ItemPickerModal = class extends import_obsidian2.FuzzySuggestModal {
   }
   onChooseItem(item) {
     void Promise.resolve(this.onPick(item)).catch((error) => {
-      new import_obsidian2.Notice(
-        `\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4: ${error instanceof Error ? error.message : String(error)}`
-      );
+      new import_obsidian2.Notice(this.i18n.t("notice.actionFailed", {
+        error: error instanceof Error ? error.message : String(error)
+      }));
     });
   }
 };
@@ -7569,14 +8862,16 @@ var TaskActionsChild = class extends import_obsidian2.MarkdownRenderChild {
     );
   }
   render() {
+    const i18n = this.host.getI18n();
     this.containerEl.empty();
     this.containerEl.addClass("todoist-task-notes-inline-actions");
-    this.containerEl.setAttr("dir", "rtl");
+    this.containerEl.setAttr("dir", i18n.direction);
+    this.containerEl.setAttr("lang", i18n.locale);
     const context = this.host.getTaskNoteActionContext(this.sourcePath);
     if (!context) return;
     const button = this.containerEl.createEl("button", {
       cls: "todoist-task-notes-add-subtask",
-      text: "\u05D4\u05D5\u05E1\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4"
+      text: i18n.t("action.addSubtask")
     });
     (0, import_obsidian2.setIcon)(button.createSpan(), "list-plus");
     if (context.enabled) {
@@ -7588,7 +8883,10 @@ var TaskActionsChild = class extends import_obsidian2.MarkdownRenderChild {
     }
     button.disabled = true;
     button.setAttr("aria-disabled", "true");
-    button.setAttr("title", context.disabledReason ?? "\u05D4\u05E4\u05E2\u05D5\u05DC\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4");
+    button.setAttr(
+      "title",
+      context.disabledReason ?? i18n.t("action.unavailable")
+    );
     if (context.disabledReason) {
       this.containerEl.createSpan({
         cls: "todoist-task-notes-action-reason",
@@ -7615,6 +8913,7 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     this.render();
   }
   render() {
+    const i18n = this.host.getI18n();
     const data = this.host.getDashboardData();
     const stats = calculateDashboardStats(data.knownTasks);
     const projectStats = calculateProjectStats(data.knownTasks);
@@ -7624,20 +8923,21 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     const children = this.buildChildren(data.tasks);
     this.containerEl.empty();
     this.containerEl.addClass("todoist-task-notes-dashboard");
-    this.containerEl.setAttr("dir", "rtl");
+    this.containerEl.setAttr("dir", i18n.direction);
+    this.containerEl.setAttr("lang", i18n.locale);
     this.renderToolbar(data);
     this.renderOverview(stats.overview);
     if (!projectStats.length) {
       this.containerEl.createDiv({
         cls: "todoist-task-notes-empty",
-        text: "\u05D0\u05D9\u05DF \u05DB\u05E8\u05D2\u05E2 \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA Todoist \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA."
+        text: i18n.t("dashboard.empty")
       });
       return;
     }
     const statsSection = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section"
     });
-    statsSection.createEl("h2", { text: "\u05EA\u05DE\u05D5\u05E0\u05EA \u05DE\u05E6\u05D1 \u05DC\u05E4\u05D9 \u05E4\u05E8\u05D5\u05D9\u05E7\u05D8" });
+    statsSection.createEl("h2", { text: i18n.t("dashboard.projectSnapshot") });
     const statsGrid = statsSection.createDiv(
       "todoist-task-notes-branch-stats-grid"
     );
@@ -7645,22 +8945,22 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
       this.renderProjectStats(
         statsGrid,
         project,
-        projectById.get(project.projectId)?.name ?? "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2"
+        projectById.get(project.projectId)?.name ?? i18n.t("common.unknownProject")
       );
     }
     const treeSection = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section"
     });
-    treeSection.createEl("h2", { text: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA" });
+    treeSection.createEl("h2", { text: i18n.t("dashboard.tasks") });
     treeSection.createEl("p", {
       cls: "todoist-task-notes-section-hint",
-      text: "\u05DB\u05DC \u05D4\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8\u05D9\u05DD \u05D5\u05D4\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E1\u05D2\u05D5\u05E8\u05D9\u05DD \u05D1\u05E4\u05EA\u05D9\u05D7\u05EA \u05D4\u05D3\u05E9\u05D1\u05D5\u05E8\u05D3. \u05D0\u05E4\u05E9\u05E8 \u05DC\u05E4\u05EA\u05D5\u05D7 \u05DB\u05DE\u05D4 \u05E2\u05E0\u05E4\u05D9\u05DD \u05D1\u05DE\u05E7\u05D1\u05D9\u05DC."
+      text: i18n.t("dashboard.treeHint")
     });
     const branches = treeSection.createDiv(
       "todoist-task-notes-branch-list"
     );
     for (const project of projectStats) {
-      const projectName = projectById.get(project.projectId)?.name ?? "\u05E4\u05E8\u05D5\u05D9\u05E7\u05D8 \u05DC\u05D0 \u05D9\u05D3\u05D5\u05E2";
+      const projectName = projectById.get(project.projectId)?.name ?? i18n.t("common.unknownProject");
       this.renderProjectBranch(
         branches,
         project,
@@ -7672,26 +8972,33 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     }
   }
   renderToolbar(data) {
+    const i18n = this.host.getI18n();
     const toolbar = this.containerEl.createDiv(
       "todoist-task-notes-toolbar"
     );
-    const newButton = toolbar.createEl("button", { text: "\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4" });
+    const newButton = toolbar.createEl("button", {
+      text: i18n.t("dashboard.newTask")
+    });
     (0, import_obsidian2.setIcon)(newButton.createSpan(), "plus");
     newButton.addEventListener("click", () => this.host.openNewTaskModal());
-    const syncButton = toolbar.createEl("button", { text: "\u05E1\u05E0\u05DB\u05E8\u05DF \u05E2\u05DB\u05E9\u05D9\u05D5" });
+    const syncButton = toolbar.createEl("button", {
+      text: i18n.t("dashboard.syncNow")
+    });
     (0, import_obsidian2.setIcon)(syncButton.createSpan(), "refresh-cw");
     syncButton.addEventListener("click", () => {
       void this.syncFromDashboard(syncButton);
     });
     const status = toolbar.createSpan("todoist-task-notes-status");
     if (data.lastError) {
-      status.setText(`\u05E9\u05D2\u05D9\u05D0\u05EA \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF \u05D0\u05D7\u05E8\u05D5\u05E0\u05D4: ${data.lastError}`);
+      status.setText(i18n.t("dashboard.lastError", { error: data.lastError }));
     } else if (data.lastSync) {
       status.setText(
-        `\u05E1\u05D5\u05E0\u05DB\u05E8\u05DF \u05DC\u05D0\u05D7\u05E8\u05D5\u05E0\u05D4 ${new Date(data.lastSync).toLocaleString("he-IL")}`
+        i18n.t("dashboard.lastSync", {
+          date: new Date(data.lastSync).toLocaleString(i18n.intlLocale)
+        })
       );
     } else {
-      status.setText("\u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D1\u05D5\u05E6\u05E2 \u05E1\u05E0\u05DB\u05E8\u05D5\u05DF");
+      status.setText(i18n.t("dashboard.neverSynced"));
     }
   }
   async syncFromDashboard(button) {
@@ -7703,16 +9010,17 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     }
   }
   renderOverview(overview) {
+    const i18n = this.host.getI18n();
     const section = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section"
     });
-    section.createEl("h2", { text: "\u05E1\u05D9\u05DB\u05D5\u05DD \u05DB\u05DC\u05DC\u05D9" });
+    section.createEl("h2", { text: i18n.t("dashboard.overview") });
     const grid = section.createDiv("todoist-task-notes-overview-grid");
     const cards = [
-      ["\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05EA\u05D5\u05D7\u05D5\u05EA", overview.openCount, "list-checks"],
-      ["\u05D1\u05D0\u05D9\u05D7\u05D5\u05E8", overview.overdueCount, "alarm-clock"],
-      ["\u05D4\u05D9\u05D5\u05DD \u05D5\u05D1\u05BE7 \u05D4\u05D9\u05DE\u05D9\u05DD \u05D4\u05E7\u05E8\u05D5\u05D1\u05D9\u05DD", overview.dueSoonCount, "calendar-days"],
-      ["\u05D3\u05D7\u05D5\u05E4\u05D5\u05EA \xB7 P1/P2", overview.urgentCount, "flame"]
+      [i18n.t("dashboard.openTasks"), overview.openCount, "list-checks"],
+      [i18n.t("dashboard.overdue"), overview.overdueCount, "alarm-clock"],
+      [i18n.t("dashboard.dueSoon"), overview.dueSoonCount, "calendar-days"],
+      [i18n.t("dashboard.urgentP1P2"), overview.urgentCount, "flame"]
     ];
     for (const [label, value, icon] of cards) {
       const card = grid.createDiv("todoist-task-notes-overview-card");
@@ -7723,22 +9031,29 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     }
   }
   renderProjectStats(parent, project, projectName) {
+    const i18n = this.host.getI18n();
     const card = parent.createDiv("todoist-task-notes-branch-stat-card");
     const heading = card.createDiv("todoist-task-notes-branch-stat-heading");
     heading.createEl("h3", { text: projectName });
-    heading.createSpan({ text: "My Projects \xB7 Todoist" });
+    heading.createSpan({ text: i18n.t("dashboard.todoistProject") });
     const progressLabel = card.createDiv(
       "todoist-task-notes-progress-label"
     );
     progressLabel.createSpan({
-      text: `${project.openCount} \u05E0\u05D5\u05EA\u05E8\u05D5 \xB7 ${project.completedCount} \u05D4\u05D5\u05E9\u05DC\u05DE\u05D5`
+      text: i18n.t("dashboard.remainingCompleted", {
+        remaining: project.openCount,
+        completed: project.completedCount
+      })
     });
     progressLabel.createEl("strong", {
       text: `${project.completionPercent}%`
     });
     const progress = card.createDiv("todoist-task-notes-progress");
     progress.setAttr("role", "progressbar");
-    progress.setAttr("aria-label", `\u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA ${projectName}`);
+    progress.setAttr(
+      "aria-label",
+      i18n.t("dashboard.progress", { project: projectName })
+    );
     progress.setAttr("aria-valuemin", "0");
     progress.setAttr("aria-valuemax", "100");
     progress.setAttr("aria-valuenow", String(project.completionPercent));
@@ -7747,19 +9062,19 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
       attr: { style: `width: ${project.completionPercent}%` }
     });
     const next = card.createDiv("todoist-task-notes-next-task");
-    next.createSpan({ text: "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D4\u05E7\u05E8\u05D5\u05D1\u05D4" });
+    next.createSpan({ text: i18n.t("dashboard.nextTask") });
     if (project.nextTask) {
       next.createEl("strong", { text: project.nextTask.content });
       next.createSpan({
         text: this.formatDue(project.nextTask.due?.date ?? "")
       });
     } else {
-      next.createEl("strong", { text: "\u05D0\u05D9\u05DF \u05EA\u05D0\u05E8\u05D9\u05DA \u05DC\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05E4\u05EA\u05D5\u05D7\u05D5\u05EA" });
+      next.createEl("strong", { text: i18n.t("dashboard.noDatedTasks") });
     }
     const details = card.createDiv("todoist-task-notes-branch-metrics");
-    this.renderMetric(details, "\u05D1\u05D0\u05D9\u05D7\u05D5\u05E8", project.overdueCount);
-    this.renderMetric(details, "\u05D3\u05D7\u05D5\u05E4\u05D5\u05EA", project.urgentCount);
-    this.renderMetric(details, "\u05DC\u05DC\u05D0 \u05EA\u05D0\u05E8\u05D9\u05DA", project.unscheduledCount);
+    this.renderMetric(details, i18n.t("dashboard.overdue"), project.overdueCount);
+    this.renderMetric(details, i18n.t("dashboard.urgent"), project.urgentCount);
+    this.renderMetric(details, i18n.t("dashboard.noDate"), project.unscheduledCount);
   }
   renderMetric(parent, label, value) {
     const metric = parent.createDiv();
@@ -7783,7 +9098,7 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     header.createEl("strong", { text: projectName });
     header.createSpan({
       cls: "todoist-task-notes-remaining-badge",
-      text: `${project.openCount} \u05DE\u05E9\u05D9\u05DE\u05D5\u05EA`
+      text: this.host.getI18n().plural("dashboard.taskCount", project.openCount)
     });
     if (!expanded) return;
     const panel = card.createDiv("todoist-task-notes-project-panel");
@@ -7820,12 +9135,14 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     );
     toggle.setAttr(
       "aria-label",
-      `${expanded ? "\u05E1\u05D2\u05D5\u05E8" : "\u05E4\u05EA\u05D7"} \u05D0\u05EA ${root.content}`
+      this.host.getI18n().t(expanded ? "aria.collapse" : "aria.expand", {
+        label: root.content
+      })
     );
     this.createTaskLink(header, root, paths);
     header.createSpan({
       cls: "todoist-task-notes-remaining-badge",
-      text: `${remainingCount} \u05E0\u05D5\u05EA\u05E8\u05D5`
+      text: this.host.getI18n().plural("dashboard.remainingCount", remainingCount)
     });
     if (!expanded) return;
     const panel = card.createDiv("todoist-task-notes-root-panel");
@@ -7842,7 +9159,7 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     } else {
       panel.createDiv({
         cls: "todoist-task-notes-empty",
-        text: "\u05D0\u05D9\u05DF \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA."
+        text: this.host.getI18n().t("dashboard.noActiveSubtasks")
       });
     }
   }
@@ -7876,7 +9193,10 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     const checkbox = parent.createEl("input");
     checkbox.type = "checkbox";
     checkbox.checked = false;
-    checkbox.setAttribute("aria-label", `\u05E1\u05DE\u05DF \u05DB\u05D4\u05D5\u05E9\u05DC\u05DE\u05D4: ${task.content}`);
+    checkbox.setAttribute(
+      "aria-label",
+      this.host.getI18n().t("aria.markCompleted", { task: task.content })
+    );
     checkbox.addEventListener("change", () => {
       void this.updateTaskCompletion(checkbox, task);
     });
@@ -7889,9 +9209,9 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
       await this.host.setTaskCompleted(task.id, checkbox.checked);
     } catch (error) {
       checkbox.checked = !checkbox.checked;
-      new import_obsidian2.Notice(
-        `\u05E2\u05D3\u05DB\u05D5\u05DF Todoist \u05E0\u05DB\u05E9\u05DC: ${error instanceof Error ? error.message : String(error)}`
-      );
+      new import_obsidian2.Notice(this.host.getI18n().t("notice.todoistUpdateFailed", {
+        error: error instanceof Error ? error.message : String(error)
+      }));
     } finally {
       checkbox.disabled = false;
     }
@@ -7942,7 +9262,9 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     button.setAttr("aria-controls", controlsId);
     button.setAttr(
       "aria-label",
-      `${expanded ? "\u05E1\u05D2\u05D5\u05E8" : "\u05E4\u05EA\u05D7"} \u05D0\u05EA ${label}`
+      this.host.getI18n().t(expanded ? "aria.collapse" : "aria.expand", {
+        label
+      })
     );
     (0, import_obsidian2.setIcon)(button, "chevron-down");
     if (expanded) button.addClass("is-expanded");
@@ -7992,17 +9314,21 @@ var DashboardChild = class extends import_obsidian2.MarkdownRenderChild {
     const key = dueDateKey({ id: "", content: "", project_id: "", due: { date: value } });
     if (!key) return value;
     const [year, month, day] = key.split("-").map(Number);
-    return new Date(year, month - 1, day).toLocaleDateString("he-IL");
+    return new Date(year, month - 1, day).toLocaleDateString(
+      this.host.getI18n().intlLocale
+    );
   }
 };
 
 // src/main.ts
 var DEFAULT_SETTINGS = {
+  language: "system",
   rootFolder: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA/Todoist",
   dashboardPath: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA/Untitled.md",
   intervalMinutes: 5,
   tokenSecretId: "swt-todoist-api-token"
 };
+var MANAGED_TOKEN_SECRET_ID = "todoist-task-notes-api-token";
 var DEFAULT_DATA = {
   settings: DEFAULT_SETTINGS,
   tasks: {},
@@ -8022,16 +9348,18 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   localSyncTimer = null;
   taskHeaderAction = null;
   writingPaths = /* @__PURE__ */ new Set();
+  i18n = createI18n("system", "en");
   async onload() {
     await this.loadPluginData();
+    this.i18n = createI18n(this.data.settings.language, (0, import_obsidian3.getLanguage)());
     this.api = new TodoistApi(() => this.getTodoistToken());
     this.addSettingTab(new TodoistTaskNotesSettingTab(this.app, this));
     this.addRibbonIcon(
       "list-plus",
-      "New task",
+      this.i18n.t("ribbon.newTask"),
       () => this.openNewTaskModal()
     );
-    this.addRibbonIcon("refresh-cw", "Sync task notes", () => {
+    this.addRibbonIcon("refresh-cw", this.i18n.t("ribbon.sync"), () => {
       void this.syncNow("ribbon");
     });
     this.addCommand({
@@ -8130,6 +9458,9 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       lastError: this.data.lastError
     };
   }
+  getI18n() {
+    return this.i18n;
+  }
   getProjects() {
     return this.projects;
   }
@@ -8141,15 +9472,33 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   }
   async updateSettings(changes) {
     this.data.settings = { ...this.data.settings, ...changes };
+    if (changes.language && isLanguagePreference(changes.language)) {
+      this.i18n = createI18n(changes.language, (0, import_obsidian3.getLanguage)());
+      this.triggerDashboardUpdate();
+    }
     await this.savePluginData();
   }
   async testConnection() {
     await this.api.validate();
-    new import_obsidian3.Notice("API connection is working.");
+    new import_obsidian3.Notice(this.i18n.t("notice.connectionWorking"));
+  }
+  async getTokenStatus() {
+    if (this.getManagedTodoistToken()) return "managed";
+    return await this.getSharedTodoistToken() ? "shared" : "missing";
+  }
+  saveTodoistToken(token) {
+    const trimmed = token.trim();
+    if (!trimmed) {
+      throw new Error(this.i18n.t("notice.tokenRequired"));
+    }
+    this.app.secretStorage.setSecret(MANAGED_TOKEN_SECRET_ID, trimmed);
+  }
+  removeTodoistToken() {
+    this.app.secretStorage.setSecret(MANAGED_TOKEN_SECRET_ID, "");
   }
   openNewTaskModal(context = {}) {
     if (!this.projects.length) {
-      new import_obsidian3.Notice("\u05D9\u05E9 \u05DC\u05E1\u05E0\u05DB\u05E8\u05DF \u05E4\u05E2\u05DD \u05D0\u05D7\u05EA \u05DC\u05E4\u05E0\u05D9 \u05D9\u05E6\u05D9\u05E8\u05EA \u05DE\u05E9\u05D9\u05DE\u05D4.");
+      new import_obsidian3.Notice(this.i18n.t("notice.syncBeforeCreate"));
       void this.syncNow("new-task-prerequisite").then(() => {
         if (this.projects.length) {
           new NewTaskModal(this.app, this, context).open();
@@ -8162,7 +9511,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   openSubtaskModal(taskId) {
     const parent = this.tasks.find((task) => task.id === taskId);
     if (!parent) {
-      new import_obsidian3.Notice("\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E9\u05D0\u05D9\u05E0\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4.");
+      new import_obsidian3.Notice(this.i18n.t("notice.inactiveSubtask"));
       return;
     }
     this.openNewTaskModal({
@@ -8183,13 +9532,13 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     const syncState = String(frontmatter.sync_state ?? "");
     let disabledReason = null;
     if (!taskId || syncState === "pending-create") {
-      disabledReason = "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E2\u05D3\u05D9\u05D9\u05DF \u05DE\u05DE\u05EA\u05D9\u05E0\u05D4 \u05DC\u05D9\u05E6\u05D9\u05E8\u05D4 \u05D1\u05BETodoist; \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05D9\u05DC\u05D3\u05D9\u05DD \u05DC\u05D0\u05D7\u05E8 \u05D4\u05E1\u05E0\u05DB\u05E8\u05D5\u05DF.";
+      disabledReason = this.i18n.t("action.pendingReason");
     } else if (status === "completed") {
-      disabledReason = "\u05DC\u05D0 \u05E0\u05D9\u05EA\u05DF \u05DC\u05D4\u05D5\u05E1\u05D9\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05DC\u05DE\u05E9\u05D9\u05DE\u05D4 \u05E9\u05D4\u05D5\u05E9\u05DC\u05DE\u05D4.";
+      disabledReason = this.i18n.t("action.completedReason");
     } else if (status === "detached" || syncState === "detached") {
-      disabledReason = "\u05D4\u05E4\u05EA\u05E7 \u05DE\u05E0\u05D5\u05EA\u05E7 \u05DE\u05BETodoist.";
+      disabledReason = this.i18n.t("action.detachedReason");
     } else if (!this.tasks.some((task) => task.id === taskId)) {
-      disabledReason = "\u05D4\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4 \u05DB\u05E8\u05D2\u05E2 \u05D1\u05BETodoist.";
+      disabledReason = this.i18n.t("action.inactiveReason");
     }
     return {
       taskId,
@@ -8221,7 +9570,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       await this.savePluginData();
       this.triggerDashboardUpdate();
       await this.app.workspace.getLeaf(false).openFile(file);
-      new import_obsidian3.Notice("Todoist task created.");
+      new import_obsidian3.Notice(this.i18n.t("notice.taskCreated"));
     } catch (error) {
       const pendingFile = await this.createPendingTaskNote(
         input,
@@ -8230,10 +9579,9 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       );
       await this.refreshKnownTasks();
       await this.app.workspace.getLeaf(false).openFile(pendingFile);
-      new import_obsidian3.Notice(
-        `Saved offline as pending-create. It will retry on the next sync. ${error instanceof Error ? error.message : String(error)}`,
-        8e3
-      );
+      new import_obsidian3.Notice(this.i18n.t("notice.savedOffline", {
+        error: error instanceof Error ? error.message : String(error)
+      }), 8e3);
     }
   }
   async setTaskCompleted(id, completed) {
@@ -8395,7 +9743,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         if (state.missingCount >= 3) {
           await this.markDetached(
             local,
-            "Remote task was deleted or is unavailable."
+            this.i18n.t("sync.remoteDeleted")
           );
           state.status = "detached";
         }
@@ -8417,9 +9765,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       this.triggerDashboardUpdate();
       const imported = this.tasks.length;
       if (reason !== "interval" && reason !== "file-change") {
-        new import_obsidian3.Notice(
-          pullOnly ? `Todoist Task Notes: initial pull imported ${imported} active tasks without changing Todoist.` : `Todoist Task Notes: sync complete (${imported} active tasks).`
-        );
+        new import_obsidian3.Notice(pullOnly ? this.i18n.t("notice.initialPull", { count: imported }) : this.i18n.t("notice.syncComplete", { count: imported }));
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -8427,7 +9773,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       await this.savePluginData();
       this.triggerDashboardUpdate();
       if (reason !== "interval" && reason !== "file-change") {
-        new import_obsidian3.Notice(`Todoist Task Notes sync failed: ${message}`, 1e4);
+        new import_obsidian3.Notice(this.i18n.t("notice.syncFailed", { error: message }), 1e4);
       }
       throw error;
     }
@@ -8515,7 +9861,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       local.parsed.properties.sync_state = "synced";
       await this.writeFile(
         local.file,
-        renderTaskNote(local.parsed.properties, local.parsed.notes)
+        renderTaskNote(local.parsed.properties, local.parsed.notes, this.i18n)
       );
     }
     return created;
@@ -8553,7 +9899,8 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       parentNote,
       "open",
       "pending-create",
-      requestId
+      requestId,
+      this.i18n
     );
     await this.ensureFolder(folder);
     const existing = this.app.vault.getAbstractFileByPath(path);
@@ -8563,15 +9910,18 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       );
       return this.app.vault.create(
         alternate,
-        renderTaskNote(properties, "")
+        renderTaskNote(properties, "", this.i18n)
       );
     }
-    return this.app.vault.create(path, renderTaskNote(properties, ""));
+    return this.app.vault.create(
+      path,
+      renderTaskNote(properties, "", this.i18n)
+    );
   }
   async materializeRemoteTask(task, status, pathMap, local) {
     const pathInfo = pathMap.get(task.id);
     if (!pathInfo) {
-      throw new Error(`No note path generated for Todoist task ${task.id}`);
+      throw new Error(this.i18n.t("error.noTaskPath", { taskId: task.id }));
     }
     const project = this.projects.find(
       (item) => item.id === task.project_id
@@ -8582,14 +9932,16 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       project,
       parentPath,
       status,
-      "synced"
+      "synced",
+      null,
+      this.i18n
     );
     const previousLastSynced = local?.parsed.properties.last_synced;
     if (previousLastSynced) {
       properties.last_synced = previousLastSynced;
     }
     const notes = local?.parsed.notes ?? "";
-    let content = renderTaskNote(properties, notes);
+    let content = renderTaskNote(properties, notes, this.i18n);
     await this.ensureFolder(pathInfo.folder);
     let file = local?.file ?? null;
     if (!file) {
@@ -8600,7 +9952,9 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     if (file && file.path !== pathInfo.note) {
       const collision = this.app.vault.getAbstractFileByPath(pathInfo.note);
       if (collision && collision !== file) {
-        throw new Error(`Task note path already exists: ${pathInfo.note}`);
+        throw new Error(this.i18n.t("error.pathCollision", {
+          path: pathInfo.note
+        }));
       }
       this.writingPaths.add(file.path);
       this.writingPaths.add(pathInfo.note);
@@ -8611,7 +9965,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       const existingContent = await this.app.vault.read(file);
       if (existingContent !== content) {
         properties.last_synced = (/* @__PURE__ */ new Date()).toISOString();
-        content = renderTaskNote(properties, notes);
+        content = renderTaskNote(properties, notes, this.i18n);
         await this.writeFile(file, content);
       }
     } else {
@@ -8638,14 +9992,14 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     );
     const original = await this.app.vault.read(local.file);
     const content = [
-      "# Todoist sync conflict",
+      `# ${this.i18n.t("conflict.title")}`,
       "",
-      `- **Original note:** [[${local.file.path.replace(/\.md$/, "")}]]`,
-      `- **Todoist task:** ${remote.id}`,
-      `- **Captured:** ${(/* @__PURE__ */ new Date()).toISOString()}`,
-      "- **Resolution:** Todoist won; this file preserves the displaced local version.",
+      `- **${this.i18n.t("conflict.originalNote")}:** [[${local.file.path.replace(/\.md$/, "")}]]`,
+      `- **${this.i18n.t("conflict.todoistTask")}:** ${remote.id}`,
+      `- **${this.i18n.t("conflict.captured")}:** ${(/* @__PURE__ */ new Date()).toISOString()}`,
+      `- **${this.i18n.t("conflict.resolution")}:** ${this.i18n.t("conflict.resolutionText")}`,
       "",
-      "## Local version",
+      `## ${this.i18n.t("conflict.localVersion")}`,
       "",
       "```markdown",
       original.replace(/```/g, "``\\`"),
@@ -8664,7 +10018,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     };
     await this.writeFile(
       local.file,
-      renderTaskNote(properties, local.parsed.notes)
+      renderTaskNote(properties, local.parsed.notes, this.i18n)
     );
   }
   async scanLocalTaskFiles() {
@@ -8740,10 +10094,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         changed += 1;
       }
     }
-    new import_obsidian3.Notice(
-      `Todoist Task Notes preview: ${changed} changed note(s), ${pending} pending creation(s). No remote changes were made.`,
-      8e3
-    );
+    new import_obsidian3.Notice(this.i18n.t("notice.preview", { changed, pending }), 8e3);
   }
   activeTaskFile() {
     const file = this.app.workspace.getActiveFile();
@@ -8759,7 +10110,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       const parsed = parseTaskNote(content);
       const currentId = stringValue(parsed.properties.todoist_id).trim();
       const items = [
-        { id: "", label: "No parent" },
+        { id: "", label: this.i18n.t("picker.noParent") },
         ...this.tasks.filter((task) => task.id !== currentId).map((task) => ({
           id: task.id,
           label: task.content,
@@ -8768,7 +10119,8 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       ];
       new ItemPickerModal(
         this.app,
-        "Choose a parent task",
+        this.i18n,
+        this.i18n.t("picker.chooseParent"),
         items,
         async (item) => {
           const parent = this.tasks.find((task) => task.id === item.id);
@@ -8797,7 +10149,8 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     }));
     new ItemPickerModal(
       this.app,
-      "Choose a Todoist project",
+      this.i18n,
+      this.i18n.t("picker.chooseProject"),
       items,
       async (item) => {
         const project = this.projects.find((p) => p.id === item.id);
@@ -8821,7 +10174,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       const frontmatter = fm;
       frontmatter.status = "detached";
       frontmatter.sync_state = "detached";
-      frontmatter.detached_reason = "Detached manually in Obsidian.";
+      frontmatter.detached_reason = this.i18n.t("sync.detachedManual");
       frontmatter.detached_at = (/* @__PURE__ */ new Date()).toISOString();
     }).then(() => this.syncNow("detach"));
     return true;
@@ -8849,7 +10202,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     if (!view || !file) return;
     const context = this.getTaskNoteActionContext(file.path);
     if (!context) return;
-    const title = context.enabled ? "\u05D4\u05D5\u05E1\u05E3 \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4" : context.disabledReason ?? "\u05D4\u05D5\u05E1\u05E4\u05EA \u05EA\u05EA\u05BE\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D0\u05D9\u05E0\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4";
+    const title = context.enabled ? this.i18n.t("action.addSubtask") : context.disabledReason ?? this.i18n.t("action.addSubtaskUnavailable");
     const action = view.addAction("list-plus", title, () => {
       if (context.enabled) {
         this.openSubtaskModal(context.taskId);
@@ -8865,7 +10218,20 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     this.taskHeaderAction = action;
   }
   async getTodoistToken() {
-    let secretId = this.data.settings.tokenSecretId;
+    const managedToken = this.getManagedTodoistToken();
+    if (managedToken) return managedToken;
+    const sharedToken = await this.getSharedTodoistToken();
+    if (sharedToken) return sharedToken;
+    throw new TodoistApiError(this.i18n.t("error.tokenMissing"), 401);
+  }
+  getManagedTodoistToken() {
+    return this.app.secretStorage.getSecret(MANAGED_TOKEN_SECRET_ID)?.trim() || null;
+  }
+  async getSharedTodoistToken() {
+    const candidateSecretIds = /* @__PURE__ */ new Set([
+      this.data.settings.tokenSecretId,
+      DEFAULT_SETTINGS.tokenSecretId
+    ]);
     try {
       const configDir = this.app.vault.configDir;
       const configPath = (0, import_obsidian3.normalizePath)(
@@ -8876,7 +10242,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         const parsed = JSON.parse(raw);
         const config = parsed && typeof parsed === "object" ? parsed : {};
         if (typeof config.apiTokenSecretId === "string") {
-          secretId = config.apiTokenSecretId;
+          candidateSecretIds.add(config.apiTokenSecretId);
         }
         if (config.tokenStorage === "file") {
           const legacyPath = (0, import_obsidian3.normalizePath)(`${configDir}/todoist-token`);
@@ -8888,25 +10254,26 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       }
     } catch {
     }
-    const appWithSecrets = this.app;
-    const token = appWithSecrets.secretStorage?.getSecret(secretId)?.trim();
-    if (!token) {
-      throw new TodoistApiError(
-        `Todoist API token was not found in Obsidian SecretStorage (${secretId}). Configure the existing Todoist Sync plugin first.`,
-        401
-      );
+    for (const secretId of candidateSecretIds) {
+      if (!secretId) continue;
+      const token = this.app.secretStorage.getSecret(secretId)?.trim();
+      if (token) return token;
     }
-    return token;
+    return null;
   }
   async loadPluginData() {
     const loaded = await this.loadData();
+    const settings = {
+      ...DEFAULT_SETTINGS,
+      ...loaded?.settings ?? {}
+    };
+    if (!isLanguagePreference(settings.language)) {
+      settings.language = "system";
+    }
     this.data = {
       ...structuredClone(DEFAULT_DATA),
       ...loaded ?? {},
-      settings: {
-        ...DEFAULT_SETTINGS,
-        ...loaded?.settings ?? {}
-      },
+      settings,
       tasks: loaded?.tasks ?? {}
     };
   }
@@ -8925,30 +10292,35 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     return [
       {
         type: "group",
-        heading: "Synchronization",
+        heading: this.plugin.getI18n().t("settings.heading"),
         items: [
           {
-            name: "Task-note root folder",
-            desc: "One nested Markdown note is created for every task.",
+            name: this.plugin.getI18n().t("settings.language"),
+            desc: this.plugin.getI18n().t("settings.languageDescription"),
+            render: (setting) => this.addLanguageSetting(setting, settings)
+          },
+          {
+            name: this.plugin.getI18n().t("settings.rootFolder"),
+            desc: this.plugin.getI18n().t("settings.rootFolderDescription"),
             render: (setting) => this.addRootFolderSetting(setting, settings)
           },
           {
-            name: "Dashboard note",
+            name: this.plugin.getI18n().t("settings.dashboardNote"),
             render: (setting) => this.addDashboardPathSetting(setting, settings)
           },
           {
-            name: "Automatic sync interval",
-            desc: "Minutes while Obsidian is open. Takes effect after reload.",
+            name: this.plugin.getI18n().t("settings.interval"),
+            desc: this.plugin.getI18n().t("settings.intervalDescription"),
             render: (setting) => this.addIntervalSetting(setting, settings)
           },
           {
-            name: "Shared secret key",
-            desc: "Uses the token already configured by the existing sync plugin. The token itself is never saved here.",
-            render: (setting) => this.addSecretKeySetting(setting, settings)
+            name: this.plugin.getI18n().t("settings.token"),
+            desc: this.plugin.getI18n().t("settings.tokenDescription"),
+            render: (setting) => this.addTokenSetting(setting)
           },
           {
-            name: "API connection",
-            desc: "Validates the shared token without displaying it.",
+            name: this.plugin.getI18n().t("settings.connection"),
+            desc: this.plugin.getI18n().t("settings.connectionDescription"),
             render: (setting) => this.addConnectionSetting(setting)
           }
         ]
@@ -8956,18 +10328,47 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     ];
   }
   display() {
+    this.renderSettings();
+  }
+  renderSettings() {
     const { containerEl } = this;
     const settings = this.plugin.getSettings();
     containerEl.empty();
-    new import_obsidian3.Setting(containerEl).setName("Synchronization").setHeading();
+    new import_obsidian3.Setting(containerEl).setName(this.plugin.getI18n().t("settings.heading")).setHeading();
+    this.addLanguageSetting(new import_obsidian3.Setting(containerEl), settings);
     this.addRootFolderSetting(new import_obsidian3.Setting(containerEl), settings);
     this.addDashboardPathSetting(new import_obsidian3.Setting(containerEl), settings);
     this.addIntervalSetting(new import_obsidian3.Setting(containerEl), settings);
-    this.addSecretKeySetting(new import_obsidian3.Setting(containerEl), settings);
+    this.addTokenSetting(new import_obsidian3.Setting(containerEl));
     this.addConnectionSetting(new import_obsidian3.Setting(containerEl));
   }
+  addLanguageSetting(setting, settings) {
+    const i18n = this.plugin.getI18n();
+    setting.setName(i18n.t("settings.language")).setDesc(i18n.t("settings.languageDescription")).addDropdown((dropdown) => {
+      dropdown.addOption("system", i18n.t("language.system"));
+      for (const locale of LOCALE_CODES) {
+        const suffix = isLocaleAvailable(locale) ? "" : ` \u2014 ${i18n.t("language.unavailable")}`;
+        dropdown.addOption(
+          locale,
+          `${getLocaleDisplayName(locale)} (${locale})${suffix}`
+        );
+      }
+      dropdown.setValue(settings.language);
+      for (const option of Array.from(dropdown.selectEl.options)) {
+        if (option.value !== "system" && !isLocaleAvailable(option.value)) {
+          option.disabled = true;
+        }
+      }
+      dropdown.onChange((value) => {
+        if (!isLanguagePreference(value)) return;
+        void this.plugin.updateSettings({ language: value }).then(() => {
+          this.renderSettings();
+        });
+      });
+    });
+  }
   addRootFolderSetting(setting, settings) {
-    setting.setName("Task-note root folder").setDesc("One nested Markdown note is created for every task.").addText(
+    setting.setName(this.plugin.getI18n().t("settings.rootFolder")).setDesc(this.plugin.getI18n().t("settings.rootFolderDescription")).addText(
       (text) => text.setValue(settings.rootFolder).onChange((value) => {
         void this.plugin.updateSettings({
           rootFolder: (0, import_obsidian3.normalizePath)(value)
@@ -8976,7 +10377,7 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     );
   }
   addDashboardPathSetting(setting, settings) {
-    setting.setName("Dashboard note").addText(
+    setting.setName(this.plugin.getI18n().t("settings.dashboardNote")).addText(
       (text) => text.setValue(settings.dashboardPath).onChange((value) => {
         void this.plugin.updateSettings({
           dashboardPath: (0, import_obsidian3.normalizePath)(value)
@@ -8985,7 +10386,7 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     );
   }
   addIntervalSetting(setting, settings) {
-    setting.setName("Automatic sync interval").setDesc("Minutes while Obsidian is open. Takes effect after reload.").addText((text) => {
+    setting.setName(this.plugin.getI18n().t("settings.interval")).setDesc(this.plugin.getI18n().t("settings.intervalDescription")).addText((text) => {
       text.inputEl.type = "number";
       text.setValue(String(settings.intervalMinutes)).onChange((value) => {
         void this.plugin.updateSettings({
@@ -8994,18 +10395,91 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
       });
     });
   }
-  addSecretKeySetting(setting, settings) {
-    setting.setName("Shared secret key").setDesc(
-      "Uses the token already configured by the existing sync plugin. The token itself is never saved here."
-    ).addText(
-      (text) => text.setValue(settings.tokenSecretId).onChange((value) => {
-        void this.plugin.updateSettings({ tokenSecretId: value.trim() });
-      })
-    );
+  addTokenSetting(setting) {
+    const i18n = this.plugin.getI18n();
+    const description = createFragment();
+    description.append(i18n.t("settings.tokenDescription"));
+    description.createEl("br");
+    const statusEl = description.createSpan();
+    statusEl.addClass("todoist-task-notes-token-status");
+    statusEl.textContent = i18n.t("settings.tokenStatusChecking");
+    description.append(statusEl);
+    let inputEl = null;
+    let saveButton = null;
+    let removeButton = null;
+    const updateStatus = async () => {
+      const status = await this.plugin.getTokenStatus();
+      const statusKey = `settings.tokenStatus${status === "managed" ? "Managed" : status === "shared" ? "Shared" : "Missing"}`;
+      statusEl.textContent = i18n.t(statusKey);
+      statusEl.toggleClass("is-missing", status === "missing");
+      if (inputEl) {
+        inputEl.placeholder = i18n.t(
+          status === "managed" ? "settings.tokenPlaceholderSaved" : "settings.tokenPlaceholderEmpty"
+        );
+      }
+      saveButton?.setButtonText(
+        i18n.t(
+          status === "managed" ? "settings.replaceToken" : "settings.saveToken"
+        )
+      );
+      removeButton?.setDisabled(status !== "managed");
+    };
+    const saveToken = () => {
+      const value = inputEl?.value ?? "";
+      if (!value.trim()) {
+        new import_obsidian3.Notice(i18n.t("notice.tokenRequired"));
+        return;
+      }
+      try {
+        this.plugin.saveTodoistToken(value);
+        if (inputEl) inputEl.value = "";
+        saveButton?.setDisabled(true);
+        new import_obsidian3.Notice(i18n.t("notice.tokenSaved"));
+        void updateStatus();
+      } catch (error) {
+        new import_obsidian3.Notice(
+          i18n.t("notice.tokenSaveFailed", {
+            error: error instanceof Error ? error.message : String(error)
+          }),
+          1e4
+        );
+      }
+    };
+    setting.setName(i18n.t("settings.token")).setDesc(description).addText((text) => {
+      inputEl = text.inputEl;
+      inputEl.type = "password";
+      inputEl.autocomplete = "off";
+      inputEl.spellcheck = false;
+      inputEl.setAttr("aria-label", i18n.t("settings.token"));
+      text.setPlaceholder(i18n.t("settings.tokenPlaceholderEmpty"));
+      text.onChange((value) => {
+        saveButton?.setDisabled(!value.trim());
+      });
+      inputEl.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          saveToken();
+        }
+      });
+    }).addButton((button) => {
+      saveButton = button;
+      button.setButtonText(i18n.t("settings.saveToken")).setCta().setDisabled(true).onClick(saveToken);
+    }).addButton((button) => {
+      removeButton = button;
+      button.buttonEl.addClass("mod-warning");
+      button.setButtonText(i18n.t("settings.removeToken")).setDisabled(true).onClick(() => {
+        new ConfirmTokenRemovalModal(this.app, i18n, () => {
+          this.plugin.removeTodoistToken();
+          new import_obsidian3.Notice(i18n.t("notice.tokenRemoved"));
+          void updateStatus();
+        }).open();
+      });
+    });
+    void updateStatus();
   }
   addConnectionSetting(setting) {
-    setting.setName("API connection").setDesc("Validates the shared token without displaying it.").addButton(
-      (button) => button.setButtonText("Test connection").onClick(() => {
+    setting.setName(this.plugin.getI18n().t("settings.connection")).setDesc(this.plugin.getI18n().t("settings.connectionDescription")).addButton(
+      (button) => button.setButtonText(this.plugin.getI18n().t("settings.testConnection")).onClick(() => {
         void this.testConnection(button);
       })
     );
@@ -9015,12 +10489,42 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     try {
       await this.plugin.testConnection();
     } catch (error) {
-      new import_obsidian3.Notice(
-        `Todoist connection failed: ${error instanceof Error ? error.message : String(error)}`,
-        1e4
-      );
+      new import_obsidian3.Notice(this.plugin.getI18n().t("notice.connectionFailed", {
+        error: error instanceof Error ? error.message : String(error)
+      }), 1e4);
     } finally {
       button.setDisabled(false);
     }
+  }
+};
+var ConfirmTokenRemovalModal = class extends import_obsidian3.Modal {
+  constructor(app, i18n, confirmRemoval) {
+    super(app);
+    this.i18n = i18n;
+    this.confirmRemoval = confirmRemoval;
+  }
+  i18n;
+  confirmRemoval;
+  onOpen() {
+    this.modalEl.setAttr("dir", this.i18n.direction);
+    this.modalEl.setAttr("lang", this.i18n.locale);
+    this.setTitle(this.i18n.t("settings.removeTokenTitle"));
+    this.contentEl.createEl("p", {
+      text: this.i18n.t("settings.removeTokenDescription")
+    });
+    const actions = new import_obsidian3.Setting(this.contentEl);
+    actions.settingEl.addClass("todoist-task-notes-modal-actions");
+    actions.addButton(
+      (button) => button.setButtonText(this.i18n.t("common.cancel")).onClick(() => this.close())
+    ).addButton((button) => {
+      button.buttonEl.addClass("mod-warning");
+      button.setButtonText(this.i18n.t("settings.removeToken")).setCta().onClick(() => {
+        this.confirmRemoval();
+        this.close();
+      });
+    });
+  }
+  onClose() {
+    this.contentEl.empty();
   }
 };

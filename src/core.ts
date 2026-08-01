@@ -1,4 +1,5 @@
 import YAML from "yaml";
+import { createI18n, type I18n } from "./i18n";
 
 export const NOTE_TAG = "todoist-task";
 export const NOTES_HEADING = "## Notes";
@@ -371,6 +372,7 @@ export function makeTaskProperties(
   status: "open" | "completed",
   syncState: string,
   pendingCreateId: string | null = null,
+  i18n: I18n = createI18n("en", "en"),
 ): Record<string, unknown> {
   return {
     type: "todoist-task",
@@ -379,7 +381,7 @@ export function makeTaskProperties(
     title: task.content,
     description: task.description ?? "",
     status,
-    project: project?.name ?? "Unknown project",
+    project: project?.name ?? i18n.t("common.unknownProject"),
     project_id: task.project_id,
     parent: parentPath ? `[[${parentPath.replace(/\.md$/, "")}]]` : null,
     parent_id: task.parent_id ?? null,
@@ -414,12 +416,16 @@ function valueOrDash(value: unknown): string {
 export function renderTaskNote(
   properties: Record<string, unknown>,
   notes: string,
+  i18n: I18n = createI18n("en", "en"),
 ): string {
   const yaml = YAML.stringify(properties, {
     lineWidth: 0,
     defaultStringType: "QUOTE_DOUBLE",
   }).trimEnd();
-  const title = stringValue(properties.title, "Untitled task");
+  const title = stringValue(
+    properties.title,
+    i18n.t("common.untitledTask"),
+  );
   const taskUrl = optionalString(properties.todoist_url);
   const lines = [
     "---",
@@ -428,18 +434,20 @@ export function renderTaskNote(
     "",
     `# ${title}`,
     "",
-    "> [!todoist] Todoist task",
-    taskUrl ? `> [Open in Todoist](${taskUrl})` : "> Pending API creation",
+    `> [!todoist] ${i18n.t("note.todoistTask")}`,
+    taskUrl
+      ? `> [${i18n.t("note.openInTodoist")}](${taskUrl})`
+      : `> ${i18n.t("note.pendingCreation")}`,
     "",
-    "## Details",
+    `## ${i18n.t("note.details")}`,
     "",
-    `- **Project:** ${valueOrDash(properties.project)}`,
-    `- **Parent:** ${valueOrDash(properties.parent)}`,
-    `- **Status:** ${valueOrDash(properties.status)}`,
-    `- **Due:** ${valueOrDash(properties.due)}`,
-    `- **Deadline:** ${valueOrDash(properties.deadline)}`,
-    `- **Priority:** ${valueOrDash(properties.priority)}`,
-    `- **Labels:** ${valueOrDash(properties.labels)}`,
+    `- **${i18n.t("field.project")}:** ${valueOrDash(properties.project)}`,
+    `- **${i18n.t("field.parent")}:** ${valueOrDash(properties.parent)}`,
+    `- **${i18n.t("field.status")}:** ${valueOrDash(properties.status)}`,
+    `- **${i18n.t("field.due")}:** ${valueOrDash(properties.due)}`,
+    `- **${i18n.t("field.deadline")}:** ${valueOrDash(properties.deadline)}`,
+    `- **${i18n.t("field.priority")}:** ${valueOrDash(properties.priority)}`,
+    `- **${i18n.t("field.labels")}:** ${valueOrDash(properties.labels)}`,
     "",
     `\`\`\`${TASK_ACTIONS_BLOCK}`,
     "```",

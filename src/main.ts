@@ -2,13 +2,16 @@ import {
   App,
   MarkdownPostProcessorContext,
   MarkdownView,
+  Modal,
   Notice,
   Plugin,
   PluginSettingTab,
   Setting,
   TAbstractFile,
   TFile,
+  getLanguage,
   normalizePath,
+  type ButtonComponent,
   type SettingDefinitionItem,
 } from "obsidian";
 import {
@@ -41,6 +44,15 @@ import {
   type TodoistTask,
 } from "./core";
 import {
+  LOCALE_CODES,
+  createI18n,
+  getLocaleDisplayName,
+  isLanguagePreference,
+  isLocaleAvailable,
+  type I18n,
+  type LanguagePreference,
+} from "./i18n";
+import {
   DashboardChild,
   ItemPickerModal,
   NewTaskModal,
@@ -54,6 +66,7 @@ import {
 } from "./ui";
 
 interface PluginSettings {
+  language: LanguagePreference;
   rootFolder: string;
   dashboardPath: string;
   intervalMinutes: number;
@@ -81,11 +94,16 @@ interface LocalTaskFile {
 }
 
 const DEFAULT_SETTINGS: PluginSettings = {
+  language: "system",
   rootFolder: "משימות/Todoist",
   dashboardPath: "משימות/Untitled.md",
   intervalMinutes: 5,
   tokenSecretId: "swt-todoist-api-token",
 };
+
+const MANAGED_TOKEN_SECRET_ID = "todoist-task-notes-api-token";
+
+type TokenStatus = "managed" | "shared" | "missing";
 
 const DEFAULT_DATA: StoredPluginData = {
   settings: DEFAULT_SETTINGS,
@@ -110,16 +128,18 @@ export default class TodoistTaskNotesPlugin
   private localSyncTimer: number | null = null;
   private taskHeaderAction: HTMLElement | null = null;
   private readonly writingPaths = new Set<string>();
+  private i18n: I18n = createI18n("system", "en");
 
   async onload(): Promise<void> {
     await this.loadPluginData();
+    this.i18n = createI18n(this.data.settings.language, getLanguage());
     this.api = new TodoistApi(() => this.getTodoistToken());
 
     this.addSettingTab(new TodoistTaskNotesSettingTab(this.app, this));
-    this.addRibbonIcon("list-plus", "New task", () =>
+    this.addRibbonIcon("list-plus", this.i18n.t("ribbon.newTask"), () =>
       this.openNewTaskModal(),
     );
-    this.addRibbonIcon("refresh-cw", "Sync task notes", () => {
+    this.addRibbonIcon("refresh-cw", this.i18n.t("ribbon.sync"), () => {
       void this.syncNow("ribbon");
     });
 
@@ -232,6 +252,10 @@ export default class TodoistTaskNotesPlugin
     };
   }
 
+  getI18n(): I18n {
+    return this.i18n;
+  }
+
   getProjects(): TodoistProject[] {
     return this.projects;
   }
@@ -246,17 +270,38 @@ export default class TodoistTaskNotesPlugin
 
   async updateSettings(changes: Partial<PluginSettings>): Promise<void> {
     this.data.settings = { ...this.data.settings, ...changes };
+    if (changes.language && isLanguagePreference(changes.language)) {
+      this.i18n = createI18n(changes.language, getLanguage());
+      this.triggerDashboardUpdate();
+    }
     await this.savePluginData();
   }
 
   async testConnection(): Promise<void> {
     await this.api.validate();
-    new Notice("API connection is working.");
+    new Notice(this.i18n.t("notice.connectionWorking"));
+  }
+
+  async getTokenStatus(): Promise<TokenStatus> {
+    if (this.getManagedTodoistToken()) return "managed";
+    return (await this.getSharedTodoistToken()) ? "shared" : "missing";
+  }
+
+  saveTodoistToken(token: string): void {
+    const trimmed = token.trim();
+    if (!trimmed) {
+      throw new Error(this.i18n.t("notice.tokenRequired"));
+    }
+    this.app.secretStorage.setSecret(MANAGED_TOKEN_SECRET_ID, trimmed);
+  }
+
+  removeTodoistToken(): void {
+    this.app.secretStorage.setSecret(MANAGED_TOKEN_SECRET_ID, "");
   }
 
   openNewTaskModal(context: NewTaskModalContext = {}): void {
     if (!this.projects.length) {
-      new Notice("יש לסנכרן פעם אחת לפני יצירת משימה.");
+      new Notice(this.i18n.t("notice.syncBeforeCreate"));
       void this.syncNow("new-task-prerequisite").then(() => {
         if (this.projects.length) {
           new NewTaskModal(this.app, this, context).open();
@@ -270,7 +315,7 @@ export default class TodoistTaskNotesPlugin
   openSubtaskModal(taskId: string): void {
     const parent = this.tasks.find((task) => task.id === taskId);
     if (!parent) {
-      new Notice("לא ניתן להוסיף תת־משימה למשימה שאינה פעילה.");
+      new Notice(this.i18n.t("notice.inactiveSubtask"));
       return;
     }
     this.openNewTaskModal({
@@ -293,14 +338,13 @@ export default class TodoistTaskNotesPlugin
     const syncState = String(frontmatter.sync_state ?? "");
     let disabledReason: string | null = null;
     if (!taskId || syncState === "pending-create") {
-      disabledReason =
-        "המשימה עדיין ממתינה ליצירה ב־Todoist; ניתן להוסיף ילדים לאחר הסנכרון.";
+      disabledReason = this.i18n.t("action.pendingReason");
     } else if (status === "completed") {
-      disabledReason = "לא ניתן להוסיף תת־משימה למשימה שהושלמה.";
+      disabledReason = this.i18n.t("action.completedReason");
     } else if (status === "detached" || syncState === "detached") {
-      disabledReason = "הפתק מנותק מ־Todoist.";
+      disabledReason = this.i18n.t("action.detachedReason");
     } else if (!this.tasks.some((task) => task.id === taskId)) {
-      disabledReason = "המשימה אינה פעילה כרגע ב־Todoist.";
+      disabledReason = this.i18n.t("action.inactiveReason");
     }
     return {
       taskId,
@@ -333,7 +377,7 @@ export default class TodoistTaskNotesPlugin
       await this.savePluginData();
       this.triggerDashboardUpdate();
       await this.app.workspace.getLeaf(false).openFile(file);
-      new Notice("Todoist task created.");
+      new Notice(this.i18n.t("notice.taskCreated"));
     } catch (error) {
       const pendingFile = await this.createPendingTaskNote(
         input,
@@ -342,12 +386,9 @@ export default class TodoistTaskNotesPlugin
       );
       await this.refreshKnownTasks();
       await this.app.workspace.getLeaf(false).openFile(pendingFile);
-      new Notice(
-        `Saved offline as pending-create. It will retry on the next sync. ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-        8000,
-      );
+      new Notice(this.i18n.t("notice.savedOffline", {
+        error: error instanceof Error ? error.message : String(error),
+      }), 8000);
     }
   }
 
@@ -539,7 +580,7 @@ export default class TodoistTaskNotesPlugin
         if (state.missingCount >= 3) {
           await this.markDetached(
             local,
-            "Remote task was deleted or is unavailable.",
+            this.i18n.t("sync.remoteDeleted"),
           );
           state.status = "detached";
         }
@@ -562,11 +603,9 @@ export default class TodoistTaskNotesPlugin
       this.triggerDashboardUpdate();
       const imported = this.tasks.length;
       if (reason !== "interval" && reason !== "file-change") {
-        new Notice(
-          pullOnly
-            ? `Todoist Task Notes: initial pull imported ${imported} active tasks without changing Todoist.`
-            : `Todoist Task Notes: sync complete (${imported} active tasks).`,
-        );
+        new Notice(pullOnly
+          ? this.i18n.t("notice.initialPull", { count: imported })
+          : this.i18n.t("notice.syncComplete", { count: imported }));
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -574,7 +613,7 @@ export default class TodoistTaskNotesPlugin
       await this.savePluginData();
       this.triggerDashboardUpdate();
       if (reason !== "interval" && reason !== "file-change") {
-        new Notice(`Todoist Task Notes sync failed: ${message}`, 10000);
+        new Notice(this.i18n.t("notice.syncFailed", { error: message }), 10000);
       }
       throw error;
     }
@@ -693,7 +732,7 @@ export default class TodoistTaskNotesPlugin
       local.parsed.properties.sync_state = "synced";
       await this.writeFile(
         local.file,
-        renderTaskNote(local.parsed.properties, local.parsed.notes),
+        renderTaskNote(local.parsed.properties, local.parsed.notes, this.i18n),
       );
     }
     return created;
@@ -752,6 +791,7 @@ export default class TodoistTaskNotesPlugin
       "open",
       "pending-create",
       requestId,
+      this.i18n,
     );
     await this.ensureFolder(folder);
     const existing = this.app.vault.getAbstractFileByPath(path);
@@ -761,10 +801,13 @@ export default class TodoistTaskNotesPlugin
       );
       return this.app.vault.create(
         alternate,
-        renderTaskNote(properties, ""),
+        renderTaskNote(properties, "", this.i18n),
       );
     }
-    return this.app.vault.create(path, renderTaskNote(properties, ""));
+    return this.app.vault.create(
+      path,
+      renderTaskNote(properties, "", this.i18n),
+    );
   }
 
   private async materializeRemoteTask(
@@ -775,7 +818,7 @@ export default class TodoistTaskNotesPlugin
   ): Promise<TFile> {
     const pathInfo = pathMap.get(task.id);
     if (!pathInfo) {
-      throw new Error(`No note path generated for Todoist task ${task.id}`);
+      throw new Error(this.i18n.t("error.noTaskPath", { taskId: task.id }));
     }
     const project = this.projects.find(
       (item) => item.id === task.project_id,
@@ -789,13 +832,15 @@ export default class TodoistTaskNotesPlugin
       parentPath,
       status,
       "synced",
+      null,
+      this.i18n,
     );
     const previousLastSynced = local?.parsed.properties.last_synced;
     if (previousLastSynced) {
       properties.last_synced = previousLastSynced;
     }
     const notes = local?.parsed.notes ?? "";
-    let content = renderTaskNote(properties, notes);
+    let content = renderTaskNote(properties, notes, this.i18n);
     await this.ensureFolder(pathInfo.folder);
 
     let file = local?.file ?? null;
@@ -809,7 +854,9 @@ export default class TodoistTaskNotesPlugin
     if (file && file.path !== pathInfo.note) {
       const collision = this.app.vault.getAbstractFileByPath(pathInfo.note);
       if (collision && collision !== file) {
-        throw new Error(`Task note path already exists: ${pathInfo.note}`);
+        throw new Error(this.i18n.t("error.pathCollision", {
+          path: pathInfo.note,
+        }));
       }
       this.writingPaths.add(file.path);
       this.writingPaths.add(pathInfo.note);
@@ -821,7 +868,7 @@ export default class TodoistTaskNotesPlugin
       const existingContent = await this.app.vault.read(file);
       if (existingContent !== content) {
         properties.last_synced = new Date().toISOString();
-        content = renderTaskNote(properties, notes);
+        content = renderTaskNote(properties, notes, this.i18n);
         await this.writeFile(file, content);
       }
     } else {
@@ -854,14 +901,14 @@ export default class TodoistTaskNotesPlugin
     );
     const original = await this.app.vault.read(local.file);
     const content = [
-      "# Todoist sync conflict",
+      `# ${this.i18n.t("conflict.title")}`,
       "",
-      `- **Original note:** [[${local.file.path.replace(/\.md$/, "")}]]`,
-      `- **Todoist task:** ${remote.id}`,
-      `- **Captured:** ${new Date().toISOString()}`,
-      "- **Resolution:** Todoist won; this file preserves the displaced local version.",
+      `- **${this.i18n.t("conflict.originalNote")}:** [[${local.file.path.replace(/\.md$/, "")}]]`,
+      `- **${this.i18n.t("conflict.todoistTask")}:** ${remote.id}`,
+      `- **${this.i18n.t("conflict.captured")}:** ${new Date().toISOString()}`,
+      `- **${this.i18n.t("conflict.resolution")}:** ${this.i18n.t("conflict.resolutionText")}`,
       "",
-      "## Local version",
+      `## ${this.i18n.t("conflict.localVersion")}`,
       "",
       "```markdown",
       original.replace(/```/g, "``\\`"),
@@ -884,7 +931,7 @@ export default class TodoistTaskNotesPlugin
     };
     await this.writeFile(
       local.file,
-      renderTaskNote(properties, local.parsed.notes),
+      renderTaskNote(properties, local.parsed.notes, this.i18n),
     );
   }
 
@@ -971,10 +1018,7 @@ export default class TodoistTaskNotesPlugin
         changed += 1;
       }
     }
-    new Notice(
-      `Todoist Task Notes preview: ${changed} changed note(s), ${pending} pending creation(s). No remote changes were made.`,
-      8000,
-    );
+    new Notice(this.i18n.t("notice.preview", { changed, pending }), 8000);
   }
 
   private activeTaskFile(): TFile | null {
@@ -992,7 +1036,7 @@ export default class TodoistTaskNotesPlugin
       const parsed = parseTaskNote(content);
       const currentId = stringValue(parsed.properties.todoist_id).trim();
       const items = [
-        { id: "", label: "No parent" },
+        { id: "", label: this.i18n.t("picker.noParent") },
         ...this.tasks
           .filter((task) => task.id !== currentId)
           .map((task) => ({
@@ -1005,7 +1049,8 @@ export default class TodoistTaskNotesPlugin
       ];
       new ItemPickerModal(
         this.app,
-        "Choose a parent task",
+        this.i18n,
+        this.i18n.t("picker.chooseParent"),
         items,
         async (item) => {
           const parent = this.tasks.find((task) => task.id === item.id);
@@ -1041,7 +1086,8 @@ export default class TodoistTaskNotesPlugin
     }));
     new ItemPickerModal(
       this.app,
-      "Choose a Todoist project",
+      this.i18n,
+      this.i18n.t("picker.chooseProject"),
       items,
       async (item) => {
         const project = this.projects.find((p) => p.id === item.id);
@@ -1067,7 +1113,7 @@ export default class TodoistTaskNotesPlugin
         const frontmatter = fm as Record<string, unknown>;
         frontmatter.status = "detached";
         frontmatter.sync_state = "detached";
-        frontmatter.detached_reason = "Detached manually in Obsidian.";
+        frontmatter.detached_reason = this.i18n.t("sync.detachedManual");
         frontmatter.detached_at = new Date().toISOString();
       })
       .then(() => this.syncNow("detach"));
@@ -1105,8 +1151,8 @@ export default class TodoistTaskNotesPlugin
     const context = this.getTaskNoteActionContext(file.path);
     if (!context) return;
     const title = context.enabled
-      ? "הוסף תת־משימה"
-      : context.disabledReason ?? "הוספת תת־משימה אינה זמינה";
+      ? this.i18n.t("action.addSubtask")
+      : context.disabledReason ?? this.i18n.t("action.addSubtaskUnavailable");
     const action = view.addAction("list-plus", title, () => {
       if (context.enabled) {
         this.openSubtaskModal(context.taskId);
@@ -1123,7 +1169,26 @@ export default class TodoistTaskNotesPlugin
   }
 
   private async getTodoistToken(): Promise<string> {
-    let secretId = this.data.settings.tokenSecretId;
+    const managedToken = this.getManagedTodoistToken();
+    if (managedToken) return managedToken;
+
+    const sharedToken = await this.getSharedTodoistToken();
+    if (sharedToken) return sharedToken;
+
+    throw new TodoistApiError(this.i18n.t("error.tokenMissing"), 401);
+  }
+
+  private getManagedTodoistToken(): string | null {
+    return (
+      this.app.secretStorage.getSecret(MANAGED_TOKEN_SECRET_ID)?.trim() || null
+    );
+  }
+
+  private async getSharedTodoistToken(): Promise<string | null> {
+    const candidateSecretIds = new Set<string>([
+      this.data.settings.tokenSecretId,
+      DEFAULT_SETTINGS.tokenSecretId,
+    ]);
     try {
       const configDir = this.app.vault.configDir;
       const configPath = normalizePath(
@@ -1137,7 +1202,7 @@ export default class TodoistTaskNotesPlugin
             ? (parsed as Record<string, unknown>)
             : {};
         if (typeof config.apiTokenSecretId === "string") {
-          secretId = config.apiTokenSecretId;
+          candidateSecretIds.add(config.apiTokenSecretId);
         }
         if (config.tokenStorage === "file") {
           const legacyPath = normalizePath(`${configDir}/todoist-token`);
@@ -1152,28 +1217,27 @@ export default class TodoistTaskNotesPlugin
     } catch {
       // Fall through to the configured SecretStorage key.
     }
-    const appWithSecrets = this.app as unknown as {
-      secretStorage?: { getSecret(id: string): string | null };
-    };
-    const token = appWithSecrets.secretStorage?.getSecret(secretId)?.trim();
-    if (!token) {
-      throw new TodoistApiError(
-        `Todoist API token was not found in Obsidian SecretStorage (${secretId}). Configure the existing Todoist Sync plugin first.`,
-        401,
-      );
+    for (const secretId of candidateSecretIds) {
+      if (!secretId) continue;
+      const token = this.app.secretStorage.getSecret(secretId)?.trim();
+      if (token) return token;
     }
-    return token;
+    return null;
   }
 
   private async loadPluginData(): Promise<void> {
     const loaded = (await this.loadData()) as Partial<StoredPluginData> | null;
+    const settings = {
+      ...DEFAULT_SETTINGS,
+      ...(loaded?.settings ?? {}),
+    };
+    if (!isLanguagePreference(settings.language)) {
+      settings.language = "system";
+    }
     this.data = {
       ...structuredClone(DEFAULT_DATA),
       ...(loaded ?? {}),
-      settings: {
-        ...DEFAULT_SETTINGS,
-        ...(loaded?.settings ?? {}),
-      },
+      settings,
       tasks: loaded?.tasks ?? {},
     };
   }
@@ -1197,30 +1261,35 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     return [
       {
         type: "group",
-        heading: "Synchronization",
+        heading: this.plugin.getI18n().t("settings.heading"),
         items: [
           {
-            name: "Task-note root folder",
-            desc: "One nested Markdown note is created for every task.",
+            name: this.plugin.getI18n().t("settings.language"),
+            desc: this.plugin.getI18n().t("settings.languageDescription"),
+            render: (setting) => this.addLanguageSetting(setting, settings),
+          },
+          {
+            name: this.plugin.getI18n().t("settings.rootFolder"),
+            desc: this.plugin.getI18n().t("settings.rootFolderDescription"),
             render: (setting) => this.addRootFolderSetting(setting, settings),
           },
           {
-            name: "Dashboard note",
+            name: this.plugin.getI18n().t("settings.dashboardNote"),
             render: (setting) => this.addDashboardPathSetting(setting, settings),
           },
           {
-            name: "Automatic sync interval",
-            desc: "Minutes while Obsidian is open. Takes effect after reload.",
+            name: this.plugin.getI18n().t("settings.interval"),
+            desc: this.plugin.getI18n().t("settings.intervalDescription"),
             render: (setting) => this.addIntervalSetting(setting, settings),
           },
           {
-            name: "Shared secret key",
-            desc: "Uses the token already configured by the existing sync plugin. The token itself is never saved here.",
-            render: (setting) => this.addSecretKeySetting(setting, settings),
+            name: this.plugin.getI18n().t("settings.token"),
+            desc: this.plugin.getI18n().t("settings.tokenDescription"),
+            render: (setting) => this.addTokenSetting(setting),
           },
           {
-            name: "API connection",
-            desc: "Validates the shared token without displaying it.",
+            name: this.plugin.getI18n().t("settings.connection"),
+            desc: this.plugin.getI18n().t("settings.connectionDescription"),
             render: (setting) => this.addConnectionSetting(setting),
           },
         ],
@@ -1229,15 +1298,59 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
   }
 
   display(): void {
+    this.renderSettings();
+  }
+
+  private renderSettings(): void {
     const { containerEl } = this;
     const settings = this.plugin.getSettings();
     containerEl.empty();
-    new Setting(containerEl).setName("Synchronization").setHeading();
+    new Setting(containerEl)
+      .setName(this.plugin.getI18n().t("settings.heading"))
+      .setHeading();
+    this.addLanguageSetting(new Setting(containerEl), settings);
     this.addRootFolderSetting(new Setting(containerEl), settings);
     this.addDashboardPathSetting(new Setting(containerEl), settings);
     this.addIntervalSetting(new Setting(containerEl), settings);
-    this.addSecretKeySetting(new Setting(containerEl), settings);
+    this.addTokenSetting(new Setting(containerEl));
     this.addConnectionSetting(new Setting(containerEl));
+  }
+
+  private addLanguageSetting(
+    setting: Setting,
+    settings: PluginSettings,
+  ): void {
+    const i18n = this.plugin.getI18n();
+    setting
+      .setName(i18n.t("settings.language"))
+      .setDesc(i18n.t("settings.languageDescription"))
+      .addDropdown((dropdown) => {
+        dropdown.addOption("system", i18n.t("language.system"));
+        for (const locale of LOCALE_CODES) {
+          const suffix = isLocaleAvailable(locale)
+            ? ""
+            : ` — ${i18n.t("language.unavailable")}`;
+          dropdown.addOption(
+            locale,
+            `${getLocaleDisplayName(locale)} (${locale})${suffix}`,
+          );
+        }
+        dropdown.setValue(settings.language);
+        for (const option of Array.from(dropdown.selectEl.options)) {
+          if (
+            option.value !== "system" &&
+            !isLocaleAvailable(option.value as (typeof LOCALE_CODES)[number])
+          ) {
+            option.disabled = true;
+          }
+        }
+        dropdown.onChange((value) => {
+          if (!isLanguagePreference(value)) return;
+          void this.plugin.updateSettings({ language: value }).then(() => {
+            this.renderSettings();
+          });
+        });
+      });
   }
 
   private addRootFolderSetting(
@@ -1245,8 +1358,8 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     settings: PluginSettings,
   ): void {
     setting
-      .setName("Task-note root folder")
-      .setDesc("One nested Markdown note is created for every task.")
+      .setName(this.plugin.getI18n().t("settings.rootFolder"))
+      .setDesc(this.plugin.getI18n().t("settings.rootFolderDescription"))
       .addText((text) =>
         text.setValue(settings.rootFolder).onChange((value) => {
           void this.plugin.updateSettings({
@@ -1260,7 +1373,7 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     setting: Setting,
     settings: PluginSettings,
   ): void {
-    setting.setName("Dashboard note").addText((text) =>
+    setting.setName(this.plugin.getI18n().t("settings.dashboardNote")).addText((text) =>
       text.setValue(settings.dashboardPath).onChange((value) => {
           void this.plugin.updateSettings({
             dashboardPath: normalizePath(value),
@@ -1274,8 +1387,8 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     settings: PluginSettings,
   ): void {
     setting
-      .setName("Automatic sync interval")
-      .setDesc("Minutes while Obsidian is open. Takes effect after reload.")
+      .setName(this.plugin.getI18n().t("settings.interval"))
+      .setDesc(this.plugin.getI18n().t("settings.intervalDescription"))
       .addText((text) => {
         text.inputEl.type = "number";
         text
@@ -1288,28 +1401,120 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
       });
   }
 
-  private addSecretKeySetting(
-    setting: Setting,
-    settings: PluginSettings,
-  ): void {
-    setting
-      .setName("Shared secret key")
-      .setDesc(
-        "Uses the token already configured by the existing sync plugin. The token itself is never saved here.",
-      )
-      .addText((text) =>
-        text.setValue(settings.tokenSecretId).onChange((value) => {
-          void this.plugin.updateSettings({ tokenSecretId: value.trim() });
-        }),
+  private addTokenSetting(setting: Setting): void {
+    const i18n = this.plugin.getI18n();
+    const description = createFragment();
+    description.append(i18n.t("settings.tokenDescription"));
+    description.createEl("br");
+    const statusEl = description.createSpan();
+    statusEl.addClass("todoist-task-notes-token-status");
+    statusEl.textContent = i18n.t("settings.tokenStatusChecking");
+    description.append(statusEl);
+
+    let inputEl: HTMLInputElement | null = null;
+    let saveButton: ButtonComponent | null = null;
+    let removeButton: ButtonComponent | null = null;
+
+    const updateStatus = async (): Promise<void> => {
+      const status = await this.plugin.getTokenStatus();
+      const statusKey = `settings.tokenStatus${
+        status === "managed"
+          ? "Managed"
+          : status === "shared"
+            ? "Shared"
+            : "Missing"
+      }` as const;
+      statusEl.textContent = i18n.t(statusKey);
+      statusEl.toggleClass("is-missing", status === "missing");
+      if (inputEl) {
+        inputEl.placeholder = i18n.t(
+          status === "managed"
+            ? "settings.tokenPlaceholderSaved"
+            : "settings.tokenPlaceholderEmpty",
+        );
+      }
+      saveButton?.setButtonText(
+        i18n.t(
+          status === "managed" ? "settings.replaceToken" : "settings.saveToken",
+        ),
       );
+      removeButton?.setDisabled(status !== "managed");
+    };
+
+    const saveToken = (): void => {
+      const value = inputEl?.value ?? "";
+      if (!value.trim()) {
+        new Notice(i18n.t("notice.tokenRequired"));
+        return;
+      }
+      try {
+        this.plugin.saveTodoistToken(value);
+        if (inputEl) inputEl.value = "";
+        saveButton?.setDisabled(true);
+        new Notice(i18n.t("notice.tokenSaved"));
+        void updateStatus();
+      } catch (error) {
+        new Notice(
+          i18n.t("notice.tokenSaveFailed", {
+            error: error instanceof Error ? error.message : String(error),
+          }),
+          10000,
+        );
+      }
+    };
+
+    setting
+      .setName(i18n.t("settings.token"))
+      .setDesc(description)
+      .addText((text) => {
+        inputEl = text.inputEl;
+        inputEl.type = "password";
+        inputEl.autocomplete = "off";
+        inputEl.spellcheck = false;
+        inputEl.setAttr("aria-label", i18n.t("settings.token"));
+        text.setPlaceholder(i18n.t("settings.tokenPlaceholderEmpty"));
+        text.onChange((value) => {
+          saveButton?.setDisabled(!value.trim());
+        });
+        inputEl.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            saveToken();
+          }
+        });
+      })
+      .addButton((button) => {
+        saveButton = button;
+        button
+          .setButtonText(i18n.t("settings.saveToken"))
+          .setCta()
+          .setDisabled(true)
+          .onClick(saveToken);
+      })
+      .addButton((button) => {
+        removeButton = button;
+        button.buttonEl.addClass("mod-warning");
+        button
+          .setButtonText(i18n.t("settings.removeToken"))
+          .setDisabled(true)
+          .onClick(() => {
+            new ConfirmTokenRemovalModal(this.app, i18n, () => {
+              this.plugin.removeTodoistToken();
+              new Notice(i18n.t("notice.tokenRemoved"));
+              void updateStatus();
+            }).open();
+          });
+      });
+
+    void updateStatus();
   }
 
   private addConnectionSetting(setting: Setting): void {
     setting
-      .setName("API connection")
-      .setDesc("Validates the shared token without displaying it.")
+      .setName(this.plugin.getI18n().t("settings.connection"))
+      .setDesc(this.plugin.getI18n().t("settings.connectionDescription"))
       .addButton((button) =>
-        button.setButtonText("Test connection").onClick(() => {
+        button.setButtonText(this.plugin.getI18n().t("settings.testConnection")).onClick(() => {
           void this.testConnection(button);
         }),
       );
@@ -1322,14 +1527,52 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     try {
       await this.plugin.testConnection();
     } catch (error) {
-      new Notice(
-        `Todoist connection failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-        10000,
-      );
+      new Notice(this.plugin.getI18n().t("notice.connectionFailed", {
+        error: error instanceof Error ? error.message : String(error),
+      }), 10000);
     } finally {
       button.setDisabled(false);
     }
+  }
+}
+
+class ConfirmTokenRemovalModal extends Modal {
+  constructor(
+    app: App,
+    private readonly i18n: I18n,
+    private readonly confirmRemoval: () => void,
+  ) {
+    super(app);
+  }
+
+  onOpen(): void {
+    this.modalEl.setAttr("dir", this.i18n.direction);
+    this.modalEl.setAttr("lang", this.i18n.locale);
+    this.setTitle(this.i18n.t("settings.removeTokenTitle"));
+    this.contentEl.createEl("p", {
+      text: this.i18n.t("settings.removeTokenDescription"),
+    });
+    const actions = new Setting(this.contentEl);
+    actions.settingEl.addClass("todoist-task-notes-modal-actions");
+    actions
+      .addButton((button) =>
+        button
+          .setButtonText(this.i18n.t("common.cancel"))
+          .onClick(() => this.close()),
+      )
+      .addButton((button) => {
+        button.buttonEl.addClass("mod-warning");
+        button
+          .setButtonText(this.i18n.t("settings.removeToken"))
+          .setCta()
+          .onClick(() => {
+            this.confirmRemoval();
+            this.close();
+          });
+      });
+  }
+
+  onClose(): void {
+    this.contentEl.empty();
   }
 }

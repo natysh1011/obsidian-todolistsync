@@ -4,7 +4,6 @@
   --ttn-soft: var(--background-secondary);
   --ttn-accent: var(--interactive-accent);
   display: grid;
-  direction: rtl;
   gap: 1.4rem;
   text-align: start;
 }
@@ -283,7 +282,17 @@
   width: 1rem;
 }
 
+.todoist-task-notes-dashboard[dir="rtl"] .todoist-task-notes-toggle svg {
+  transform: rotate(-90deg);
+}
+
 .todoist-task-notes-toggle.is-expanded svg {
+  transform: rotate(0);
+}
+
+.todoist-task-notes-dashboard[dir="rtl"]
+  .todoist-task-notes-toggle.is-expanded
+  svg {
   transform: rotate(0);
 }
 
@@ -315,7 +324,6 @@
 }
 
 .todoist-task-notes-modal {
-  direction: rtl;
   text-align: start;
 }
 

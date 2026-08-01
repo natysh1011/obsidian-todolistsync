@@ -18,6 +18,7 @@
     "noUnusedLocals": false,
     "skipLibCheck": true,
     "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
     "importHelpers": true,
     "downlevelIteration": true,
     "esModuleInterop": true,

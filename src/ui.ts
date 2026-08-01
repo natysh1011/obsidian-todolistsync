@@ -9,6 +9,7 @@ import {
   type ButtonComponent,
 } from "obsidian";
 import type { CreateTaskInput } from "./api";
+import type { I18n } from "./i18n";
 import {
   calculateDashboardStats,
   calculateProjectStats,
@@ -68,6 +69,7 @@ export interface DashboardData {
 
 export interface TaskNotesHost {
   app: App;
+  getI18n(): I18n;
   getDashboardData(): DashboardData;
   getProjects(): TodoistProject[];
   getTasks(): TodoistTask[];
@@ -122,27 +124,31 @@ export class NewTaskModal extends Modal {
 
   onOpen(): void {
     const { contentEl } = this;
+    const i18n = this.host.getI18n();
     contentEl.empty();
     contentEl.addClass("todoist-task-notes-modal");
-    contentEl.setAttr("dir", "rtl");
+    contentEl.setAttr("dir", i18n.direction);
+    contentEl.setAttr("lang", i18n.locale);
     this.setTitle(
-      this.context.lockHierarchy ? "הוספת תת־משימה" : "משימת Todoist חדשה",
+      i18n.t(
+        this.context.lockHierarchy ? "modal.addSubtask" : "modal.newTask",
+      ),
     );
 
     new Setting(contentEl)
-      .setName("כותרת")
-      .setDesc("שדה חובה")
+      .setName(i18n.t("modal.title"))
+      .setDesc(i18n.t("modal.required"))
       .addText((text) => {
-        text.setPlaceholder("מה צריך לעשות?").onChange((value) => {
+        text.setPlaceholder(i18n.t("modal.titlePlaceholder")).onChange((value) => {
           this.value.title = value;
         });
         text.inputEl.autofocus = true;
       });
 
     new Setting(contentEl)
-      .setName("תיאור")
+      .setName(i18n.t("modal.description"))
       .addTextArea((text) => {
-        text.setPlaceholder("פרטים נוספים למשימה").onChange((value) => {
+        text.setPlaceholder(i18n.t("modal.descriptionPlaceholder")).onChange((value) => {
           this.value.description = value;
         });
       });
@@ -154,10 +160,10 @@ export class NewTaskModal extends Modal {
     }
 
     new Setting(contentEl)
-      .setName("תגיות")
-      .setDesc("מופרדות בפסיקים; תגיות חסרות ייווצרו")
+      .setName(i18n.t("modal.labels"))
+      .setDesc(i18n.t("modal.labelsDescription"))
       .addText((text) =>
-        text.setPlaceholder("לימודים, דחוף").onChange((value) => {
+        text.setPlaceholder(i18n.t("modal.labelsPlaceholder")).onChange((value) => {
           this.value.labels = value
             .split(",")
             .map((label) => label.trim())
@@ -165,14 +171,14 @@ export class NewTaskModal extends Modal {
         }),
       );
 
-    new Setting(contentEl).setName("תאריך יעד").addText((text) => {
+    new Setting(contentEl).setName(i18n.t("modal.dueDate")).addText((text) => {
       text.inputEl.type = "date";
       text.onChange((value) => {
         this.value.dueDate = value;
       });
     });
 
-    new Setting(contentEl).setName("שעת יעד").addText((text) => {
+    new Setting(contentEl).setName(i18n.t("modal.dueTime")).addText((text) => {
       text.inputEl.type = "time";
       text.onChange((value) => {
         this.value.dueTime = value;
@@ -180,23 +186,23 @@ export class NewTaskModal extends Modal {
     });
 
     new Setting(contentEl)
-      .setName("חזרה")
-      .setDesc("הזן מספר ובחר יחידת זמן")
+      .setName(i18n.t("modal.recurrence"))
+      .setDesc(i18n.t("modal.recurrenceDescription"))
       .addText((text) => {
         text.inputEl.type = "number";
         text.inputEl.min = "1";
         text.inputEl.step = "1";
         text.inputEl.inputMode = "numeric";
-        text.setPlaceholder("מספר").onChange((value) => {
+        text.setPlaceholder(i18n.t("modal.number")).onChange((value) => {
           this.value.recurrenceInterval = value;
         });
       })
       .addDropdown((dropdown) =>
         dropdown
-          .addOption("", "ללא חזרה")
-          .addOption("minute", "דקות")
-          .addOption("hour", "שעות")
-          .addOption("day", "ימים")
+          .addOption("", i18n.t("modal.noRecurrence"))
+          .addOption("minute", i18n.t("unit.minutes"))
+          .addOption("hour", i18n.t("unit.hours"))
+          .addOption("day", i18n.t("unit.days"))
           .setValue("")
           .onChange((value) => {
             this.value.recurrenceUnit = value as
@@ -207,19 +213,19 @@ export class NewTaskModal extends Modal {
           }),
       );
 
-    new Setting(contentEl).setName("דדליין").addText((text) => {
+    new Setting(contentEl).setName(i18n.t("modal.deadline")).addText((text) => {
       text.inputEl.type = "date";
       text.onChange((value) => {
         this.value.deadline = value;
       });
     });
 
-    new Setting(contentEl).setName("עדיפות").addDropdown((dropdown) => {
+    new Setting(contentEl).setName(i18n.t("modal.priority")).addDropdown((dropdown) => {
       dropdown
-        .addOption("p4", "P4 — רגילה")
-        .addOption("p3", "P3 — בינונית")
-        .addOption("p2", "P2 — גבוהה")
-        .addOption("p1", "P1 — דחופה")
+        .addOption("p4", i18n.t("priority.normal"))
+        .addOption("p3", i18n.t("priority.medium"))
+        .addOption("p2", i18n.t("priority.high"))
+        .addOption("p1", i18n.t("priority.urgent"))
         .setValue("p4")
         .onChange((value) => {
           this.value.priority = value;
@@ -234,8 +240,8 @@ export class NewTaskModal extends Modal {
         : "";
     };
     new Setting(contentEl)
-      .setName("משך")
-      .setDesc("הזן מספר ובחר דקות, שעות או ימים")
+      .setName(i18n.t("modal.duration"))
+      .setDesc(i18n.t("modal.durationDescription"))
       .addText((text) => {
         text.inputEl.type = "number";
         text.inputEl.min = "1";
@@ -247,9 +253,9 @@ export class NewTaskModal extends Modal {
       })
       .addDropdown((dropdown) => {
         dropdown
-          .addOption("minute", "דקות")
-          .addOption("hour", "שעות")
-          .addOption("day", "ימים")
+          .addOption("minute", i18n.t("unit.minutes"))
+          .addOption("hour", i18n.t("unit.hours"))
+          .addOption("day", i18n.t("unit.days"))
           .setValue(durationUnit)
           .onChange((value) => {
             if (value === "minute" || value === "hour" || value === "day") {
@@ -263,11 +269,11 @@ export class NewTaskModal extends Modal {
     actions.settingEl.addClass("todoist-task-notes-modal-actions");
     actions
       .addButton((button) =>
-        button.setButtonText("ביטול").onClick(() => this.close()),
+        button.setButtonText(i18n.t("common.cancel")).onClick(() => this.close()),
       )
       .addButton((button) =>
         button
-          .setButtonText("יצירה וסנכרון")
+          .setButtonText(i18n.t("modal.createAndSync"))
           .setCta()
           .onClick(() => {
             void this.submitTask(button);
@@ -276,8 +282,9 @@ export class NewTaskModal extends Modal {
   }
 
   private async submitTask(button: ButtonComponent): Promise<void> {
+    const i18n = this.host.getI18n();
     if (!this.value.title.trim()) {
-      new Notice("יש להזין כותרת למשימה.");
+      new Notice(i18n.t("notice.titleRequired"));
       return;
     }
     button.setDisabled(true);
@@ -285,16 +292,15 @@ export class NewTaskModal extends Modal {
       await this.host.createTaskFromForm(this.value);
       this.close();
     } catch (error) {
-      new Notice(
-        `יצירת המשימה נכשלה: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+      new Notice(i18n.t("notice.createFailed", {
+        error: error instanceof Error ? error.message : String(error),
+      }));
       button.setDisabled(false);
     }
   }
 
   private renderLockedHierarchy(container: HTMLElement): void {
+    const i18n = this.host.getI18n();
     const project = this.host
       .getProjects()
       .find((item) => item.id === this.value.projectId);
@@ -305,19 +311,20 @@ export class NewTaskModal extends Modal {
       )
       .join(" ← ");
     new Setting(container)
-      .setName("פרויקט")
-      .setDesc(project?.name ?? "פרויקט לא ידוע");
+      .setName(i18n.t("field.project"))
+      .setDesc(project?.name ?? i18n.t("common.unknownProject"));
     const setting = new Setting(container)
-      .setName("משימת אב נעולה")
-      .setDesc(path || "ללא משימת אב");
+      .setName(i18n.t("modal.lockedParent"))
+      .setDesc(path || i18n.t("common.noParent"));
     setting.settingEl.addClass("todoist-task-notes-hierarchy-locked");
   }
 
   private renderHierarchyPicker(container: HTMLElement): void {
+    const i18n = this.host.getI18n();
     const projects = this.host.getProjects();
     new Setting(container)
-      .setName("פרויקט")
-      .setDesc("בחירת הפרויקט מסננת את כל רמות ההיררכיה")
+      .setName(i18n.t("field.project"))
+      .setDesc(i18n.t("modal.projectDescription"))
       .addDropdown((dropdown) => {
         for (const project of projects) {
           dropdown.addOption(project.id, project.name);
@@ -337,6 +344,7 @@ export class NewTaskModal extends Modal {
 
   private renderParentSelectors(): void {
     if (!this.parentSelectorsEl) return;
+    const i18n = this.host.getI18n();
     this.parentSelectorsEl.empty();
     const tasks = this.host.getTasks();
     let level = 0;
@@ -355,20 +363,20 @@ export class NewTaskModal extends Modal {
       const setting = new Setting(this.parentSelectorsEl)
         .setName(
           currentLevel === 0
-            ? "משימה ראשית"
-            : `תת־משימה — רמה ${currentLevel}`,
+            ? i18n.t("modal.mainTask")
+            : i18n.t("modal.subtaskLevel", { level: currentLevel }),
         )
         .setDesc(
           currentLevel === 0
-            ? "אופציונלי; אפשר ליצור ישירות בתוך הפרויקט"
-            : "רק ילדים ישירים של הבחירה הקודמת",
+            ? i18n.t("modal.mainTaskDescription")
+            : i18n.t("modal.childDescription"),
         );
       setting.addDropdown((dropdown) => {
         dropdown.addOption(
           "",
           currentLevel === 0
-            ? "ללא משימת אב"
-            : "עצור ברמה הנוכחית",
+            ? i18n.t("modal.stopAtProject")
+            : i18n.t("modal.stopAtLevel"),
         );
         for (const task of options) {
           dropdown.addOption(task.id, task.content);
@@ -390,12 +398,12 @@ export class NewTaskModal extends Modal {
     const breadcrumb = this.parentSelectorsEl.createDiv(
       "todoist-task-notes-breadcrumb",
     );
-    breadcrumb.createSpan({ text: "נתיב אב: " });
+    breadcrumb.createSpan({ text: `${i18n.t("modal.parentPath")} ` });
     const names = this.parentPathIds.map(
       (id) => tasks.find((task) => task.id === id)?.content ?? id,
     );
     breadcrumb.createEl("strong", {
-      text: names.length ? names.join(" ← ") : "ללא — יצירה ברמת הפרויקט",
+      text: names.length ? names.join(" ← ") : i18n.t("modal.projectLevel"),
     });
   }
 
@@ -434,6 +442,7 @@ export interface PickerItem {
 export class ItemPickerModal extends FuzzySuggestModal<PickerItem> {
   constructor(
     app: App,
+    private readonly i18n: I18n,
     private readonly title: string,
     private readonly items: PickerItem[],
     private readonly onPick: (item: PickerItem) => void | Promise<void>,
@@ -454,11 +463,9 @@ export class ItemPickerModal extends FuzzySuggestModal<PickerItem> {
 
   onChooseItem(item: PickerItem): void {
     void Promise.resolve(this.onPick(item)).catch((error: unknown) => {
-      new Notice(
-        `הפעולה נכשלה: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+      new Notice(this.i18n.t("notice.actionFailed", {
+        error: error instanceof Error ? error.message : String(error),
+      }));
     });
   }
 }
@@ -486,14 +493,16 @@ export class TaskActionsChild extends MarkdownRenderChild {
   }
 
   private render(): void {
+    const i18n = this.host.getI18n();
     this.containerEl.empty();
     this.containerEl.addClass("todoist-task-notes-inline-actions");
-    this.containerEl.setAttr("dir", "rtl");
+    this.containerEl.setAttr("dir", i18n.direction);
+    this.containerEl.setAttr("lang", i18n.locale);
     const context = this.host.getTaskNoteActionContext(this.sourcePath);
     if (!context) return;
     const button = this.containerEl.createEl("button", {
       cls: "todoist-task-notes-add-subtask",
-      text: "הוסף תת־משימה",
+      text: i18n.t("action.addSubtask"),
     });
     setIcon(button.createSpan(), "list-plus");
     if (context.enabled) {
@@ -504,7 +513,10 @@ export class TaskActionsChild extends MarkdownRenderChild {
     }
     button.disabled = true;
     button.setAttr("aria-disabled", "true");
-    button.setAttr("title", context.disabledReason ?? "הפעולה אינה זמינה");
+    button.setAttr(
+      "title",
+      context.disabledReason ?? i18n.t("action.unavailable"),
+    );
     if (context.disabledReason) {
       this.containerEl.createSpan({
         cls: "todoist-task-notes-action-reason",
@@ -540,6 +552,7 @@ export class DashboardChild extends MarkdownRenderChild {
   }
 
   private render(): void {
+    const i18n = this.host.getI18n();
     const data = this.host.getDashboardData();
     const stats = calculateDashboardStats(data.knownTasks);
     const projectStats = calculateProjectStats(data.knownTasks);
@@ -550,14 +563,15 @@ export class DashboardChild extends MarkdownRenderChild {
 
     this.containerEl.empty();
     this.containerEl.addClass("todoist-task-notes-dashboard");
-    this.containerEl.setAttr("dir", "rtl");
+    this.containerEl.setAttr("dir", i18n.direction);
+    this.containerEl.setAttr("lang", i18n.locale);
     this.renderToolbar(data);
     this.renderOverview(stats.overview);
 
     if (!projectStats.length) {
       this.containerEl.createDiv({
         cls: "todoist-task-notes-empty",
-        text: "אין כרגע משימות Todoist פעילות.",
+        text: i18n.t("dashboard.empty"),
       });
       return;
     }
@@ -565,7 +579,7 @@ export class DashboardChild extends MarkdownRenderChild {
     const statsSection = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section",
     });
-    statsSection.createEl("h2", { text: "תמונת מצב לפי פרויקט" });
+    statsSection.createEl("h2", { text: i18n.t("dashboard.projectSnapshot") });
     const statsGrid = statsSection.createDiv(
       "todoist-task-notes-branch-stats-grid",
     );
@@ -573,24 +587,24 @@ export class DashboardChild extends MarkdownRenderChild {
       this.renderProjectStats(
         statsGrid,
         project,
-        projectById.get(project.projectId)?.name ?? "פרויקט לא ידוע",
+        projectById.get(project.projectId)?.name ?? i18n.t("common.unknownProject"),
       );
     }
 
     const treeSection = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section",
     });
-    treeSection.createEl("h2", { text: "משימות" });
+    treeSection.createEl("h2", { text: i18n.t("dashboard.tasks") });
     treeSection.createEl("p", {
       cls: "todoist-task-notes-section-hint",
-      text: "כל הפרויקטים והמשימות סגורים בפתיחת הדשבורד. אפשר לפתוח כמה ענפים במקביל.",
+      text: i18n.t("dashboard.treeHint"),
     });
     const branches = treeSection.createDiv(
       "todoist-task-notes-branch-list",
     );
     for (const project of projectStats) {
       const projectName =
-        projectById.get(project.projectId)?.name ?? "פרויקט לא ידוע";
+        projectById.get(project.projectId)?.name ?? i18n.t("common.unknownProject");
       this.renderProjectBranch(
         branches,
         project,
@@ -603,26 +617,33 @@ export class DashboardChild extends MarkdownRenderChild {
   }
 
   private renderToolbar(data: DashboardData): void {
+    const i18n = this.host.getI18n();
     const toolbar = this.containerEl.createDiv(
       "todoist-task-notes-toolbar",
     );
-    const newButton = toolbar.createEl("button", { text: "משימה חדשה" });
+    const newButton = toolbar.createEl("button", {
+      text: i18n.t("dashboard.newTask"),
+    });
     setIcon(newButton.createSpan(), "plus");
     newButton.addEventListener("click", () => this.host.openNewTaskModal());
-    const syncButton = toolbar.createEl("button", { text: "סנכרן עכשיו" });
+    const syncButton = toolbar.createEl("button", {
+      text: i18n.t("dashboard.syncNow"),
+    });
     setIcon(syncButton.createSpan(), "refresh-cw");
     syncButton.addEventListener("click", () => {
       void this.syncFromDashboard(syncButton);
     });
     const status = toolbar.createSpan("todoist-task-notes-status");
     if (data.lastError) {
-      status.setText(`שגיאת סנכרון אחרונה: ${data.lastError}`);
+      status.setText(i18n.t("dashboard.lastError", { error: data.lastError }));
     } else if (data.lastSync) {
       status.setText(
-        `סונכרן לאחרונה ${new Date(data.lastSync).toLocaleString("he-IL")}`,
+        i18n.t("dashboard.lastSync", {
+          date: new Date(data.lastSync).toLocaleString(i18n.intlLocale),
+        }),
       );
     } else {
-      status.setText("עדיין לא בוצע סנכרון");
+      status.setText(i18n.t("dashboard.neverSynced"));
     }
   }
 
@@ -638,16 +659,17 @@ export class DashboardChild extends MarkdownRenderChild {
   private renderOverview(
     overview: ReturnType<typeof calculateDashboardStats>["overview"],
   ): void {
+    const i18n = this.host.getI18n();
     const section = this.containerEl.createEl("section", {
       cls: "todoist-task-notes-section",
     });
-    section.createEl("h2", { text: "סיכום כללי" });
+    section.createEl("h2", { text: i18n.t("dashboard.overview") });
     const grid = section.createDiv("todoist-task-notes-overview-grid");
     const cards: Array<[string, number, string]> = [
-      ["משימות פתוחות", overview.openCount, "list-checks"],
-      ["באיחור", overview.overdueCount, "alarm-clock"],
-      ["היום וב־7 הימים הקרובים", overview.dueSoonCount, "calendar-days"],
-      ["דחופות · P1/P2", overview.urgentCount, "flame"],
+      [i18n.t("dashboard.openTasks"), overview.openCount, "list-checks"],
+      [i18n.t("dashboard.overdue"), overview.overdueCount, "alarm-clock"],
+      [i18n.t("dashboard.dueSoon"), overview.dueSoonCount, "calendar-days"],
+      [i18n.t("dashboard.urgentP1P2"), overview.urgentCount, "flame"],
     ];
     for (const [label, value, icon] of cards) {
       const card = grid.createDiv("todoist-task-notes-overview-card");
@@ -663,22 +685,29 @@ export class DashboardChild extends MarkdownRenderChild {
     project: ProjectTaskStats,
     projectName: string,
   ): void {
+    const i18n = this.host.getI18n();
     const card = parent.createDiv("todoist-task-notes-branch-stat-card");
     const heading = card.createDiv("todoist-task-notes-branch-stat-heading");
     heading.createEl("h3", { text: projectName });
-    heading.createSpan({ text: "My Projects · Todoist" });
+    heading.createSpan({ text: i18n.t("dashboard.todoistProject") });
     const progressLabel = card.createDiv(
       "todoist-task-notes-progress-label",
     );
     progressLabel.createSpan({
-      text: `${project.openCount} נותרו · ${project.completedCount} הושלמו`,
+      text: i18n.t("dashboard.remainingCompleted", {
+        remaining: project.openCount,
+        completed: project.completedCount,
+      }),
     });
     progressLabel.createEl("strong", {
       text: `${project.completionPercent}%`,
     });
     const progress = card.createDiv("todoist-task-notes-progress");
     progress.setAttr("role", "progressbar");
-    progress.setAttr("aria-label", `התקדמות ${projectName}`);
+    progress.setAttr(
+      "aria-label",
+      i18n.t("dashboard.progress", { project: projectName }),
+    );
     progress.setAttr("aria-valuemin", "0");
     progress.setAttr("aria-valuemax", "100");
     progress.setAttr("aria-valuenow", String(project.completionPercent));
@@ -688,20 +717,20 @@ export class DashboardChild extends MarkdownRenderChild {
     });
 
     const next = card.createDiv("todoist-task-notes-next-task");
-    next.createSpan({ text: "המשימה הקרובה" });
+    next.createSpan({ text: i18n.t("dashboard.nextTask") });
     if (project.nextTask) {
       next.createEl("strong", { text: project.nextTask.content });
       next.createSpan({
         text: this.formatDue(project.nextTask.due?.date ?? ""),
       });
     } else {
-      next.createEl("strong", { text: "אין תאריך למשימות הפתוחות" });
+      next.createEl("strong", { text: i18n.t("dashboard.noDatedTasks") });
     }
 
     const details = card.createDiv("todoist-task-notes-branch-metrics");
-    this.renderMetric(details, "באיחור", project.overdueCount);
-    this.renderMetric(details, "דחופות", project.urgentCount);
-    this.renderMetric(details, "ללא תאריך", project.unscheduledCount);
+    this.renderMetric(details, i18n.t("dashboard.overdue"), project.overdueCount);
+    this.renderMetric(details, i18n.t("dashboard.urgent"), project.urgentCount);
+    this.renderMetric(details, i18n.t("dashboard.noDate"), project.unscheduledCount);
   }
 
   private renderMetric(parent: HTMLElement, label: string, value: number): void {
@@ -734,7 +763,7 @@ export class DashboardChild extends MarkdownRenderChild {
     header.createEl("strong", { text: projectName });
     header.createSpan({
       cls: "todoist-task-notes-remaining-badge",
-      text: `${project.openCount} משימות`,
+      text: this.host.getI18n().plural("dashboard.taskCount", project.openCount),
     });
     if (!expanded) return;
 
@@ -785,12 +814,16 @@ export class DashboardChild extends MarkdownRenderChild {
     );
     toggle.setAttr(
       "aria-label",
-      `${expanded ? "סגור" : "פתח"} את ${root.content}`,
+      this.host.getI18n().t(expanded ? "aria.collapse" : "aria.expand", {
+        label: root.content,
+      }),
     );
     this.createTaskLink(header, root, paths);
     header.createSpan({
       cls: "todoist-task-notes-remaining-badge",
-      text: `${remainingCount} נותרו`,
+      text: this.host
+        .getI18n()
+        .plural("dashboard.remainingCount", remainingCount),
     });
 
     if (!expanded) return;
@@ -808,7 +841,7 @@ export class DashboardChild extends MarkdownRenderChild {
     } else {
       panel.createDiv({
         cls: "todoist-task-notes-empty",
-        text: "אין תת־משימות פעילות.",
+        text: this.host.getI18n().t("dashboard.noActiveSubtasks"),
       });
     }
   }
@@ -854,7 +887,10 @@ export class DashboardChild extends MarkdownRenderChild {
     const checkbox = parent.createEl("input");
     checkbox.type = "checkbox";
     checkbox.checked = false;
-    checkbox.setAttribute("aria-label", `סמן כהושלמה: ${task.content}`);
+    checkbox.setAttribute(
+      "aria-label",
+      this.host.getI18n().t("aria.markCompleted", { task: task.content }),
+    );
     checkbox.addEventListener("change", () => {
       void this.updateTaskCompletion(checkbox, task);
     });
@@ -871,11 +907,9 @@ export class DashboardChild extends MarkdownRenderChild {
       await this.host.setTaskCompleted(task.id, checkbox.checked);
     } catch (error) {
       checkbox.checked = !checkbox.checked;
-      new Notice(
-        `עדכון Todoist נכשל: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+      new Notice(this.host.getI18n().t("notice.todoistUpdateFailed", {
+        error: error instanceof Error ? error.message : String(error),
+      }));
     } finally {
       checkbox.disabled = false;
     }
@@ -939,7 +973,9 @@ export class DashboardChild extends MarkdownRenderChild {
     button.setAttr("aria-controls", controlsId);
     button.setAttr(
       "aria-label",
-      `${expanded ? "סגור" : "פתח"} את ${label}`,
+      this.host.getI18n().t(expanded ? "aria.collapse" : "aria.expand", {
+        label,
+      }),
     );
     setIcon(button, "chevron-down");
     if (expanded) button.addClass("is-expanded");
@@ -999,6 +1035,8 @@ export class DashboardChild extends MarkdownRenderChild {
     const key = dueDateKey({ id: "", content: "", project_id: "", due: { date: value } });
     if (!key) return value;
     const [year, month, day] = key.split("-").map(Number);
-    return new Date(year, month - 1, day).toLocaleDateString("he-IL");
+    return new Date(year, month - 1, day).toLocaleDateString(
+      this.host.getI18n().intlLocale,
+    );
   }
 }
