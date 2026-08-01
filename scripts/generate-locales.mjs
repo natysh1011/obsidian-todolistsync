@@ -7,11 +7,7 @@ import { localeCodes, localeDefinitions } from "./locale-registry.mjs";
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const translateDirectory = resolve(repository, "translate");
 const locales = localeCodes;
-const activeLocales = new Set(
-  localeDefinitions
-    .filter(({ available }) => available)
-    .map(({ code }) => code),
-);
+const activeLocales = new Set(localeCodes);
 const availableLocaleCodes = localeCodes;
 const definitionsByCode = new Map(
   localeDefinitions.map((definition) => [definition.code, definition]),

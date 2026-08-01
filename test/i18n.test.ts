@@ -20,27 +20,19 @@ describe("localization infrastructure", () => {
     expect(isLanguagePreference("fr")).toBe(true);
   });
 
-  it("shows native locale names with available languages first", () => {
+  it("shows native locale names for all available languages", () => {
     expect(getLocaleDisplayName("ga")).toBe("Gaeilge");
     expect(getLocaleDisplayName("de")).toBe("Deutsch");
     expect(getLocaleDisplayName("ar")).toBe("العربية");
     expect(getLocaleDisplayName("ga") === "אירית").toBe(false);
 
     const options = getLocaleOptions();
-    expect(options.slice(0, 2)).toEqual([
-      { code: "en", nativeName: "English", available: true },
-      { code: "he", nativeName: "עברית", available: true },
-    ]);
-    expect(options.slice(2).every(({ available }) => !available)).toBe(true);
+    expect(options).toHaveLength(73);
+    expect(options.every(({ available }) => available)).toBe(true);
     expect(new Set(options.map(({ code }) => code)).size).toBe(73);
-    const unavailableNames = options
-      .slice(2)
-      .map(({ nativeName }) => nativeName);
-    expect(unavailableNames).toEqual(
-      [...unavailableNames].sort((left, right) =>
-        left.localeCompare(right, "en", { sensitivity: "base" }),
-      ),
-    );
+    expect(options.some(({ code }) => code === "en")).toBe(true);
+    expect(options.some(({ code }) => code === "he")).toBe(true);
+    expect(options.some(({ code }) => code === "fr")).toBe(true);
   });
 
   it("uses an available system locale and falls back from unavailable ones", () => {

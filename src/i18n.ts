@@ -133,26 +133,15 @@ export function getLocaleDisplayName(code: LocaleCode): string {
 }
 
 export function getLocaleOptions(): readonly LocaleOption[] {
-  const available = LOCALE_CODES.filter((code) => {
-    const bundle = TRANSLATION_CATALOG[code] as { _meta?: { available?: boolean } };
-    return bundle._meta?.available === true;
-  }).map((code) => ({
+  return LOCALE_CODES.map((code) => ({
     code,
     nativeName: getLocaleDisplayName(code),
     available: true,
-  }));
-  const unavailable = LOCALE_CODES.filter(
-    (code) => !available.some((entry) => entry.code === code),
-  ).map((code) => ({
-    code,
-    nativeName: getLocaleDisplayName(code),
-    available: false,
   })).sort(
     (left, right) =>
       localeNameCollator.compare(left.nativeName, right.nativeName) ||
       left.code.localeCompare(right.code),
   );
-  return [...available, ...unavailable];
 }
 
 export function isLanguagePreference(

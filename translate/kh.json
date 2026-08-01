@@ -4,7 +4,7 @@
     "nativeName": "ខ្មែរ",
     "sourceHash": "7d6e1e3b2c4244547151680537337e09611835ab39a29fbe5b635a9032b66714",
     "direction": "ltr",
-    "available": false
+    "available": true
   },
   "messages": {
     "language.system": "ភាសាប្រព័ន្ធ",

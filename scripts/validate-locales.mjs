@@ -10,11 +10,7 @@ const expectedLocales = localeDefinitions.map(({ code }) => code).sort();
 const definitionsByCode = new Map(
   localeDefinitions.map((definition) => [definition.code, definition]),
 );
-const activeLocales = new Set(
-  localeDefinitions
-    .filter(({ available }) => available)
-    .map(({ code }) => code),
-);
+const activeLocales = new Set(localeCodes);
 
 function placeholders(value) {
   return [...value.matchAll(/\{([A-Za-z][A-Za-z0-9_]*)\}/g)]
