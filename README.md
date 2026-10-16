@@ -7,14 +7,15 @@ An Obsidian plugin that creates one Markdown note per Todoist task and keeps tas
 ## Features
 
 - One note per task, subtask, and nested subtask.
-- Hierarchical folders grouped by the real Todoist project.
+- Compact hierarchy grouped by the real Todoist project; folders are created only for tasks that have subtasks.
 - Hebrew RTL dashboard with project statistics and a collapsible task tree.
 - Create tasks and subtasks from Obsidian.
 - Sync title, description, labels, project, hierarchy, dates, priority, duration, recurrence, and completion.
 - Offline task creation with idempotent retry.
 - Conflict copies when Todoist and Obsidian changed the same field.
 - User content under `## Notes` is never overwritten.
-- Localized interface and task-note details in English and Hebrew, with RTL support.
+- Completed, inactive, and remotely deleted task notes move to the configured Obsidian trash during synchronization.
+- Localized interface and task-note details across 73 locale dictionaries, including RTL support.
 
 ## Installation
 
@@ -52,15 +53,19 @@ Add this block to any Markdown note:
 
 The dashboard groups tasks by their actual Todoist project under **My Projects**. Projects and task branches are collapsed by default.
 
+Set the managed dashboard note in **Settings → Todoist Task Notes**, or add the
+block to the current Markdown note with **Todoist: Add dashboard** in the Command
+Palette. In the editor, type `/todoist: add dashboard` and select the matching
+suggestion.
+
 ## Languages
 
-Choose **System language**, **English**, or **עברית** in the plugin settings.
-Hebrew uses a fully mirrored RTL interface; English uses LTR. The localization
-registry contains a separate JSON file for each planned locale under
-`translate/`, but languages without a complete translation are shown as
-unavailable and cannot be selected. Available languages are listed first; every
-language is labeled by its native name (for example, `Gaeilge`). An unsupported
-system language safely falls back to English.
+Choose **System language** or any supported locale in the plugin settings.
+The localization registry contains one complete JSON dictionary per locale
+under `translate/`. RTL metadata is applied to Arabic, Divehi, Persian,
+Hebrew, and Urdu; other locales use LTR. Every language is labeled by its native
+name (for example, `Gaeilge`), and an unsupported system language safely falls
+back to English.
 
 Technical identifiers, command names, code-block names, frontmatter keys, and
 the `## Notes` heading remain in English for compatibility. User-authored task

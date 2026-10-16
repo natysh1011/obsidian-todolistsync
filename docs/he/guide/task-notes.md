@@ -5,11 +5,16 @@
 הפתקים נשמרים מתחת לתיקיית השורש שהוגדרה:
 
 ```text
-משימות/Todoist/<Todoist project>/<main task>/<main task>.md
-משימות/Todoist/<Todoist project>/<main task>/<subtask>/<subtask>.md
+משימות/Todoist/<Todoist project>/<leaf task>.md
+משימות/Todoist/<Todoist project>/<parent task>/<parent task>.md
+משימות/Todoist/<Todoist project>/<parent task>/<leaf subtask>.md
 ```
 
-לכותרות כפולות מתווספת סיומת יציבה מה־Todoist ID כדי למנוע דריסה. שמות קבצים בעברית ורמות משימה עמוקות נתמכים.
+תיקייה נפרדת נוצרת למשימה רק כל עוד יש לה תתי־משימות ישירות. משימות־עלה נשמרות
+כקבצים ישירות בתיקיית משימת האב או הפרויקט. הפלאגין מעביר פתקים בין שתי הצורות
+כאשר ההיררכיה משתנה ומנקה תיקיות מנוהלות ריקות. לכותרות כפולות מתווספת סיומת
+יציבה מה־Todoist ID כדי למנוע דריסה. שמות קבצים בעברית ורמות משימה עמוקות
+נתמכים.
 
 ## מאפיינים מנוהלים
 

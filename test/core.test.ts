@@ -60,7 +60,7 @@ describe("sanitizeSegment", () => {
 });
 
 describe("buildTaskPathMap", () => {
-  it("creates main/subtask/subtask folders with one note per item", () => {
+  it("creates folders only for tasks that have subtasks", () => {
     const tasks = [
       task("main", "משימה ראשית"),
       task("child", "משימת משנה", "main"),
@@ -75,9 +75,21 @@ describe("buildTaskPathMap", () => {
       "משימות/Todoist/לימודים/משימה ראשית/משימת משנה/משימת משנה.md",
     );
     expect(paths.get("grandchild")?.note).toBe(
-      "משימות/Todoist/לימודים/משימה ראשית/משימת משנה/פרט נוסף/פרט נוסף.md",
+      "משימות/Todoist/לימודים/משימה ראשית/משימת משנה/פרט נוסף.md",
     );
     expect(paths.get("grandchild")?.depth).toBe(2);
+  });
+
+  it("stores a root task without subtasks as a direct project file", () => {
+    const paths = buildTaskPathMap(
+      [task("leaf", "משימה יחידה")],
+      [project],
+      "משימות/Todoist",
+    );
+
+    expect(paths.get("leaf")?.note).toBe(
+      "משימות/Todoist/לימודים/משימה יחידה.md",
+    );
   });
 
   it("adds a stable suffix only when sibling titles collide", () => {

@@ -1,5 +1,6 @@
 import {
   App,
+  EditorSuggest,
   MarkdownPostProcessorContext,
   MarkdownView,
   Modal,
@@ -9,11 +10,23 @@ import {
   Setting,
   TAbstractFile,
   TFile,
+  TFolder,
   getLanguage,
   normalizePath,
   type ButtonComponent,
+  type Editor,
+  type EditorPosition,
+  type EditorSuggestContext,
+  type EditorSuggestTriggerInfo,
   type SettingDefinitionItem,
 } from "obsidian";
+import {
+  DASHBOARD_BLOCK,
+  appendDashboardBlock,
+  findDashboardSlashTrigger,
+  hasDashboardBlock,
+  normalizeDashboardNotePath,
+} from "./dashboard-note";
 import {
   dashboardRecordFromProperties,
   type DashboardTaskRecord,
@@ -154,6 +167,14 @@ export default class TodoistTaskNotesPlugin
       callback: () => void this.syncNow("command"),
     });
     this.addCommand({
+      id: "add-dashboard",
+      name: "Todoist: Add dashboard",
+      editorCallback: (editor) => {
+        this.addDashboardToEditor(editor);
+      },
+    });
+    this.registerEditorSuggest(new DashboardSlashSuggest(this.app, this));
+    this.addCommand({
       id: "preview-changes",
       name: "Preview pending local changes",
       callback: () => void this.previewPendingChanges(),
@@ -275,6 +296,46 @@ export default class TodoistTaskNotesPlugin
       this.triggerDashboardUpdate();
     }
     await this.savePluginData();
+  }
+
+  async setDashboardPath(value: string): Promise<string> {
+    const path = normalizeDashboardNotePath(value);
+    if (!path) return this.data.settings.dashboardPath;
+
+    await this.ensureDashboardNoteAtPath(path);
+    this.data.settings = { ...this.data.settings, dashboardPath: path };
+    await this.savePluginData();
+    this.triggerDashboardUpdate();
+    return path;
+  }
+
+  addDashboardToEditor(
+    editor: Editor,
+    from?: EditorPosition,
+    to?: EditorPosition,
+  ): boolean {
+    if (hasDashboardBlock(editor.getValue())) {
+      if (from) editor.replaceRange("", from, to ?? from);
+      return false;
+    }
+
+    if (from) {
+      editor.replaceRange(DASHBOARD_BLOCK, from, to ?? from);
+      return true;
+    }
+
+    const cursor = editor.getCursor();
+    const line = editor.getLine(cursor.line);
+    const textBeforeCursor = line.slice(0, cursor.ch);
+    const textAfterCursor = line.slice(cursor.ch);
+    const leading = textBeforeCursor.trim() ? "\n\n" : "";
+    const trailing = textAfterCursor.trim() ? "\n\n" : "";
+    editor.replaceRange(
+      `${leading}${DASHBOARD_BLOCK}${trailing}`,
+      cursor,
+      cursor,
+    );
+    return true;
   }
 
   async testConnection(): Promise<void> {
@@ -412,6 +473,7 @@ export default class TodoistTaskNotesPlugin
   private async performSync(reason: string): Promise<void> {
     const pullOnly = !this.data.initialImportDone;
     try {
+      await this.ensureDashboardNoteAtPath(this.data.settings.dashboardPath);
       const localFiles = await this.scanLocalTaskFiles();
       this.projects = await this.api.listProjects();
       this.labels = await this.api.listLabels();
@@ -422,43 +484,19 @@ export default class TodoistTaskNotesPlugin
         activeTasks.push(...pendingCreated);
       }
 
-      const completedSince = new Date(
-        Math.max(
-          Date.now() - 89 * 24 * 60 * 60 * 1000,
-          (this.data.lastSync
-            ? new Date(this.data.lastSync).getTime()
-            : Date.now()) -
-            24 * 60 * 60 * 1000,
-        ),
-      );
-      const completedTasks = pullOnly
-        ? []
-        : await this.api.listCompletedSince(completedSince);
-
       const localById = new Map<string, LocalTaskFile>();
       for (const local of localFiles) {
         const id = stringValue(local.parsed.properties.todoist_id).trim();
         if (id) localById.set(id, local);
       }
       const activeById = new Map(activeTasks.map((task) => [task.id, task]));
-      const completedById = new Map(
-        completedTasks.map((task) => [task.id, task]),
-      );
-      const knownCompleted = completedTasks.filter(
-        (task) => localById.has(task.id) || Boolean(this.data.tasks[task.id]),
-      );
-      const pathTasks = [
-        ...activeTasks,
-        ...knownCompleted.filter((task) => !activeById.has(task.id)),
-      ];
       let pathMap = buildTaskPathMap(
-        pathTasks,
+        activeTasks,
         this.projects,
         this.data.settings.rootFolder,
       );
 
       const activeForDashboard: TodoistTask[] = [];
-      const locallyCompleted = new Set<string>();
       const sortedActive = [...activeTasks].sort(
         (a, b) =>
           (pathMap.get(a.id)?.depth ?? 0) -
@@ -495,17 +533,7 @@ export default class TodoistTaskNotesPlugin
             localState.status === "completed"
           ) {
             await this.api.closeTask(remote.id);
-            locallyCompleted.add(remote.id);
-            const completed = {
-              ...remote,
-              completed_at: new Date().toISOString(),
-            };
-            await this.materializeRemoteTask(
-              completed,
-              "completed",
-              pathMap,
-              local,
-            );
+            await this.trashInactiveTaskNote(local, remote.id);
             continue;
           } else if (resolution === "local") {
             effective = await this.pushLocalChanges(remote, localState);
@@ -521,74 +549,13 @@ export default class TodoistTaskNotesPlugin
         activeForDashboard.push(effective);
       }
 
-      for (const completed of knownCompleted) {
-        if (activeById.has(completed.id) || locallyCompleted.has(completed.id)) {
-          continue;
-        }
-        const local = localById.get(completed.id) ?? null;
-        if (local?.parsed.properties.sync_state === "detached") continue;
-        if (local && !pullOnly) {
-          const localState = localComparable(local.parsed.properties);
-          const resolution = resolveSyncChange(
-            this.data.tasks[completed.id]?.fingerprint,
-            localState,
-            remoteComparable(completed, "completed"),
-          );
-          if (resolution === "conflict") {
-            await this.writeConflictCopy(local, completed);
-          } else if (
-            resolution === "local" &&
-            localState.status === "open"
-          ) {
-            await this.api.reopenTask(completed.id);
-            const reopened = {
-              ...completed,
-              checked: false,
-              completed_at: null,
-            };
-            await this.materializeRemoteTask(
-              reopened,
-              "open",
-              pathMap,
-              local,
-            );
-            activeForDashboard.push(reopened);
-            continue;
-          }
-        }
-        await this.materializeRemoteTask(
-          completed,
-          "completed",
-          pathMap,
-          local,
-        );
-      }
-
-      const remoteKnown = new Set([
-        ...activeById.keys(),
-        ...completedById.keys(),
-        ...locallyCompleted,
-      ]);
       for (const [id, local] of localById) {
-        if (remoteKnown.has(id)) {
-          if (this.data.tasks[id]) this.data.tasks[id].missingCount = 0;
-          continue;
-        }
-        const state = this.data.tasks[id];
-        if (!state || state.status !== "open") continue;
-        state.missingCount = (state.missingCount ?? 0) + 1;
-        if (state.missingCount >= 3) {
-          await this.markDetached(
-            local,
-            this.i18n.t("sync.remoteDeleted"),
-          );
-          state.status = "detached";
-        }
+        if (activeById.has(id)) continue;
+        await this.trashInactiveTaskNote(local, id);
       }
+      await this.pruneEmptyManagedFolders();
 
-      this.tasks = activeForDashboard.filter(
-        (task) => !locallyCompleted.has(task.id),
-      );
+      this.tasks = activeForDashboard;
       pathMap = buildTaskPathMap(
         this.tasks,
         this.projects,
@@ -749,14 +716,14 @@ export default class TodoistTaskNotesPlugin
     const parent = this.tasks.find((task) => task.id === form.parentId);
     const parentPath = parent ? this.paths.get(parent.id)?.folder : null;
     const segment = sanitizeSegment(input.content);
-    const folder = normalizePath(
+    const containerFolder = normalizePath(
       parentPath
-        ? `${parentPath}/${segment}`
+        ? parentPath
         : `${this.data.settings.rootFolder}/${
             sanitizeSegment(project?.name ?? "Inbox")
-          }/${segment}`,
+          }`,
     );
-    const path = normalizePath(`${folder}/${segment}.md`);
+    const path = normalizePath(`${containerFolder}/${segment}.md`);
     const pseudo: TodoistTask = {
       id: "",
       content: input.content,
@@ -793,11 +760,11 @@ export default class TodoistTaskNotesPlugin
       requestId,
       this.i18n,
     );
-    await this.ensureFolder(folder);
+    await this.ensureFolder(containerFolder);
     const existing = this.app.vault.getAbstractFileByPath(path);
     if (existing instanceof TFile) {
       const alternate = normalizePath(
-        `${folder}/${segment} · ${requestId.slice(-6)}.md`,
+        `${containerFolder}/${segment} · ${requestId.slice(-6)}.md`,
       );
       return this.app.vault.create(
         alternate,
@@ -841,7 +808,8 @@ export default class TodoistTaskNotesPlugin
     }
     const notes = local?.parsed.notes ?? "";
     let content = renderTaskNote(properties, notes, this.i18n);
-    await this.ensureFolder(pathInfo.folder);
+    const noteFolder = pathInfo.note.slice(0, pathInfo.note.lastIndexOf("/"));
+    await this.ensureFolder(noteFolder);
 
     let file = local?.file ?? null;
     if (!file) {
@@ -918,21 +886,41 @@ export default class TodoistTaskNotesPlugin
     await this.app.vault.create(path, content);
   }
 
-  private async markDetached(
+  private async trashInactiveTaskNote(
     local: LocalTaskFile,
-    reason: string,
+    id: string,
   ): Promise<void> {
-    const properties = {
-      ...local.parsed.properties,
+    this.writingPaths.add(local.file.path);
+    await this.app.fileManager.trashFile(local.file);
+    window.setTimeout(() => this.writingPaths.delete(local.file.path), 1000);
+
+    const previous = this.data.tasks[id];
+    this.data.tasks[id] = {
+      path: local.file.path,
+      fingerprint:
+        previous?.fingerprint ??
+        stableFingerprint(localComparable(local.parsed.properties)),
       status: "detached",
-      sync_state: "detached",
-      detached_reason: reason,
-      detached_at: new Date().toISOString(),
+      missingCount: Math.max(1, previous?.missingCount ?? 0),
     };
-    await this.writeFile(
-      local.file,
-      renderTaskNote(properties, local.parsed.notes, this.i18n),
-    );
+  }
+
+  private async pruneEmptyManagedFolders(): Promise<void> {
+    const root = normalizePath(this.data.settings.rootFolder);
+    const folders = this.app.vault
+      .getAllLoadedFiles()
+      .filter(
+        (file): file is TFolder =>
+          file instanceof TFolder &&
+          file.path.startsWith(`${root}/`),
+      )
+      .sort((a, b) => b.path.split("/").length - a.path.split("/").length);
+
+    for (const folder of folders) {
+      if (folder.children.length === 0) {
+        await this.app.fileManager.trashFile(folder);
+      }
+    }
   }
 
   private async scanLocalTaskFiles(): Promise<LocalTaskFile[]> {
@@ -975,6 +963,32 @@ export default class TodoistTaskNotesPlugin
       if (!this.app.vault.getAbstractFileByPath(current)) {
         await this.app.vault.createFolder(current);
       }
+    }
+  }
+
+  private async ensureDashboardNoteAtPath(pathValue: string): Promise<TFile> {
+    const path = normalizeDashboardNotePath(pathValue);
+    if (!path) throw new Error("Invalid dashboard note path");
+
+    const slash = path.lastIndexOf("/");
+    if (slash > 0) await this.ensureFolder(path.slice(0, slash));
+
+    const existing = this.app.vault.getAbstractFileByPath(path);
+    if (existing && !(existing instanceof TFile)) {
+      throw new Error(`Dashboard note path is not a file: ${path}`);
+    }
+    if (existing instanceof TFile) {
+      const content = await this.app.vault.read(existing);
+      const updated = appendDashboardBlock(content);
+      if (updated !== content) await this.writeFile(existing, updated);
+      return existing;
+    }
+
+    this.writingPaths.add(path);
+    try {
+      return await this.app.vault.create(path, `${DASHBOARD_BLOCK}\n`);
+    } finally {
+      window.setTimeout(() => this.writingPaths.delete(path), 1000);
     }
   }
 
@@ -1247,6 +1261,62 @@ export default class TodoistTaskNotesPlugin
   }
 }
 
+interface DashboardSuggestion {
+  readonly label: string;
+}
+
+class DashboardSlashSuggest extends EditorSuggest<DashboardSuggestion> {
+  constructor(
+    app: App,
+    private readonly plugin: TodoistTaskNotesPlugin,
+  ) {
+    super(app);
+  }
+
+  onTrigger(
+    cursor: EditorPosition,
+    editor: Editor,
+    file: TFile | null,
+  ): EditorSuggestTriggerInfo | null {
+    if (!file) return null;
+    const trigger = findDashboardSlashTrigger(
+      editor.getLine(cursor.line),
+      cursor.ch,
+    );
+    if (!trigger) return null;
+    return {
+      start: { line: cursor.line, ch: trigger.startCh },
+      end: { line: cursor.line, ch: trigger.endCh },
+      query: trigger.query,
+    };
+  }
+
+  getSuggestions(
+    _context: EditorSuggestContext,
+  ): DashboardSuggestion[] {
+    return [{ label: "Todoist: Add dashboard" }];
+  }
+
+  renderSuggestion(item: DashboardSuggestion, element: HTMLElement): void {
+    element.createDiv({ text: item.label });
+    element.createEl("small", { text: "/todoist: add dashboard" });
+  }
+
+  selectSuggestion(
+    _item: DashboardSuggestion,
+    _event: MouseEvent | KeyboardEvent,
+  ): void {
+    const context = this.context;
+    if (!context) return;
+    this.plugin.addDashboardToEditor(
+      context.editor,
+      context.start,
+      context.end,
+    );
+    this.close();
+  }
+}
+
 class TodoistTaskNotesSettingTab extends PluginSettingTab {
   constructor(
     app: App,
@@ -1373,13 +1443,28 @@ class TodoistTaskNotesSettingTab extends PluginSettingTab {
     setting: Setting,
     settings: PluginSettings,
   ): void {
-    setting.setName(this.plugin.getI18n().t("settings.dashboardNote")).addText((text) =>
-      text.setValue(settings.dashboardPath).onChange((value) => {
-          void this.plugin.updateSettings({
-            dashboardPath: normalizePath(value),
-          });
-        }),
-    );
+    setting
+      .setName(this.plugin.getI18n().t("settings.dashboardNote"))
+      .addText((text) => {
+        text.setValue(settings.dashboardPath);
+        text.inputEl.addEventListener("change", () => {
+          const entered = text.getValue();
+          void this.plugin
+            .setDashboardPath(entered)
+            .then((savedPath) => {
+              if (text.getValue() === entered) text.setValue(savedPath);
+            })
+            .catch((error: unknown) => {
+              text.setValue(this.plugin.getSettings().dashboardPath);
+              new Notice(
+                this.plugin.getI18n().t("notice.actionFailed", {
+                  error:
+                    error instanceof Error ? error.message : String(error),
+                }),
+              );
+            });
+        });
+      });
   }
 
   private addIntervalSetting(

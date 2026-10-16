@@ -8,8 +8,8 @@
 
 ## התקנה ידנית
 
-1. פתח את [Release 1.0.1](https://github.com/natysh1011/obsidian-todolistsync/releases/tag/1.0.1).
-2. הורד את `todoist-task-notes-1.0.1.zip`.
+1. פתח את [Release 1.0.2](https://github.com/natysh1011/obsidian-todolistsync/releases/tag/1.0.2).
+2. הורד את `todoist-task-notes-1.0.2.zip`.
 3. חלץ את `manifest.json`,‏ `main.js` ו־`styles.css` אל `<vault-config>/plugins/todoist-task-notes/`.
 4. ב־Obsidian פתח **Settings → Community plugins** והפעל את **Todoist Task Notes**.
 

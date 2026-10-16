@@ -1,5 +1,6 @@
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
+import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import https from "node:https";
 
@@ -21,10 +22,6 @@ const forceLocales = new Set(
     .filter(Boolean),
 );
 const forceAll = process.env.FORCE_ALL === "1";
-
-function sleep(ms) {
-  return new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
-}
 
 function encodePlaceholders(value) {
   const placeholders = [];

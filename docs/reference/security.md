@@ -16,7 +16,7 @@ The plugin communicates with Todoist's API to list and update task data. The doc
 
 - The initial import is pull-only.
 - Missing local notes never delete remote tasks.
-- Remote deletions retain a detached local note.
+- Remote completion and deletion move the managed local note through Obsidian's configured trash behavior.
 - Simultaneous changes produce a conflict copy.
 - Free-form `## Notes` content is preserved.
 

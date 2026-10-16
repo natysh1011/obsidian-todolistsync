@@ -7,7 +7,15 @@ Add the following block to a Markdown note:
 ```
 ````
 
-The default dashboard note is `משימות/Untitled.md`. The rendered block includes **Sync now** and **New task** actions.
+The default dashboard note is `משימות/Untitled.md`. Changing the dashboard
+path in settings creates the target note and block immediately, and every sync
+keeps that configured note available. The rendered block includes **Sync now**
+and **New task** actions.
+
+To add another dashboard without changing the configured path, run
+**Todoist: Add dashboard** in the Command Palette. You can also type
+`/todoist: add dashboard` in a Markdown editor and select the suggestion.
+Repeating either action does not add a duplicate block.
 
 ## Overview statistics
 
@@ -24,7 +32,7 @@ Each Todoist project card shows remaining and known completed tasks, progress, t
 
 Projects and task branches are closed when the dashboard first opens. Expand a project, then expand any task with children. Several branches can remain open at once, and the expansion state survives dashboard refreshes during the same view.
 
-The tree retains note links, completion controls, due dates, priorities, and labels. Dated items are ordered by nearest due date; undated items appear later. Completed and detached notes are excluded from the active tree.
+The tree retains note links, completion controls, due dates, priorities, and labels. Dated items are ordered by nearest due date; undated items appear later. Inactive tasks are removed from the managed task-note tree during synchronization.
 
 <DashboardPreview />
 

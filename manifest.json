@@ -1,7 +1,7 @@
 {
   "id": "todoist-task-notes",
   "name": "Todoist Task Notes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "1.11.4",
   "description": "Creates one hierarchical Markdown note per Todoist task with two-way synchronization.",
   "author": "Nataniel Shulkin",

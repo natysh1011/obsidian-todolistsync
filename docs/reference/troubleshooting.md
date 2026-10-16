@@ -8,9 +8,11 @@ Open **Settings → Todoist Task Notes**, paste a new token, select **Save token
 
 Confirm that the token is current in Todoist's Developer integration settings. Replace it in the plugin and retry. Also check connectivity, Todoist service status, and whether a firewall blocks API requests.
 
-## A language is disabled
+## A language falls back to English
 
-Only English and Hebrew have complete translations in 1.0.1. Other native language names are visible to show the translation registry, but cannot be selected until their message catalogs are complete.
+The plugin includes 73 locale dictionaries. If Obsidian or the operating system
+reports a locale outside that registry, the interface safely falls back to
+English. You can also choose a supported locale explicitly in plugin settings.
 
 ## A task was saved as pending-create
 
@@ -20,11 +22,19 @@ The plugin could not reach Todoist during creation. Keep the note in place and r
 
 Todoist and the local managed state changed since the previous synchronization. Todoist's version was applied to the task note, while the displaced local file was copied to `_Conflicts`. Review the copy and manually restore any value you still want.
 
-## A note is detached
+## An inactive task note disappeared
 
-The corresponding remote task stayed unavailable across repeated synchronizations, or you detached it manually. The note remains local and is excluded from active synchronization and dashboard counts.
+Completed, inactive, and remotely deleted tasks are not kept in the managed
+task-note tree. After a successful synchronization, their notes are moved using
+Obsidian's configured trash behavior and can be recovered from that trash when
+needed. A note detached manually while its Todoist task remains active stays
+local and is excluded from active synchronization.
 
 ## The dashboard does not appear
 
-Confirm that the fenced code block is exactly `todoist-task-notes`, that the plugin is enabled, and that a successful synchronization has loaded tasks. Use **Sync now** and review any displayed last-sync error.
+Confirm that the fenced code block is exactly `todoist-task-notes`, that the
+plugin is enabled, and that a successful synchronization has loaded tasks. Use
+**Todoist: Add dashboard** in the Command Palette, or type
+`/todoist: add dashboard` in the editor. Then use **Sync now** and review any
+displayed last-sync error.
 

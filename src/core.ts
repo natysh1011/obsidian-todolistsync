@@ -187,9 +187,12 @@ export function buildTaskPathMap(
         sanitizeSegment(projectName),
         segment,
       );
+      const hasChildren = (children.get(`task:${task.id}`)?.length ?? 0) > 0;
       const info = {
         folder,
-        note: joinPath(folder, `${segment}.md`),
+        note: hasChildren
+          ? joinPath(folder, `${segment}.md`)
+          : joinPath(rootFolder, sanitizeSegment(projectName), `${segment}.md`),
         segment,
         depth: 0,
       };
@@ -209,9 +212,12 @@ export function buildTaskPathMap(
       ? parent.folder
       : joinPath(rootFolder, sanitizeSegment(projectName));
     const folder = joinPath(base, segment);
+    const hasChildren = (children.get(`task:${task.id}`)?.length ?? 0) > 0;
     const info = {
       folder,
-      note: joinPath(folder, `${segment}.md`),
+      note: hasChildren
+        ? joinPath(folder, `${segment}.md`)
+        : joinPath(base, `${segment}.md`),
       segment,
       depth: parent ? parent.depth + 1 : 0,
     };

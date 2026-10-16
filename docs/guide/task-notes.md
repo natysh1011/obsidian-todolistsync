@@ -5,11 +5,17 @@
 Notes are nested beneath the configured root:
 
 ```text
-משימות/Todoist/<Todoist project>/<main task>/<main task>.md
-משימות/Todoist/<Todoist project>/<main task>/<subtask>/<subtask>.md
+משימות/Todoist/<Todoist project>/<leaf task>.md
+משימות/Todoist/<Todoist project>/<parent task>/<parent task>.md
+משימות/Todoist/<Todoist project>/<parent task>/<leaf subtask>.md
 ```
 
-Duplicate titles receive a stable Todoist-ID suffix so notes do not overwrite one another. Hebrew filenames and deeper task levels are supported.
+A task receives its own folder only while it has direct subtasks. Leaf tasks are
+stored as files directly inside their parent task or project folder. The plugin
+migrates notes between these two shapes as hierarchy changes and removes empty
+managed folders. Duplicate titles receive a stable Todoist-ID suffix so notes
+do not overwrite one another. Hebrew filenames and deeper task levels are
+supported.
 
 ## Managed properties
 

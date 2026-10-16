@@ -8,8 +8,8 @@
 
 ## Manual installation
 
-1. Open the [1.0.1 release](https://github.com/natysh1011/obsidian-todolistsync/releases/tag/1.0.1).
-2. Download `todoist-task-notes-1.0.1.zip`.
+1. Open the [1.0.2 release](https://github.com/natysh1011/obsidian-todolistsync/releases/tag/1.0.2).
+2. Download `todoist-task-notes-1.0.2.zip`.
 3. Extract `manifest.json`, `main.js`, and `styles.css` into `<vault-config>/plugins/todoist-task-notes/`.
 4. In Obsidian, open **Settings → Community plugins** and enable **Todoist Task Notes**.
 

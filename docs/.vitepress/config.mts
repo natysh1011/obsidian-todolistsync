@@ -26,6 +26,7 @@ const englishSidebar = [
     items: [
       { text: "Security and privacy", link: "/reference/security" },
       { text: "Troubleshooting", link: "/reference/troubleshooting" },
+      { text: "Release 1.0.2", link: "/reference/release-1.0.2" },
       { text: "Release 1.0.1", link: "/reference/release-1.0.1" },
     ],
   },
@@ -55,6 +56,7 @@ const hebrewSidebar = [
     items: [
       { text: "אבטחה ופרטיות", link: "/he/reference/security" },
       { text: "פתרון תקלות", link: "/he/reference/troubleshooting" },
+      { text: "גרסה 1.0.2", link: "/he/reference/release-1.0.2" },
       { text: "גרסה 1.0.1", link: "/he/reference/release-1.0.1" },
     ],
   },
@@ -82,7 +84,7 @@ export default defineConfig({
         nav: [
           { text: "Guide", link: "/guide/overview" },
           { text: "Dashboard", link: "/guide/dashboard" },
-          { text: "1.0.1", link: "/reference/release-1.0.1" },
+          { text: "1.0.2", link: "/reference/release-1.0.2" },
         ],
         sidebar: englishSidebar,
         outline: { label: "On this page" },
@@ -116,7 +118,7 @@ export default defineConfig({
         nav: [
           { text: "מדריך", link: "/he/guide/overview" },
           { text: "דשבורד", link: "/he/guide/dashboard" },
-          { text: "1.0.1", link: "/he/reference/release-1.0.1" },
+          { text: "1.0.2", link: "/he/reference/release-1.0.2" },
         ],
         sidebar: hebrewSidebar,
         outline: { label: "בעמוד זה" },

@@ -8,9 +8,12 @@ After the pull-only initial import, managed fields synchronize in both direction
 
 The `## Notes` section is always preserved.
 
-## Completion and reopening
+## Completion and inactive tasks
 
-Complete or reopen a task from the dashboard, Todoist, or the note's managed `status`. Completed notes stay in place for history and progress calculations but disappear from the active tree.
+Complete a task from the dashboard, Todoist, or the note's managed `status`.
+After Todoist no longer reports the task as active, synchronization moves its
+managed note to the configured Obsidian trash. The same rule applies to tasks
+that were deleted remotely, so stale notes are not recreated on later syncs.
 
 ## Project and parent changes
 
@@ -18,7 +21,11 @@ Use the dedicated Command Palette actions to move the current task to another pr
 
 ## Deletions and detaching
 
-Deleting a local note is never treated as permission to delete the Todoist task. When a known remote task is missing across repeated synchronizations, its local note becomes `detached` instead of being removed. You can also detach the current note explicitly.
+Deleting a local note is never treated as permission to delete the Todoist task.
+Remote completion or deletion removes the corresponding local managed note
+through Obsidian's trash behavior. You can still use **Detach current task
+safely** while a task is active to keep a local note out of synchronization
+without deleting the Todoist task.
 
 ## No-change behavior
 

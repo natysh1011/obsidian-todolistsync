@@ -15,16 +15,20 @@ hero:
 
 features:
   - title: Hierarchical task notes
-    details: Keep tasks, subtasks, and deeper levels in matching folders inside your vault.
+    details: Keep tasks, subtasks, and deeper levels in compact project folders; leaf tasks stay as direct Markdown files.
   - title: Safe two-way sync
     details: Sync managed fields while preserving your free-form Notes section and conflict copies.
-  - title: English and Hebrew
-    details: Complete LTR and RTL interfaces, with unavailable languages clearly separated for future translation.
+  - title: 73 locale dictionaries
+    details: Localized LTR and RTL interfaces with native language names and English fallback.
 ---
 
-## Everything in 1.0.1
+## Everything in 1.0.2
 
-The plugin creates and updates Markdown task notes, lets you create tasks and subtasks from the vault, and renders a compact dashboard grouped by your real Todoist projects. It also supports offline creation, completion and reopening, reparenting, project moves, safe detaching, and secure token management.
+The plugin creates and updates Markdown task notes, lets you create tasks and
+subtasks from the vault, and renders a compact dashboard grouped by your real
+Todoist projects. Version 1.0.2 adds a reliable managed dashboard path,
+**Todoist: Add dashboard**, compact leaf-note storage, and cleanup of inactive
+task notes through Obsidian's trash behavior.
 
 <DashboardPreview />
 

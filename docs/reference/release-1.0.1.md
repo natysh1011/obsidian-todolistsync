@@ -1,6 +1,6 @@
 # Release 1.0.1
 
-Version 1.0.1 is the current documented release.
+Version 1.0.1 introduced the localization and documentation foundation.
 
 ## Included
 

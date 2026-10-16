@@ -25,6 +25,54 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 var import_obsidian3 = require("obsidian");
 
+// src/dashboard-note.ts
+var DASHBOARD_BLOCK_LANGUAGE = "todoist-task-notes";
+var DASHBOARD_BLOCK = `\`\`\`${DASHBOARD_BLOCK_LANGUAGE}
+\`\`\``;
+var dashboardBlockPattern = /(^|\r?\n)[ \t]*```todoist-task-notes(?:[ \t]+[^\r\n]*)?\r?\n[\s\S]*?[ \t]*```(?=\r?\n|$)/;
+function hasDashboardBlock(content) {
+  return dashboardBlockPattern.test(content);
+}
+function appendDashboardBlock(content) {
+  if (hasDashboardBlock(content)) return content;
+  if (!content) return `${DASHBOARD_BLOCK}
+`;
+  const separator = content.endsWith("\n\n") ? "" : content.endsWith("\n") ? "\n" : "\n\n";
+  return `${content}${separator}${DASHBOARD_BLOCK}
+`;
+}
+function normalizeDashboardNotePath(value) {
+  let path = value.trim().replaceAll("\\", "/").replace(/\/{2,}/g, "/").replace(/^\/+|\/+$/g, "");
+  if (!path) return null;
+  const segments = path.split("/");
+  if (segments.some(
+    (segment) => !segment || segment === "." || segment === ".."
+  )) {
+    return null;
+  }
+  if (!/\.md$/i.test(path)) path += ".md";
+  return path;
+}
+function findDashboardSlashTrigger(line, cursorCh) {
+  const prefix = line.slice(0, Math.max(0, cursorCh));
+  const match = /^(\s*)\/(.*)$/.exec(prefix);
+  if (!match) return null;
+  const query = match[2].trim().replace(/\s+/g, " ").toLowerCase();
+  if (!query) return null;
+  const commands = [
+    "todoist: add dashboard",
+    "todoist add dashboard",
+    "add dashboard",
+    "dashboard"
+  ];
+  if (!commands.some((command) => command.startsWith(query))) return null;
+  return {
+    startCh: 0,
+    endCh: cursorCh,
+    query
+  };
+}
+
 // node_modules/yaml/browser/dist/index.js
 var dist_exports = {};
 __export(dist_exports, {
@@ -18916,9 +18964,10 @@ function buildTaskPathMap(tasks, projects, rootFolder) {
         sanitizeSegment(projectName2),
         segment2
       );
+      const hasChildren2 = (children.get(`task:${task.id}`)?.length ?? 0) > 0;
       const info2 = {
         folder: folder2,
-        note: joinPath(folder2, `${segment2}.md`),
+        note: hasChildren2 ? joinPath(folder2, `${segment2}.md`) : joinPath(rootFolder, sanitizeSegment(projectName2), `${segment2}.md`),
         segment: segment2,
         depth: 0
       };
@@ -18931,9 +18980,10 @@ function buildTaskPathMap(tasks, projects, rootFolder) {
     const projectName = projectById.get(task.project_id)?.name ?? "Unknown project";
     const base = parent ? parent.folder : joinPath(rootFolder, sanitizeSegment(projectName));
     const folder = joinPath(base, segment);
+    const hasChildren = (children.get(`task:${task.id}`)?.length ?? 0) > 0;
     const info = {
       folder,
-      note: joinPath(folder, `${segment}.md`),
+      note: hasChildren ? joinPath(folder, `${segment}.md`) : joinPath(base, `${segment}.md`),
       segment,
       depth: parent ? parent.depth + 1 : 0
     };
@@ -20310,6 +20360,14 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       callback: () => void this.syncNow("command")
     });
     this.addCommand({
+      id: "add-dashboard",
+      name: "Todoist: Add dashboard",
+      editorCallback: (editor) => {
+        this.addDashboardToEditor(editor);
+      }
+    });
+    this.registerEditorSuggest(new DashboardSlashSuggest(this.app, this));
+    this.addCommand({
       id: "preview-changes",
       name: "Preview pending local changes",
       callback: () => void this.previewPendingChanges()
@@ -20414,6 +20472,37 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       this.triggerDashboardUpdate();
     }
     await this.savePluginData();
+  }
+  async setDashboardPath(value) {
+    const path = normalizeDashboardNotePath(value);
+    if (!path) return this.data.settings.dashboardPath;
+    await this.ensureDashboardNoteAtPath(path);
+    this.data.settings = { ...this.data.settings, dashboardPath: path };
+    await this.savePluginData();
+    this.triggerDashboardUpdate();
+    return path;
+  }
+  addDashboardToEditor(editor, from, to) {
+    if (hasDashboardBlock(editor.getValue())) {
+      if (from) editor.replaceRange("", from, to ?? from);
+      return false;
+    }
+    if (from) {
+      editor.replaceRange(DASHBOARD_BLOCK, from, to ?? from);
+      return true;
+    }
+    const cursor = editor.getCursor();
+    const line = editor.getLine(cursor.line);
+    const textBeforeCursor = line.slice(0, cursor.ch);
+    const textAfterCursor = line.slice(cursor.ch);
+    const leading = textBeforeCursor.trim() ? "\n\n" : "";
+    const trailing = textAfterCursor.trim() ? "\n\n" : "";
+    editor.replaceRange(
+      `${leading}${DASHBOARD_BLOCK}${trailing}`,
+      cursor,
+      cursor
+    );
+    return true;
   }
   async testConnection() {
     await this.api.validate();
@@ -20536,6 +20625,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
   async performSync(reason) {
     const pullOnly = !this.data.initialImportDone;
     try {
+      await this.ensureDashboardNoteAtPath(this.data.settings.dashboardPath);
       const localFiles = await this.scanLocalTaskFiles();
       this.projects = await this.api.listProjects();
       this.labels = await this.api.listLabels();
@@ -20544,36 +20634,18 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         const pendingCreated = await this.createPendingTasks(localFiles);
         activeTasks.push(...pendingCreated);
       }
-      const completedSince = new Date(
-        Math.max(
-          Date.now() - 89 * 24 * 60 * 60 * 1e3,
-          (this.data.lastSync ? new Date(this.data.lastSync).getTime() : Date.now()) - 24 * 60 * 60 * 1e3
-        )
-      );
-      const completedTasks = pullOnly ? [] : await this.api.listCompletedSince(completedSince);
       const localById = /* @__PURE__ */ new Map();
       for (const local of localFiles) {
         const id = stringValue(local.parsed.properties.todoist_id).trim();
         if (id) localById.set(id, local);
       }
       const activeById = new Map(activeTasks.map((task) => [task.id, task]));
-      const completedById = new Map(
-        completedTasks.map((task) => [task.id, task])
-      );
-      const knownCompleted = completedTasks.filter(
-        (task) => localById.has(task.id) || Boolean(this.data.tasks[task.id])
-      );
-      const pathTasks = [
-        ...activeTasks,
-        ...knownCompleted.filter((task) => !activeById.has(task.id))
-      ];
       let pathMap = buildTaskPathMap(
-        pathTasks,
+        activeTasks,
         this.projects,
         this.data.settings.rootFolder
       );
       const activeForDashboard = [];
-      const locallyCompleted = /* @__PURE__ */ new Set();
       const sortedActive = [...activeTasks].sort(
         (a, b) => (pathMap.get(a.id)?.depth ?? 0) - (pathMap.get(b.id)?.depth ?? 0)
       );
@@ -20601,17 +20673,7 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
             await this.writeConflictCopy(local, remote);
           } else if (resolution === "local" && localState.status === "completed") {
             await this.api.closeTask(remote.id);
-            locallyCompleted.add(remote.id);
-            const completed = {
-              ...remote,
-              completed_at: (/* @__PURE__ */ new Date()).toISOString()
-            };
-            await this.materializeRemoteTask(
-              completed,
-              "completed",
-              pathMap,
-              local
-            );
+            await this.trashInactiveTaskNote(local, remote.id);
             continue;
           } else if (resolution === "local") {
             effective = await this.pushLocalChanges(remote, localState);
@@ -20625,69 +20687,12 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
         );
         activeForDashboard.push(effective);
       }
-      for (const completed of knownCompleted) {
-        if (activeById.has(completed.id) || locallyCompleted.has(completed.id)) {
-          continue;
-        }
-        const local = localById.get(completed.id) ?? null;
-        if (local?.parsed.properties.sync_state === "detached") continue;
-        if (local && !pullOnly) {
-          const localState = localComparable(local.parsed.properties);
-          const resolution = resolveSyncChange(
-            this.data.tasks[completed.id]?.fingerprint,
-            localState,
-            remoteComparable(completed, "completed")
-          );
-          if (resolution === "conflict") {
-            await this.writeConflictCopy(local, completed);
-          } else if (resolution === "local" && localState.status === "open") {
-            await this.api.reopenTask(completed.id);
-            const reopened = {
-              ...completed,
-              checked: false,
-              completed_at: null
-            };
-            await this.materializeRemoteTask(
-              reopened,
-              "open",
-              pathMap,
-              local
-            );
-            activeForDashboard.push(reopened);
-            continue;
-          }
-        }
-        await this.materializeRemoteTask(
-          completed,
-          "completed",
-          pathMap,
-          local
-        );
-      }
-      const remoteKnown = /* @__PURE__ */ new Set([
-        ...activeById.keys(),
-        ...completedById.keys(),
-        ...locallyCompleted
-      ]);
       for (const [id, local] of localById) {
-        if (remoteKnown.has(id)) {
-          if (this.data.tasks[id]) this.data.tasks[id].missingCount = 0;
-          continue;
-        }
-        const state = this.data.tasks[id];
-        if (!state || state.status !== "open") continue;
-        state.missingCount = (state.missingCount ?? 0) + 1;
-        if (state.missingCount >= 3) {
-          await this.markDetached(
-            local,
-            this.i18n.t("sync.remoteDeleted")
-          );
-          state.status = "detached";
-        }
+        if (activeById.has(id)) continue;
+        await this.trashInactiveTaskNote(local, id);
       }
-      this.tasks = activeForDashboard.filter(
-        (task) => !locallyCompleted.has(task.id)
-      );
+      await this.pruneEmptyManagedFolders();
+      this.tasks = activeForDashboard;
       pathMap = buildTaskPathMap(
         this.tasks,
         this.projects,
@@ -20808,10 +20813,10 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     const parent = this.tasks.find((task) => task.id === form.parentId);
     const parentPath = parent ? this.paths.get(parent.id)?.folder : null;
     const segment = sanitizeSegment(input.content);
-    const folder = (0, import_obsidian3.normalizePath)(
-      parentPath ? `${parentPath}/${segment}` : `${this.data.settings.rootFolder}/${sanitizeSegment(project?.name ?? "Inbox")}/${segment}`
+    const containerFolder = (0, import_obsidian3.normalizePath)(
+      parentPath ? parentPath : `${this.data.settings.rootFolder}/${sanitizeSegment(project?.name ?? "Inbox")}`
     );
-    const path = (0, import_obsidian3.normalizePath)(`${folder}/${segment}.md`);
+    const path = (0, import_obsidian3.normalizePath)(`${containerFolder}/${segment}.md`);
     const pseudo = {
       id: "",
       content: input.content,
@@ -20839,11 +20844,11 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       requestId,
       this.i18n
     );
-    await this.ensureFolder(folder);
+    await this.ensureFolder(containerFolder);
     const existing = this.app.vault.getAbstractFileByPath(path);
     if (existing instanceof import_obsidian3.TFile) {
       const alternate = (0, import_obsidian3.normalizePath)(
-        `${folder}/${segment} \xB7 ${requestId.slice(-6)}.md`
+        `${containerFolder}/${segment} \xB7 ${requestId.slice(-6)}.md`
       );
       return this.app.vault.create(
         alternate,
@@ -20879,7 +20884,8 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     }
     const notes = local?.parsed.notes ?? "";
     let content = renderTaskNote(properties, notes, this.i18n);
-    await this.ensureFolder(pathInfo.folder);
+    const noteFolder = pathInfo.note.slice(0, pathInfo.note.lastIndexOf("/"));
+    await this.ensureFolder(noteFolder);
     let file = local?.file ?? null;
     if (!file) {
       const statePath = this.data.tasks[task.id]?.path;
@@ -20945,18 +20951,28 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     ].join("\n");
     await this.app.vault.create(path, content);
   }
-  async markDetached(local, reason) {
-    const properties = {
-      ...local.parsed.properties,
+  async trashInactiveTaskNote(local, id) {
+    this.writingPaths.add(local.file.path);
+    await this.app.fileManager.trashFile(local.file);
+    window.setTimeout(() => this.writingPaths.delete(local.file.path), 1e3);
+    const previous = this.data.tasks[id];
+    this.data.tasks[id] = {
+      path: local.file.path,
+      fingerprint: previous?.fingerprint ?? stableFingerprint(localComparable(local.parsed.properties)),
       status: "detached",
-      sync_state: "detached",
-      detached_reason: reason,
-      detached_at: (/* @__PURE__ */ new Date()).toISOString()
+      missingCount: Math.max(1, previous?.missingCount ?? 0)
     };
-    await this.writeFile(
-      local.file,
-      renderTaskNote(properties, local.parsed.notes, this.i18n)
-    );
+  }
+  async pruneEmptyManagedFolders() {
+    const root = (0, import_obsidian3.normalizePath)(this.data.settings.rootFolder);
+    const folders = this.app.vault.getAllLoadedFiles().filter(
+      (file) => file instanceof import_obsidian3.TFolder && file.path.startsWith(`${root}/`)
+    ).sort((a, b) => b.path.split("/").length - a.path.split("/").length);
+    for (const folder of folders) {
+      if (folder.children.length === 0) {
+        await this.app.fileManager.trashFile(folder);
+      }
+    }
   }
   async scanLocalTaskFiles() {
     const prefix = `${(0, import_obsidian3.normalizePath)(this.data.settings.rootFolder)}/`;
@@ -20994,6 +21010,29 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
       if (!this.app.vault.getAbstractFileByPath(current)) {
         await this.app.vault.createFolder(current);
       }
+    }
+  }
+  async ensureDashboardNoteAtPath(pathValue) {
+    const path = normalizeDashboardNotePath(pathValue);
+    if (!path) throw new Error("Invalid dashboard note path");
+    const slash = path.lastIndexOf("/");
+    if (slash > 0) await this.ensureFolder(path.slice(0, slash));
+    const existing = this.app.vault.getAbstractFileByPath(path);
+    if (existing && !(existing instanceof import_obsidian3.TFile)) {
+      throw new Error(`Dashboard note path is not a file: ${path}`);
+    }
+    if (existing instanceof import_obsidian3.TFile) {
+      const content = await this.app.vault.read(existing);
+      const updated = appendDashboardBlock(content);
+      if (updated !== content) await this.writeFile(existing, updated);
+      return existing;
+    }
+    this.writingPaths.add(path);
+    try {
+      return await this.app.vault.create(path, `${DASHBOARD_BLOCK}
+`);
+    } finally {
+      window.setTimeout(() => this.writingPaths.delete(path), 1e3);
     }
   }
   async writeFile(file, content) {
@@ -21218,6 +21257,43 @@ var TodoistTaskNotesPlugin = class extends import_obsidian3.Plugin {
     await this.saveData(this.data);
   }
 };
+var DashboardSlashSuggest = class extends import_obsidian3.EditorSuggest {
+  constructor(app, plugin) {
+    super(app);
+    this.plugin = plugin;
+  }
+  plugin;
+  onTrigger(cursor, editor, file) {
+    if (!file) return null;
+    const trigger = findDashboardSlashTrigger(
+      editor.getLine(cursor.line),
+      cursor.ch
+    );
+    if (!trigger) return null;
+    return {
+      start: { line: cursor.line, ch: trigger.startCh },
+      end: { line: cursor.line, ch: trigger.endCh },
+      query: trigger.query
+    };
+  }
+  getSuggestions(_context) {
+    return [{ label: "Todoist: Add dashboard" }];
+  }
+  renderSuggestion(item, element) {
+    element.createDiv({ text: item.label });
+    element.createEl("small", { text: "/todoist: add dashboard" });
+  }
+  selectSuggestion(_item, _event) {
+    const context = this.context;
+    if (!context) return;
+    this.plugin.addDashboardToEditor(
+      context.editor,
+      context.start,
+      context.end
+    );
+    this.close();
+  }
+};
 var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
@@ -21314,13 +21390,22 @@ var TodoistTaskNotesSettingTab = class extends import_obsidian3.PluginSettingTab
     );
   }
   addDashboardPathSetting(setting, settings) {
-    setting.setName(this.plugin.getI18n().t("settings.dashboardNote")).addText(
-      (text) => text.setValue(settings.dashboardPath).onChange((value) => {
-        void this.plugin.updateSettings({
-          dashboardPath: (0, import_obsidian3.normalizePath)(value)
+    setting.setName(this.plugin.getI18n().t("settings.dashboardNote")).addText((text) => {
+      text.setValue(settings.dashboardPath);
+      text.inputEl.addEventListener("change", () => {
+        const entered = text.getValue();
+        void this.plugin.setDashboardPath(entered).then((savedPath) => {
+          if (text.getValue() === entered) text.setValue(savedPath);
+        }).catch((error) => {
+          text.setValue(this.plugin.getSettings().dashboardPath);
+          new import_obsidian3.Notice(
+            this.plugin.getI18n().t("notice.actionFailed", {
+              error: error instanceof Error ? error.message : String(error)
+            })
+          );
         });
-      })
-    );
+      });
+    });
   }
   addIntervalSetting(setting, settings) {
     setting.setName(this.plugin.getI18n().t("settings.interval")).setDesc(this.plugin.getI18n().t("settings.intervalDescription")).addText((text) => {
